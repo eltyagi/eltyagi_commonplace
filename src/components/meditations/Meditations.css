@@ -1,0 +1,22 @@
+.meditations {
+  width: 100vw;
+  height: 100vh;
+}
+
+.pg-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 58px;
+  padding: 10px;
+}
+
+.pg-title-icon-img {
+width: 164px;
+height: 164px;
+}
+
+.pg-title-name, .pg-title-subtitle {
+  font-size: 68px;
+  padding: 1%;
+}

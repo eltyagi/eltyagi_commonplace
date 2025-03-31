@@ -1,0 +1,22 @@
+.blog-card {
+    /* Project */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 331px;
+height: 241px;
+
+background: #FFF0EE;
+border: 1px solid #99352F;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}

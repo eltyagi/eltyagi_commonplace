@@ -2,6 +2,9 @@ import React from 'react';
 import './Thoughts.css';
 import logoImg from '../../assets/music.svg'; // Adjust the path as necessary
 import Navigation from '../navigation/Navigation';
+import BlogCard from '../blog-card/BlogCard';
+import BlogContent from '../blog-content/BlogContent';
+
 
 const Thoughts: React.FC = () => {
   return (
@@ -20,7 +23,12 @@ const Thoughts: React.FC = () => {
         </div>
 
         <div className = 'blog'>
-
+          <div className = 'blog-content'>
+            <BlogContent/>
+          </div>
+          <div className = 'blog-list'>
+            <BlogCard/>
+          </div>
         </div>
 
         <div className = 'nav'>

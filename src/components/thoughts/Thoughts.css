@@ -22,3 +22,24 @@ height: 164px;
   font-size: 68px;
   padding: 1%;
 }
+
+.blog{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  top: 312px;
+  left: 97px;
+  right: 97px;
+  position: absolute;
+  gap: 45px;
+}
+
+.blog-content{
+  width: 847px;
+
+}
+
+.blog-list{
+  width: 331px;
+}

@@ -4,12 +4,10 @@ import './Thoughts.css';
 import logoImg from '../../assets/music.svg';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
-import BlogContent from '../blog-content/BlogContent';
 import { Buffer } from 'buffer';
 
-
 // Add Buffer to global scope
-globalThis.Buffer = Buffer;
+(globalThis as any).Buffer = Buffer;
 
 interface Post {
   title: string;
@@ -20,6 +18,8 @@ interface Post {
 
 const Thoughts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
+  const [isViewing, setIsViewing] = useState<boolean>(true);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -48,40 +48,70 @@ const Thoughts: React.FC = () => {
     loadPosts();
   }, []);
 
+  const handleCardClick = (index: number) => {
+    if (activeCardIndex === index) {
+      // If clicking the same card, toggle its expanded state
+      setActiveCardIndex(0);
+      setIsViewing(true);
+    } else {
+      // If clicking a different card, expand it and reset viewing state
+      setActiveCardIndex(index);
+      setIsViewing(false);
+    }
+  };
+
+  const handleViewStateChange = (viewing: boolean) => {
+    setIsViewing(viewing);
+  };
+
+  const activePost = posts[activeCardIndex];
+
   return (
     <div className="thoughts">
       <div className='pg-title'>
-            <div className='pg-title-name krona-one-regular'>
-                eltyagi's
-            </div>
-            <div className='pg-title-icon'>
-                <img className='pg-title-icon-img' src={logoImg} alt="Logo" />
-            </div>
-            <div className='pg-title-subtitle krona-one-regular'>
-                thoughts
-            </div>
+        <div className='pg-title-name krona-one-regular'>
+          eltyagi's
+        </div>
+        <div className='pg-title-icon'>
+          <img className='pg-title-icon-img' src={logoImg} alt="Logo" />
+        </div>
+        <div className='pg-title-subtitle krona-one-regular'>
+          thoughts
+        </div>
+      </div>
 
+      <div className='blog-container krona-one-regular'>
+        <div className='blog-cards'>
+          {posts.map((post, index) => (
+            <BlogCard
+              key={index}
+              index={index}
+              title={post.title}
+              classification={post.classification}
+              excerpt={post.excerpt}
+              content={post.content}
+              isExpanded={activeCardIndex === index}
+              isViewing={activeCardIndex === index && isViewing}
+              onCardClick={() => handleCardClick(index)}
+              onViewStateChange={handleViewStateChange}
+            />
+          ))}
         </div>
 
-        <div className='blog'>
-          <div className='blog-content'>
-            <BlogContent />
-          </div>
-          <div className='blog-list'>
-            {posts.map((post, index) => (
-              <BlogCard
-                key={index}
-                classification={post.classification}
-                title={post.title}
-                excerpt={post.excerpt}
-              />
-            ))}
-          </div>
+        <div className='blog-content-display krona-one-regular'>
+          {activePost && (activeCardIndex === 0 || isViewing) && (
+            <div className='blog-content'>
+              <div className='blog-content-title'>{activePost.title}</div>
+              <div className='blog-content-classification'>{activePost.classification}</div>
+              <div className='blog-content-text krona-one-regular'>{activePost.content}</div>
+            </div>
+          )}
         </div>
+      </div>
 
-        <div className='nav'>
-            <Navigation />
-        </div>
+      <div className='nav'>
+        <Navigation />
+      </div>
     </div>
   );
 };

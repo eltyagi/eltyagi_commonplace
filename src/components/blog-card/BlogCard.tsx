@@ -1,40 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './BlogCard.css';
 
 interface BlogCardProps {
-    classification: string;
+    index: number;
     title: string;
+    classification: string;
     excerpt: string;
+    content: string;
+    isExpanded: boolean;
+    isViewing: boolean;
+    onCardClick: () => void;
+    onViewStateChange: (viewing: boolean) => void;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ classification, title, excerpt }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [isViewing, setIsViewing] = useState(false);
-
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
-    const handleClick = () => setIsViewing(!isViewing);
-
-    const getButtonText = () => {
-        if (isViewing) return "viewing";
-        if (isHovered) return "view?";
-        return "view";
+const BlogCard: React.FC<BlogCardProps> = ({
+    title,
+    classification,
+    excerpt,
+    isExpanded,
+    isViewing,
+    onCardClick,
+    onViewStateChange
+}) => {
+    const handleViewButtonClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onViewStateChange(!isViewing);
     };
 
     return (
-        <div className="blog-card fira-code-regular">
-            <div className="blog-classification">{classification}</div>
-            <hr className="blog-divider"/>
-            <h2 className="blog-title">{title}</h2>
-            <p className="blog-excerpt">{excerpt}</p>
-            <button 
-                className={`blog-button ${isViewing ? 'viewing' : ''}`}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={handleClick}
-            >
-                {getButtonText()}
-            </button>
+        <div className={`blog-card ${isExpanded ? 'expanded' : ''}`} onClick={onCardClick}>
+            <div className='blog-card-classification'>{classification}</div>
+            <div className='blog-card-title'>{title}</div>
+            {isExpanded && (
+                <>
+                    <div className='blog-card-excerpt'>{excerpt}</div>
+                    <div 
+                        className='blog-card-view-button'
+                        onClick={handleViewButtonClick}
+                    >
+                        {isViewing ? "viewing" : "view"}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

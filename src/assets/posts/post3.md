@@ -1,6 +1,6 @@
 ---
 title: Your Title
-classification: Your Classification
+classification: Tech
 excerpt: Your Excerpt (optional)
 ---
 

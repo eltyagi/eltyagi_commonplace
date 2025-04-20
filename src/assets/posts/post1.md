@@ -1,25 +1,17 @@
 ---
-title: Your Title
-classification: Your Classification
-excerpt: Your Excerpt (optional)
+title: Helmet for my Pillow
+classification: Poetry
+excerpt: I wonder if I could hold a fight, with no fight left in me.
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+As I watch the exploits of better men, from the comforts of my hotel room.
+Wondering if I could ever measure up to their 1000 yard gaze.
+If I could walk into a wall of bullets, and still manage a laugh or two.
 
-## Section 1
+If I could crawl into the wrath of death, vulnerable, yet unfazed.
+I wonder if I could ever measure up to their relentless pursuit,
+Their need to hunt beyond the horizon,
+and into the fiery depth of the enemy’s abode.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-### Subsection 1.1
-
-- Consectetur adipiscing elit
-- Sed do eiusmod tempor
-- Ut labore et dolore magna
-
-## Section 2
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-> Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-Learn more about [Lorem Ipsum](https://www.lipsum.com/).
+I wonder if I could hold a fight, with no fight left in me.
+If my legacy could be stories of battles seldom told.

@@ -15,3 +15,5 @@ Their need to hunt beyond the horizon, and into the fiery depth of the enemy’s
 
 I wonder if I could hold a fight, with no fight left in me.
 If my legacy could be stories of battles seldom told.
+
+  

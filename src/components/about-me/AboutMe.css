@@ -22,3 +22,58 @@ height: 164px;
   font-size: 68px;
   padding: 1%;
 }
+
+.about-me-main-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  position: absolute;
+  top: 280px;
+  left: 97px;
+  width: calc(100vw - 194px);
+}
+
+.about-me-image {
+  flex-shrink: 0;
+}
+
+.profile-img {
+  width: 300px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.about-me-text {
+  flex: 1;
+  max-width: 600px;
+  font-size: 16px;
+  line-height: 28px;
+  color: #252525;
+  margin-top: 20px;
+}
+
+.about-me-text a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.about-me-text a:hover {
+  text-decoration: underline;
+}
+
+.nav {
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  left: calc(50% - 0vw/2);
+}
+
+.nav-bg {
+  position: absolute;
+  width: 100vw;
+  height: 173px;
+  background-color: #FFE0DC;
+  z-index: 99;
+}

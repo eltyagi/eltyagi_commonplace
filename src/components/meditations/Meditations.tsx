@@ -81,8 +81,7 @@ These principles and questions guide my decisions, both in technology and in lif
   const handleCardClick = (index: number) => {
     if (activeCardIndex === index) {
       // If clicking the same card, toggle its expanded state
-      setActiveCardIndex(0);
-      setIsViewing(true);
+      setIsViewing(prev => !prev);
     } else {
       // If clicking a different card, expand it and reset viewing state
       setActiveCardIndex(index);

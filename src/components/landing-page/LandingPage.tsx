@@ -5,20 +5,12 @@ import logoImg from '../../assets/music.svg'; // Adjust the path as necessary
 import linkedinImg from '../../assets/linkedin.png'; // Adjust the path as necessary
 import mediumImg from '../../assets/medium.png'; // Adjust the path as necessary
 import instaImg from '../../assets/insta.png'; // Adjust the path as necessary
+import PageHeader from '../page-header/PageHeader';
 const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
-        <div className = 'pg-title'>
-            <div className = 'pg-title-name krona-one-regular'>
-                eltyagi's
-            </div>
-            <div className='pg-title-icon'>
-                <img className = 'pg-title-icon-img' src={logoImg} alt="Logo" />
-            </div>
-            <div className = 'pg-title-subtitle krona-one-regular'>
-                commonplace
-            </div>
-
+        <div className = 'pg-title-container'>
+            <PageHeader/>
         </div>
 
         <div className = 'pg-content fira-code-regular'>
@@ -36,7 +28,9 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className = 'nav'>
+            <div className = 'nav-footer-bg'></div>
             <Navigation />
+            
         </div>
     </div>
   );

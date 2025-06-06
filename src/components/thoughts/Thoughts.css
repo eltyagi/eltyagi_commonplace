@@ -2,68 +2,51 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-
+    padding-bottom: 200px; /* Increased padding for more space */
 }
 
-.pg-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    overflow: none;
-    position: fixed;
-    z-index: 5;
-    background-color: #F9F6EE;
-    left: 97px;
-}
-
-.pg-title-icon-img {
-    width: 2rem;
-    height: 2rem;
-}
-
-.pg-title-name, .pg-title-subtitle {
-    font-size: 1.5rem;
-}
 
 .blog-container {
     display: flex;
-    gap: 2rem;
-    flex: 1;
-    min-height: 0;
+    justify-content: space-between;
     flex-direction: row-reverse; /* Reverse the order to put cards on right */
     position: relative; /* Add position relative for absolute positioning context */
+    padding-bottom: 200px; /* Add padding to container */
 }
 
 .blog-cards {
-    z-index: 1;
+    z-index: 4;
     position: fixed; /* Fix the position of cards */
     right: 120px; /* Align to the right with padding */
     width: 331px;
-    height: calc(100vh - 150px); /* Adjust height to account for header and padding */
-    overflow-y: auto;
+    height: calc(100vh - 350px); /* Adjusted height to account for header and bottom padding */
+    overflow-y:scroll; /* Enable vertical scrolling */
     display: flex;
     flex-direction: column;
     gap: 26px;
     top: 320px;
+    margin-bottom: 300px;
+    padding-bottom: 100px;
 }
 
 .blog-content-display {
     overflow-y: auto;
     display: flex;
-    justify-content: center; /* Center the content horizontally */
     width: 847px; /* Limit the width of content */
     left: 97px;
     margin-top: 320px;
+    margin-bottom: 200px; /* Add margin at the bottom */
+    position: relative; /* Change to relative positioning */
+    padding-bottom: 100px;
+    min-height: calc(100vh - 320px); /* Ensure minimum height */
 }
 
 .blog-content {
-    z-index: 2;
-    position: absolute; /* Position the content absolutely */
     width: 100%;
-    width: 847px; /* Slightly smaller than container for visual balance */
+    width: 947px; /* Slightly smaller than container for visual balance */
     min-height: 200px; /* Add minimum height to maintain space */
     left: 97px;
+    margin-bottom: 200px; /* Add margin at bottom */
   }
 
 
@@ -80,13 +63,10 @@
 
 .blog-content-text {
     line-height: 1.6;
+    color: #252525;
     white-space: pre-wrap;
-    font-weight: 100;
+    font-size: 14px;
 }
 
-.nav {
-    margin-top: 810px;
-    z-index: 10;
-    position: fixed;
-    right: 876px;
-  }
+
+

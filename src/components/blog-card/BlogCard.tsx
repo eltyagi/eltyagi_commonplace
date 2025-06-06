@@ -38,7 +38,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                         className='blog-card-view-button'
                         onClick={handleViewButtonClick}
                     >
-                        {isViewing ? "viewing" : "view"}
+                        {isViewing ? "Viewing" : "View"}
                     </div>
                 </>
             )}

@@ -1,0 +1,29 @@
+.page-header {
+    width: 100vw;
+    height: 220px;
+    position: relative;
+    background-color: #F9F6EE;
+    z-index: 100;
+    position: fixed;
+}
+
+.pg-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 58px;
+    padding: 0px;
+    gap: 9px;
+    left: 97px;
+    position: absolute;
+}
+
+.pg-title-icon-img {
+    width: 164px;
+    height: 164px;
+}
+
+.pg-title-name, .pg-title-subtitle {
+    font-size: 68px;
+    padding: 1%;
+}

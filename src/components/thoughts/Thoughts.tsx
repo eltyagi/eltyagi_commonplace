@@ -5,6 +5,7 @@ import logoImg from '../../assets/music.svg';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
 import { Buffer } from 'buffer';
+import PageHeader from '../page-header/PageHeader';
 
 // Add Buffer to global scope
 (globalThis as any).Buffer = Buffer;
@@ -68,17 +69,9 @@ const Thoughts: React.FC = () => {
 
   return (
     <div className="thoughts">
-      <div className='pg-title'>
-        <div className='pg-title-name krona-one-regular'>
-          eltyagi's
+      <div className = 'pg-title-container'>
+            <PageHeader/>
         </div>
-        <div className='pg-title-icon'>
-          <img className='pg-title-icon-img' src={logoImg} alt="Logo" />
-        </div>
-        <div className='pg-title-subtitle krona-one-regular'>
-          thoughts
-        </div>
-      </div>
 
       <div className='blog-container krona-one-regular'>
         <div className='blog-cards'>
@@ -110,6 +103,7 @@ const Thoughts: React.FC = () => {
       </div>
 
       <div className='nav'>
+        <div className='nav-bg'></div>
         <Navigation />
       </div>
     </div>

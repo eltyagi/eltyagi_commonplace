@@ -120,7 +120,7 @@ These principles and questions guide my decisions, both in technology and in lif
         </div>
 
         <div className='meditation-content-display krona-one-regular'>
-          {activeSection && (activeCardIndex === 0 || isViewing) && (
+          {activeSection && isViewing && (
             <div className='meditation-content'>
               <div className='meditation-content-title'>{activeSection.title}</div>
               <div className='meditation-content-classification'>{activeSection.classification}</div>

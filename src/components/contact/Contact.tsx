@@ -89,6 +89,7 @@ const Contact: React.FC = () => {
             <div className='message-input-label'>you</div>
             <textarea
               className='message-input'
+              aria-label='Your message'
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}

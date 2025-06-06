@@ -1,22 +1,67 @@
 .meditations {
-  width: 100vw;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-bottom: 200px; /* Increased padding for more space */
 }
 
-.pg-title{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 58px;
-  padding: 10px;
+.meditation-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse; /* Reverse the order to put cards on right */
+    position: relative; /* Add position relative for absolute positioning context */
+    padding-bottom: 200px; /* Add padding to container */
 }
 
-.pg-title-icon-img {
-width: 164px;
-height: 164px;
+.meditation-cards {
+    z-index: 4;
+    position: fixed; /* Fix the position of cards */
+    right: 120px; /* Align to the right with padding */
+    width: 331px;
+    height: calc(100vh - 350px); /* Adjusted height to account for header and bottom padding */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    top: 320px;
+    margin-bottom: 300px;
+    padding-bottom: 100px;
 }
 
-.pg-title-name, .pg-title-subtitle {
-  font-size: 68px;
-  padding: 1%;
+.meditation-content-display {
+    overflow-y: auto;
+    display: flex;
+    width: 847px; /* Limit the width of content */
+    left: 97px;
+    margin-top: 320px;
+    margin-bottom: 200px; /* Add margin at the bottom */
+    position: relative; /* Change to relative positioning */
+    padding-bottom: 100px;
+    min-height: calc(100vh - 320px); /* Ensure minimum height */
+}
+
+.meditation-content {
+    width: 100%;
+    width: 947px; /* Slightly smaller than container for visual balance */
+    min-height: 200px; /* Add minimum height to maintain space */
+    left: 97px;
+    margin-bottom: 200px; /* Add margin at bottom */
+}
+
+.meditation-content-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.meditation-content-classification {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.meditation-content-text {
+    line-height: 1.6;
+    color: #252525;
+    white-space: pre-wrap;
+    font-size: 14px;
 }

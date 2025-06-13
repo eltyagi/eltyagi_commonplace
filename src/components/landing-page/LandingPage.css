@@ -42,3 +42,41 @@
     background-color: #FFE0DC;
     z-index: 99;
 }
+
+
+@media (max-width: 480px) {
+
+.pg-content{
+    position: absolute;
+    width: 321px;
+    height: 177px;
+    top: 121px;
+    left: calc(50% - 321px/2);
+    font-size: 12px;
+    line-height: 21px;
+    text-align: justify;
+}
+
+.pg-links{
+    /* Path 2520 */
+    gap: 25px;
+    position: absolute;
+    top: 334px;
+    left: calc(50% - 122px/2);
+    width: 122px;
+}
+
+.nav {
+    top: 762.77px;
+    left: calc(50% - 0vw/2);
+}
+
+.nav-footer-bg{
+    position: absolute;
+    width: 100vw;
+    height: 173px;
+    background-color: #FFE0DC;
+    z-index: 99;
+}   
+
+}

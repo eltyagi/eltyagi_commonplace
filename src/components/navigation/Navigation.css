@@ -38,3 +38,42 @@
   color: #FF6F61;
 }
 
+@media (max-width: 768px) {
+
+}
+
+@media (max-width: 480px) {
+ .navigation {
+  padding: 0px 5px;
+  gap: 3px;
+  width: 358.97px;
+  height: 33.99px;
+  left: calc(50% - 358.97px/2);
+  bottom: 55.25px;
+  background: #252525;
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 80px;
+  font-size: 11px;
+}
+
+.nav-background {
+  position: absolute;
+  height: 27.1px;
+  background-color: #FFE0DC;
+  border-radius: 48px;
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.nav-link {
+  position: relative;
+  z-index: 1;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #FFE0DC;
+}
+
+.nav-link.active {
+  color: #FF6F61;
+}
+}

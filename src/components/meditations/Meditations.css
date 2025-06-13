@@ -65,3 +65,48 @@
     white-space: pre-wrap;
     font-size: 14px;
 }
+
+@media (max-width: 480px) {
+    .meditation-container {
+        flex-direction: column; /* Stack cards and content vertically */
+        align-items: center; /* Center align items */
+    }
+
+    /* Change order in flex container to put content first, then cards */
+    .meditation-content-display {
+        width: 95%; /* Full width on mobile */
+        left: 0; /* Reset left alignment */
+        margin-top: 120px; /* More space for header */
+        order: 1; /* Display first */
+    }
+
+    .meditation-cards {
+        position: relative; /* Change to relative for stacking */
+        right: 0; /* Reset right alignment */
+        width: 95%; /* Full width on mobile */
+        height: auto; /* Auto height for flexibility */
+        overflow-y: visible; /* Disable scrolling on mobile */
+        margin-top: 40px; /* Space after content */
+        margin-bottom: 60px; /* Add margin at bottom */
+        top: auto; /* Remove top positioning */
+        order: 2; /* Display second */
+    }
+
+    .meditation-content {
+        width: 95%; /* Full width on mobile */
+        margin-bottom: 20px; /* Less margin on mobile */
+        text-align: justify; /* Justify text on mobile */
+    }
+    
+    .meditation-content-title {
+        font-size: 12px; /* Title font size for mobile */
+        text-align: left; /* Keep title left-aligned */
+        font-weight: bold; /* Keep title bold */
+    }
+
+    .meditation-content-text {
+        font-size: 10px; /* Content font size */
+        font-weight: normal; /* Ensure content is not bold */
+        text-align: justify; /* Justify text */
+    }
+}

@@ -1,7 +1,6 @@
 .page-header {
-    width: 100vw;
+    width: 100%;
     height: 220px;
-    position: relative;
     background-color: #F9F6EE;
     z-index: 100;
     position: fixed;
@@ -26,4 +25,48 @@
 .pg-title-name, .pg-title-subtitle {
     font-size: 68px;
     padding: 1%;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        height: 46.99px !important;
+    }
+
+    .pg-title{
+        top: 22px !important;
+        gap: 9px !important;
+        left: 18px !important;
+    }
+
+    .pg-title-icon-img {
+        width: 164px !important;
+        height: 164px !important;
+    }
+
+    .pg-title-name, .pg-title-subtitle {
+        font-size: 19.48px !important;
+        padding: 1% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header {
+        height: 46.99px !important;
+    }
+
+    .pg-title{
+        top: 22px !important;
+        gap: 9px !important;
+        left: 18px !important;
+    }
+
+    .pg-title-icon-img {
+        width: 46.99px !important;
+        height: 46.99px !important;
+    }
+
+    .pg-title-name, .pg-title-subtitle {
+        font-size: 19.48px !important;
+        padding: 1% !important;
+    }
 }

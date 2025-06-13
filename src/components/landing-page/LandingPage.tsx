@@ -14,7 +14,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className = 'pg-content fira-code-regular'>
-        Hi there, I’m Lakshya and welcome to my digital home!<br/><br/>
+        <strong>Hi there, I’m Lakshya and welcome to my digital home!</strong><br/><br/>
         I am a Solutions Engineer, <a href='https://github.com/eltyagi'>GitHub</a>. By day, I help CTOs, 
         Engineering Managers and VPs drive engineering productivity. 
         By night, I am building, creating and teaching and more..
@@ -28,7 +28,6 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className = 'nav'>
-            <div className = 'nav-footer-bg'></div>
             <Navigation />
             
         </div>

@@ -131,7 +131,6 @@ These principles and questions guide my decisions, both in technology and in lif
       </div>
 
       <div className="nav">
-        <div className="nav-bg"></div>
         <Navigation />
       </div>
     </div>

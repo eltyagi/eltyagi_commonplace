@@ -1,0 +1,1 @@
+- When asked a question, provide a direct answer with background on the topic for knowledge building.

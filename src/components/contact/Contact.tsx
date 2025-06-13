@@ -108,7 +108,6 @@ const Contact: React.FC = () => {
       </div>
 
       <div className='nav'>
-        <div className='nav-bg'></div>
         <Navigation/>
       </div>
     </div>

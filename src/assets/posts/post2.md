@@ -1,25 +1,12 @@
 ---
-title: Your Title
-classification: Tech
-excerpt: Your Excerpt (optional)
+title: Settle in, for the long night
+classification: Poetry
+excerpt: Today, I settle in for the long night. One of many, which have elevated destiny itself.
+date: 2023-10-15
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Today, I settle in for the long night. One of many, which have elevated destiny itself. A drive through the heart of complacency and up Sisyphus’s slope.
 
-## Section 1
+A drive through the valley of a thousand peaks, each more worthy than the last. Despite the rocky climb, there is warmth in this journey.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-### Subsection 1.1
-
-- Consectetur adipiscing elit
-- Sed do eiusmod tempor
-- Ut labore et dolore magna
-
-## Section 2
-
-Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-
-> Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
-
-Learn more about [Lorem Ipsum](https://www.lipsum.com/).
+Like a dimply lit writer’s abode, in the shade of a candle light, to the rhythm of a lazy clock, on a smooth oak-wood desk, graced by ancient texts and coffee beans. There is glory in this solitude, for it’s a journey, into the soul.

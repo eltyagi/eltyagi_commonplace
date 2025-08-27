@@ -7,7 +7,7 @@ import { Buffer } from 'buffer';
 import PageHeader from '../page-header/PageHeader';
 
 // Add Buffer to global scope
-(globalThis as any).Buffer = Buffer;
+(globalThis as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
 
 interface Post {
   title: string;

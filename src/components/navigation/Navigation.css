@@ -15,6 +15,7 @@
   background: #252525;
   box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
   border-radius: 80px;
+  z-index: 10; /* Above footer overlay (z-index: 5) */
 }
 
 .nav-background {
@@ -86,6 +87,7 @@
   box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
   border-radius: 80px;
   font-size: 11px;
+  z-index: 10; /* Above footer overlay (z-index: 5) */
 }
 
 .nav-background {

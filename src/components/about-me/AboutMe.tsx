@@ -8,6 +8,12 @@ import PageHeader from '../page-header/PageHeader';
 const AboutMe: React.FC = () => {
   return (
     <div className="about-me">
+      {/* Header Overlay - positioned behind header but above content */}
+      <div className="header-overlay"></div>
+      
+      {/* Footer Overlay - positioned behind navigation but above content */}
+      <div className="footer-overlay"></div>
+      
      <div className = 'pg-title-container'>
             <PageHeader/>
         </div>

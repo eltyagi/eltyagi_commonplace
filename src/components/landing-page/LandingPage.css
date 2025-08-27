@@ -71,12 +71,4 @@
     left: calc(50% - 0vw/2);
 }
 
-.nav-footer-bg{
-    position: absolute;
-    width: 100vw;
-    height: 173px;
-    background-color: #FFE0DC;
-    z-index: 99;
-}   
-
 }

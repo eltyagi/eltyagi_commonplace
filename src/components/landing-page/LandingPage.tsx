@@ -1,7 +1,6 @@
 import React from 'react';
 import './LandingPage.css';
 import Navigation from '../navigation/Navigation';
-import logoImg from '../../assets/music.svg'; // Adjust the path as necessary
 import linkedinImg from '../../assets/linkedin.png'; // Adjust the path as necessary
 import mediumImg from '../../assets/medium.png'; // Adjust the path as necessary
 import instaImg from '../../assets/insta.png'; // Adjust the path as necessary

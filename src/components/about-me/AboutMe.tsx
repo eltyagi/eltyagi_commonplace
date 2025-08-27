@@ -1,6 +1,5 @@
 import React from 'react';
 import './AboutMe.css';
-import logoImg from '../../assets/music.svg'; // Adjust the path as necessary
 import profileImg from '../../assets/myimg.png'; // Profile image
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';

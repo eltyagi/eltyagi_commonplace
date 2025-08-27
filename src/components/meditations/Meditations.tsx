@@ -114,6 +114,7 @@ These principles and questions guide my decisions, both in technology and in lif
       // If clicking the same card, toggle its expanded state
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
+
     } else {
       // If clicking a different card, expand it and reset viewing state
       setActiveCardIndex(index);
@@ -226,6 +227,7 @@ These principles and questions guide my decisions, both in technology and in lif
               />
             ))}
           </div>
+
 
           <div className='meditation-content-display fira-code-regular'>
             {activeSection && !isMobile && (activeCardIndex === 0 || isViewing) && (

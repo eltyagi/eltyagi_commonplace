@@ -14,10 +14,9 @@ const LandingPage: React.FC = () => {
 
         <div className = 'pg-content fira-code-regular'>
         <strong>Hi there, I’m Lakshya and welcome to my digital home!</strong><br/><br/>
-        I am a Solutions Engineer, <a href='https://github.com/eltyagi'>GitHub</a>. By day, I help CTOs, 
-        Engineering Managers and VPs drive engineering productivity. 
-        By night, I am building, creating and teaching and more..
-        There is much to cover, so much to learn so I am happy to have you here.
+        I am a tech consultant, engineer and writer. 
+        My current focus is on bringing tangible benefits of AI to engineering teams across India and APAC as a Solutions Engineer at <a href='https://github.com/eltyagi'>GitHub.</a>
+        <br/>There is much to cover, so much to learn so I am happy to have you here.
         </div>
 
         <div className = 'pg-links'>

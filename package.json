@@ -1,10 +1,13 @@
 {
-  "name": "commonplace",
+  "name": "eltyagi_commonplace",
+  "homepage": "https://eltyagi.xyz",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.8.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -12,9 +15,7 @@
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "buffer": "^6.0.3",

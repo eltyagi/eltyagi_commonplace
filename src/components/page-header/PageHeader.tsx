@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './PageHeader.css';
-import logoImg from '../../assets/music.svg';
+import logoImg from '../../assets/music-luxe.svg';
 
 const PageHeader: React.FC = () => {
   const location = useLocation();

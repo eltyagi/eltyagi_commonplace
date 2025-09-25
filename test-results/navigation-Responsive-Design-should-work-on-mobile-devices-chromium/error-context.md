@@ -7,7 +7,7 @@
     - img "Logo" [ref=e10]
     - generic [ref=e11]: commonplace
   - generic [ref=e12]:
-    - generic [ref=e13]: Hi there, I’m Lakshya and welcome to my digital home!
+    - strong [ref=e13]: Hi there, I’m Lakshya and welcome to my digital home!
     - text: I am a Solutions Engineer,
     - link "GitHub" [ref=e14] [cursor=pointer]:
       - /url: https://github.com/eltyagi

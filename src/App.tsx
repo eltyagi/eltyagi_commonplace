@@ -11,7 +11,7 @@ function App() {
   return (
     <>
      <div className="App">
-     <BrowserRouter basename="/eltyagi_commonplace">
+     <BrowserRouter>
       <div className="App">
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -25,10 +25,10 @@ function App() {
       </div> 
 
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet"/>
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet"></link>
     </>
   )

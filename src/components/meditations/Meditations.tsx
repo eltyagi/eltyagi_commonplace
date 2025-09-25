@@ -3,6 +3,7 @@ import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
+import sceneryImage from '../../assets/sceneries/myimg.png';
 
 // Custom hook for responsive design
 const useIsMobile = () => {
@@ -143,16 +144,16 @@ These principles and questions guide my decisions, both in technology and in lif
   };
 
   const sceneryImages = [
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
-    { src: "/src/assets/sceneries/myimg.png", caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
+    { src: sceneryImage, caption: "San Diego, 2024" },
   ];
 
   const activeSection = meditationSections[activeCardIndex];

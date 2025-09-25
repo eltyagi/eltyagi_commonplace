@@ -15,58 +15,88 @@
     gap: 9px;
     left: 97px;
     position: absolute;
+    width: 1246px; /* Exact width from Figma */
 }
 
 .pg-title-icon-img {
-    width: 164px;
-    height: 164px;
+    width: 164px;  /* Exact size from Figma */
+    height: 164px; /* Exact size from Figma */
 }
 
-.pg-title-name, .pg-title-subtitle {
-    font-size: 68px;
-    padding: 1%;
+.pg-title-name {
+    font-size: 68px;           /* Exact size from Figma */
+    line-height: 1.25em;       /* Exact line-height from Figma */
+    color: #252525;            /* Exact color from Figma */
+    width: 392px;              /* Exact width from Figma */
+    padding: 0;                /* Remove padding for exact sizing */
+    text-align: left;
+}
+
+.pg-title-subtitle {
+    font-size: 68px;           /* Exact size from Figma */
+    line-height: 1.25em;       /* Exact line-height from Figma */
+    color: #252525;            /* Exact color from Figma */
+    width: 665px;              /* Exact width from Figma */
+    padding: 0;                /* Remove padding for exact sizing */
+    text-align: left;
 }
 
 @media (max-width: 768px) {
     .page-header {
-        height: 46.99px !important;
+        height: 100px !important;
     }
 
     .pg-title{
-        top: 22px !important;
-        gap: 9px !important;
+        top: 20px !important;
+        gap: 6px !important;
         left: 18px !important;
+        width: calc(100vw - 36px) !important; /* Responsive width */
     }
 
     .pg-title-icon-img {
-        width: 164px !important;
-        height: 164px !important;
+        width: 60px !important;
+        height: 60px !important;
     }
 
-    .pg-title-name, .pg-title-subtitle {
-        font-size: 19.48px !important;
-        padding: 1% !important;
+    .pg-title-name {
+        font-size: 24px !important;
+        width: auto !important;
+        flex: 1 !important;
+    }
+
+    .pg-title-subtitle {
+        font-size: 24px !important;
+        width: auto !important;
+        flex: 1 !important;
     }
 }
 
 @media (max-width: 480px) {
     .page-header {
-        height: 46.99px !important;
+        height: 80px !important;
     }
 
     .pg-title{
-        top: 22px !important;
-        gap: 9px !important;
-        left: 18px !important;
+        top: 15px !important;
+        gap: 4px !important;
+        left: 12px !important;
+        width: calc(100vw - 24px) !important;
     }
 
     .pg-title-icon-img {
-        width: 46.99px !important;
-        height: 46.99px !important;
+        width: 47px !important;
+        height: 47px !important;
     }
 
-    .pg-title-name, .pg-title-subtitle {
-        font-size: 19.48px !important;
-        padding: 1% !important;
+    .pg-title-name {
+        font-size: 19px !important;
+        width: auto !important;
+        flex: 1 !important;
+    }
+
+    .pg-title-subtitle {
+        font-size: 19px !important;
+        width: auto !important;
+        flex: 1 !important;
     }
 }

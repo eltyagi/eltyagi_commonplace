@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import matter from 'gray-matter';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
-import { Buffer } from 'buffer';
 import PageHeader from '../page-header/PageHeader';
 
-// Add Buffer to global scope
-(globalThis as any).Buffer = Buffer;
+// Lightweight frontmatter parser (replaces gray-matter)
+const parseFrontmatter = (content: string) => {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { data: {}, content: content };
+  
+  const frontmatter = match[1];
+  const body = match[2];
+  const data: Record<string, string> = {};
+  
+  frontmatter.split('\n').forEach(line => {
+    const [key, ...valueParts] = line.split(':');
+    if (key && valueParts.length) {
+      data[key.trim()] = valueParts.join(':').trim();
+    }
+  });
+  
+  return { data, content: body };
+};
 
 interface Post {
   title: string;
   classification: string;
   excerpt: string;
-  content?: string; // Make optional since we'll load on demand
+  content?: string;
   date?: string;
-  filePath: string; // Store path for lazy loading
+  filePath: string;
 }
 
 // Custom hook for responsive design
@@ -46,14 +60,12 @@ const Thoughts: React.FC = () => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const postModules = import.meta.glob<string>('../../assets/posts/*.md', { as: 'raw' });
         const allPosts: Post[] = [];
 
-        // Only load metadata, not full content
-        for (const path in postModules) {
-          const content = await postModules[path]();
-          const { data } = matter(content); // Don't extract full content yet
-          
+        // Load post1.md
+        try {
+          const post1 = await import('../../assets/posts/post1.md?raw');
+          const { data } = parseFrontmatter(post1.default);
           allPosts.push({
             title: data.title || 'Untitled',
             classification: data.classification || 'Uncategorized',
@@ -63,8 +75,29 @@ const Thoughts: React.FC = () => {
               month: 'long',
               day: 'numeric'
             }) : undefined,
-            filePath: path // Store the path for lazy loading
+            filePath: 'post1.md'
           });
+        } catch (err) {
+          console.error('Error loading post1:', err);
+        }
+
+        // Load post2.md
+        try {
+          const post2 = await import('../../assets/posts/post2.md?raw');
+          const { data } = parseFrontmatter(post2.default);
+          allPosts.push({
+            title: data.title || 'Untitled',
+            classification: data.classification || 'Uncategorized',
+            excerpt: data.excerpt || '',
+            date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }) : undefined,
+            filePath: 'post2.md'
+          });
+        } catch (err) {
+          console.error('Error loading post2:', err);
         }
 
         setPosts(allPosts);
@@ -82,16 +115,23 @@ const Thoughts: React.FC = () => {
     if (post.content) return; // Already loaded
 
     try {
-      const postModules = import.meta.glob<string>('../../assets/posts/*.md', { as: 'raw' });
-      const content = await postModules[post.filePath]();
-      const { content: markdownContent } = matter(content);
+      let module;
+      if (post.filePath === 'post1.md') {
+        module = await import('../../assets/posts/post1.md?raw');
+      } else if (post.filePath === 'post2.md') {
+        module = await import('../../assets/posts/post2.md?raw');
+      }
       
-      // Update the post with the loaded content
-      setPosts(prevPosts => {
-        const newPosts = [...prevPosts];
-        newPosts[index] = { ...newPosts[index], content: markdownContent };
-        return newPosts;
-      });
+      if (module) {
+        const { content: markdownContent } = parseFrontmatter(module.default);
+        
+        // Update the post with the loaded content
+        setPosts(prevPosts => {
+          const newPosts = [...prevPosts];
+          newPosts[index] = { ...newPosts[index], content: markdownContent };
+          return newPosts;
+        });
+      }
     } catch (error) {
       console.error('Error loading post content:', error);
     }

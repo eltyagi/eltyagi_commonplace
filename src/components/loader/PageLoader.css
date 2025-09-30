@@ -1,0 +1,81 @@
+.page-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  z-index: 10000;
+  animation: fadeOut 0.5s ease-out 3s forwards;
+}
+
+.bushido-container {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 600px;
+}
+
+.bushido-virtue {
+  opacity: 0;
+  animation: tickIn 0.3s ease-out forwards;
+}
+
+.kanji {
+  font-family: "Krona One", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: #FFE0DC;
+  display: block;
+  text-align: center;
+}
+
+@keyframes tickIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from { 
+    opacity: 1; 
+  }
+  to { 
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .bushido-container {
+    gap: 24px;
+    max-width: 90%;
+  }
+  
+  .kanji {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bushido-container {
+    gap: 16px;
+    max-width: 95%;
+  }
+  
+  .kanji {
+    font-size: 28px;
+  }
+}

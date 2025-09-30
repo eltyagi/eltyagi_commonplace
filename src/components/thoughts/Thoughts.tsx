@@ -49,14 +49,15 @@ const Thoughts: React.FC = () => {
         const postModules = import.meta.glob<string>('../../assets/posts/*.md', { as: 'raw' });
         const allPosts: Post[] = [];
 
+        // Only load metadata, not full content
         for (const path in postModules) {
           const content = await postModules[path]();
-          const { data, content: markdownContent } = matter(content);
+          const { data } = matter(content); // Don't extract full content yet
           
           allPosts.push({
             title: data.title || 'Untitled',
             classification: data.classification || 'Uncategorized',
-            excerpt: data.excerpt || markdownContent.slice(0, 150) + '...',
+            excerpt: data.excerpt || '',
             date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',

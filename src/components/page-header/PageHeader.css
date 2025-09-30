@@ -14,13 +14,21 @@
     padding: 0px;
     gap: 9px;
     left: 97px;
+    right: 97px;
     position: absolute;
-    width: 1246px; /* Exact width from Figma */
+    width: calc(100vw - 194px); /* Full width minus left and right margins (97px each) */
 }
 
 .pg-title-icon-img {
     width: 164px;  /* Exact size from Figma */
     height: 164px; /* Exact size from Figma */
+    transition: transform 0.6s ease-in-out;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.pg-title-icon-img:hover {
+    transform: rotateY(360deg);
 }
 
 .pg-title-name {
@@ -47,6 +55,7 @@
     }
 
     .pg-title{
+        justify-content: flex-start !important;
         top: 20px !important;
         gap: 6px !important;
         left: 18px !important;
@@ -61,7 +70,7 @@
     .pg-title-name {
         font-size: 24px !important;
         width: auto !important;
-        flex: 1 !important;
+        flex: 0 0 auto !important;
     }
 
     .pg-title-subtitle {
@@ -77,6 +86,7 @@
     }
 
     .pg-title{
+        justify-content: flex-start !important;
         top: 15px !important;
         gap: 4px !important;
         left: 12px !important;
@@ -91,7 +101,7 @@
     .pg-title-name {
         font-size: 19px !important;
         width: auto !important;
-        flex: 1 !important;
+        flex: 0 0 auto !important;
     }
 
     .pg-title-subtitle {

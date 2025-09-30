@@ -13,8 +13,9 @@ interface Post {
   title: string;
   classification: string;
   excerpt: string;
-  content: string;
+  content?: string; // Make optional since we'll load on demand
   date?: string;
+  filePath: string; // Store path for lazy loading
 }
 
 // Custom hook for responsive design
@@ -56,12 +57,12 @@ const Thoughts: React.FC = () => {
             title: data.title || 'Untitled',
             classification: data.classification || 'Uncategorized',
             excerpt: data.excerpt || markdownContent.slice(0, 150) + '...',
-            content: markdownContent,
             date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'
-            }) : undefined
+            }) : undefined,
+            filePath: path // Store the path for lazy loading
           });
         }
 
@@ -74,31 +75,61 @@ const Thoughts: React.FC = () => {
     loadPosts();
   }, []);
 
+  // Lazy load post content when needed
+  const loadPostContent = async (index: number) => {
+    const post = posts[index];
+    if (post.content) return; // Already loaded
+
+    try {
+      const postModules = import.meta.glob<string>('../../assets/posts/*.md', { as: 'raw' });
+      const content = await postModules[post.filePath]();
+      const { content: markdownContent } = matter(content);
+      
+      // Update the post with the loaded content
+      setPosts(prevPosts => {
+        const newPosts = [...prevPosts];
+        newPosts[index] = { ...newPosts[index], content: markdownContent };
+        return newPosts;
+      });
+    } catch (error) {
+      console.error('Error loading post content:', error);
+    }
+  };
+
   // Update initial viewing state based on screen size
   useEffect(() => {
     if (!isMobile) {
       setIsViewing(true); // Desktop shows content by default
       setIsMobileContentView(false);
+      // Load first post content for desktop
+      if (posts.length > 0) {
+        loadPostContent(0);
+      }
     } else {
       setIsViewing(false); // Mobile doesn't show content initially
       setIsMobileContentView(false);
     }
-  }, [isMobile]);
+  }, [isMobile, posts.length]);
 
-  const handleCardClick = (index: number) => {
+  const handleCardClick = async (index: number) => {
     if (activeCardIndex === index) {
       // If clicking the same card, toggle its expanded state
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
     } else {
-      // If clicking a different card, expand it and reset viewing state
+      // If clicking a different card, expand it and load its content
       setActiveCardIndex(index);
       setIsViewing(false); // Don't show content initially
+      await loadPostContent(index); // Load content lazily
     }
   };
 
-  const handleViewStateChange = (viewing: boolean) => {
+  const handleViewStateChange = async (viewing: boolean) => {
     setIsViewing(viewing);
+    // Load content if viewing
+    if (viewing) {
+      await loadPostContent(activeCardIndex);
+    }
     // On mobile, when user clicks "View", show the content view
     if (viewing && isMobile) {
       setIsMobileContentView(true);
@@ -156,7 +187,7 @@ const Thoughts: React.FC = () => {
                 title={post.title}
                 classification={post.classification}
                 excerpt={post.excerpt}
-                content={post.content}
+                content={post.content || ''}
                 isExpanded={activeCardIndex === index}
                 isViewing={activeCardIndex === index && isViewing}
                 onCardClick={() => handleCardClick(index)}

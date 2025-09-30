@@ -1,44 +1,35 @@
-import React, { useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Navigation.css';
-import { Link, useLocation } from 'react-router-dom';
-import navLogo from '../../assets/nav-music.svg';
+import musicIcon from '../../assets/icons/music-icon-small.svg';
 
-const Navigation: React.FC = () => {
+const Navigation = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
-  const backgroundRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const activeLink = document.querySelector('.nav-link.active');
-    if (activeLink && backgroundRef.current) {
-      const rect = activeLink.getBoundingClientRect();
-      const navRect = backgroundRef.current.parentElement?.getBoundingClientRect();
-      if (navRect) {
-        backgroundRef.current.style.left = `${rect.left - navRect.left}px`;
-        backgroundRef.current.style.width = `${rect.width}px`;
-      }
-    }
-  }, [location]);
+  const tabs = [
+    { path: '/', label: 'Home', icon: musicIcon },
+    { path: '/thoughts', label: 'Thoughts' },
+    { path: '/meditations', label: 'Meditations' },
+    { path: '/about', label: 'Me?' },
+    { path: '/contact', label: 'Say hi?' },
+  ];
 
   return (
-    <div className="navigation fira-code-regular">
-      <div className="nav-background" ref={backgroundRef}></div>
-      <Link to="/" className={`nav-link link-home ${isActive('/') ? 'active' : ''}`}>
-        <img src={navLogo} alt="Logo" className="nav-logo" />
-      </Link>
-      <Link to="/thoughts" className={`nav-link link-thoughts ${isActive('/thoughts') ? 'active' : ''}`}>
-        Thoughts
-      </Link>
-      <Link to="/meditations" className={`nav-link link-meditations ${isActive('/meditations') ? 'active' : ''}`}>
-        Meditations
-      </Link>
-      <Link to="/about" className={`nav-link link-about ${isActive('/about') ? 'active' : ''}`}>
-        Me?
-      </Link>
-      <Link to="/contact" className={`nav-link link-contact ${isActive('/contact') ? 'active' : ''}`}>
-        Say hi!
-      </Link>
-    </div>
+    <nav className="navigation">
+      {tabs.map((tab) => (
+        <button
+          key={tab.path}
+          className={`nav-tab ${location.pathname === tab.path ? 'active' : ''}`}
+          onClick={() => navigate(tab.path)}
+        >
+          {tab.icon ? (
+            <img src={tab.icon} alt="Home" className="nav-icon" />
+          ) : (
+            tab.label
+          )}
+        </button>
+      ))}
+    </nav>
   );
 };
 

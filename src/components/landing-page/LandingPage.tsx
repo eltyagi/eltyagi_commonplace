@@ -13,10 +13,11 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className = 'pg-content fira-code-regular'>
-        <strong>Hi there, I’m Lakshya and welcome to my digital home!</strong><br/><br/>
-        I am a tech consultant, engineer and writer. 
-        My current focus is on bringing tangible benefits of AI to engineering teams across India and APAC as a Solutions Engineer at <a href='https://github.com/eltyagi'>GitHub.</a>
-        <br/>There is much to cover, so much to learn so I am happy to have you here.
+        <strong>Hi there, I'm Lakshya and welcome to my digital commonplace!</strong><br/><br/>
+        I'm an engineer, a writer. I work at <span style={{color: '#FF6F61'}}>GitHub</span> bringing an AI-native developer platform 
+        to enterprises across APAC. This site is home to my life's work, and thoughts on tech,
+        defence and probably a bunch of other things. Welcome!
+
         </div>
 
         <div className = 'pg-links'>

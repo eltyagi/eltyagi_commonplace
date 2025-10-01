@@ -61,43 +61,29 @@ const Thoughts: React.FC = () => {
     const loadPosts = async () => {
       try {
         const allPosts: Post[] = [];
-
-        // Load post1.md
-        try {
-          const post1 = await import('../../assets/posts/post1.md?raw');
-          const { data } = parseFrontmatter(post1.default);
-          allPosts.push({
-            title: data.title || 'Untitled',
-            classification: data.classification || 'Uncategorized',
-            excerpt: data.excerpt || '',
-            date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }) : undefined,
-            filePath: 'post1.md'
-          });
-        } catch (err) {
-          console.error('Error loading post1:', err);
-        }
-
-        // Load post2.md
-        try {
-          const post2 = await import('../../assets/posts/post2.md?raw');
-          const { data } = parseFrontmatter(post2.default);
-          allPosts.push({
-            title: data.title || 'Untitled',
-            classification: data.classification || 'Uncategorized',
-            excerpt: data.excerpt || '',
-            date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }) : undefined,
-            filePath: 'post2.md'
-          });
-        } catch (err) {
-          console.error('Error loading post2:', err);
+        
+        // Dynamically find all posts by trying to import them
+        // We'll try importing posts starting from a high number and working backwards
+        // This ensures newer posts (with higher numbers) appear first
+        for (let i = 20; i >= 1; i--) {
+          try {
+            const postModule = await import(`../../assets/posts/post${i}.md?raw`);
+            const { data } = parseFrontmatter(postModule.default);
+            allPosts.push({
+              title: data.title || 'Untitled',
+              classification: data.classification || 'Uncategorized',
+              excerpt: data.excerpt || '',
+              date: data.date ? new Date(data.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }) : undefined,
+              filePath: `post${i}.md`
+            });
+          } catch (err) {
+            // Post doesn't exist, skip silently
+            continue;
+          }
         }
 
         setPosts(allPosts);
@@ -115,12 +101,8 @@ const Thoughts: React.FC = () => {
     if (post.content) return; // Already loaded
 
     try {
-      let module;
-      if (post.filePath === 'post1.md') {
-        module = await import('../../assets/posts/post1.md?raw');
-      } else if (post.filePath === 'post2.md') {
-        module = await import('../../assets/posts/post2.md?raw');
-      }
+      // Dynamically import based on the file path
+      const module = await import(`../../assets/posts/${post.filePath}?raw`);
       
       if (module) {
         const { content: markdownContent } = parseFrontmatter(module.default);

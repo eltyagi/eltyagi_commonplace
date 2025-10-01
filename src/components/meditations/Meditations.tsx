@@ -1,9 +1,103 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
-import sceneryImage from '../../assets/sceneries/myimg.png';
+
+// Optimized LazyImage component
+const LazyImage: React.FC<{
+  src: string;
+  alt: string;
+  className?: string;
+  onClick?: () => void;
+}> = ({ src, alt, className = '', onClick }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    const [entry] = entries;
+    if (entry.isIntersecting) {
+      setIsInView(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.1,
+      rootMargin: '50px'
+    });
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => {
+      if (imgRef.current) {
+        observer.unobserve(imgRef.current);
+      }
+    };
+  }, [handleIntersection]);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+    setHasError(false);
+  };
+
+  const handleError = () => {
+    console.error('Failed to load image:', src);
+    setHasError(true);
+    setIsLoaded(true);
+  };
+
+  return (
+    <div 
+      ref={imgRef} 
+      className={`lazy-image-container ${className}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
+      {isInView && !hasError && (
+        <>
+          <img
+            src={src}
+            alt={alt}
+            onLoad={handleLoad}
+            onError={handleError}
+            style={{
+              opacity: isLoaded ? 1 : 0,
+              transition: 'opacity 0.3s ease-in-out'
+            }}
+          />
+          {!isLoaded && (
+            <div className="image-placeholder">
+              <div className="loading-spinner"></div>
+            </div>
+          )}
+        </>
+      )}
+      {!isInView && (
+        <div className="image-placeholder">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
+      {hasError && (
+        <div className="image-placeholder">
+          <span style={{ fontSize: '12px', color: '#999' }}>Failed to load</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Interface for image data
+interface SceneryImage {
+  src: string;
+  caption: string;
+  filename: string;
+  loaded: boolean;
+}
 
 // Custom hook for responsive design
 const useIsMobile = () => {
@@ -23,11 +117,15 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+
+
 const Meditations: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [isViewing, setIsViewing] = useState<boolean>(false);
   const [isMobileContentView, setIsMobileContentView] = useState<boolean>(false);
   const [expandedImageIndex, setExpandedImageIndex] = useState<number | null>(null);
+  const [sceneryImages, setSceneryImages] = useState<SceneryImage[]>([]);
+  const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const isMobile = useIsMobile();
 
   // Hardcoded content for the three sections
@@ -99,6 +197,53 @@ These principles and questions guide my decisions, both in technology and in lif
     }
   ];
 
+  // Load scenery images dynamically
+  useEffect(() => {
+    const loadImages = async () => {
+      try {
+        setImagesLoading(true);
+        const imageModules = import.meta.glob('../../assets/sceneries/*.{png,jpg,jpeg,gif,webp}', { eager: false });
+        
+        console.log('Found image modules:', Object.keys(imageModules));
+        
+        const imagePromises = Object.entries(imageModules).map(async ([path, resolver]) => {
+          const filename = path.split('/').pop() || '';
+          // Skip README and placeholder files
+          if (filename.toLowerCase().includes('readme') || filename.toLowerCase().includes('placeholder')) {
+            return null;
+          }
+          
+          try {
+            const module = await resolver() as { default: string };
+            console.log('Loaded image:', filename, module.default);
+            return {
+              src: module.default,
+              caption: ``,
+              filename: filename,
+              loaded: false
+            };
+          } catch (error) {
+            console.warn(`Failed to load image: ${filename}`, error);
+            return null;
+          }
+        });
+
+        const loadedImages = (await Promise.all(imagePromises))
+          .filter((img): img is SceneryImage => img !== null)
+          .sort((a, b) => b.filename.localeCompare(a.filename)); // Sort by filename (newest first if using timestamps)
+
+        console.log('Total loaded images:', loadedImages.length);
+        setSceneryImages(loadedImages);
+      } catch (error) {
+        console.error('Error loading scenery images:', error);
+      } finally {
+        setImagesLoading(false);
+      }
+    };
+
+    loadImages();
+  }, []);
+
   // Update initial viewing state based on screen size
   useEffect(() => {
     if (!isMobile) {
@@ -143,18 +288,7 @@ These principles and questions guide my decisions, both in technology and in lif
     setExpandedImageIndex(null);
   };
 
-  const sceneryImages = [
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-    { src: sceneryImage, caption: "San Diego, 2024" },
-  ];
+
 
   const activeSection = meditationSections[activeCardIndex];
 
@@ -192,17 +326,23 @@ These principles and questions guide my decisions, both in technology and in lif
                 {/* Render gallery for sceneries section on mobile */}
                 {activeSection.isGallery && (
                   <div className="sceneries-gallery mobile-gallery">
-                    {sceneryImages.slice(0, 6).map((image, index) => (
-                      <div 
-                        key={index} 
-                        className="scenery-card" 
-                        onClick={() => handleImageClick(index)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <img src={image.src} alt={image.caption} />
-                        <span className="scenery-caption">{image.caption}</span>
+                    {imagesLoading ? (
+                      <div className="gallery-loading">
+                        <div className="loading-spinner"></div>
+                        <span>Loading beautiful moments...</span>
                       </div>
-                    ))}
+                    ) : (
+                      sceneryImages.slice(0, 6).map((image, index) => (
+                        <div key={image.filename} className="scenery-card">
+                          <LazyImage
+                            src={image.src}
+                            alt={image.caption}
+                            onClick={() => handleImageClick(index)}
+                          />
+                          <span className="scenery-caption">{image.caption}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
               </div>
@@ -240,17 +380,23 @@ These principles and questions guide my decisions, both in technology and in lif
                 {/* Render gallery for sceneries section */}
                 {activeSection.isGallery && (
                   <div className="sceneries-gallery">
-                    {sceneryImages.map((image, index) => (
-                      <div 
-                        key={index} 
-                        className="scenery-card" 
-                        onClick={() => handleImageClick(index)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <img src={image.src} alt={image.caption} />
-                        <span className="scenery-caption">{image.caption}</span>
+                    {imagesLoading ? (
+                      <div className="gallery-loading">
+                        <div className="loading-spinner"></div>
+                        <span>Loading beautiful moments...</span>
                       </div>
-                    ))}
+                    ) : (
+                      sceneryImages.map((image, index) => (
+                        <div key={image.filename} className="scenery-card">
+                          <LazyImage
+                            src={image.src}
+                            alt={image.caption}
+                            onClick={() => handleImageClick(index)}
+                          />
+                          <span className="scenery-caption">{image.caption}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
               </div>
@@ -267,7 +413,7 @@ These principles and questions guide my decisions, both in technology and in lif
       )}
 
       {/* Expanded Image Modal */}
-      {expandedImageIndex !== null && (
+      {expandedImageIndex !== null && sceneryImages.length > 0 && sceneryImages[expandedImageIndex] && (
         <div className="image-modal-overlay" onClick={handleCloseExpandedImage}>
           <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="image-modal-close" onClick={handleCloseExpandedImage}>
@@ -283,28 +429,32 @@ These principles and questions guide my decisions, both in technology and in lif
             </div>
             
             {/* Navigation arrows */}
-            <button 
-              className="image-nav-button prev" 
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpandedImageIndex(
-                  expandedImageIndex > 0 ? expandedImageIndex - 1 : sceneryImages.length - 1
-                );
-              }}
-            >
-              ‹
-            </button>
-            <button 
-              className="image-nav-button next" 
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpandedImageIndex(
-                  expandedImageIndex < sceneryImages.length - 1 ? expandedImageIndex + 1 : 0
-                );
-              }}
-            >
-              ›
-            </button>
+            {sceneryImages.length > 1 && (
+              <>
+                <button 
+                  className="image-nav-button prev" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(
+                      expandedImageIndex > 0 ? expandedImageIndex - 1 : sceneryImages.length - 1
+                    );
+                  }}
+                >
+                  ‹
+                </button>
+                <button 
+                  className="image-nav-button next" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(
+                      expandedImageIndex < sceneryImages.length - 1 ? expandedImageIndex + 1 : 0
+                    );
+                  }}
+                >
+                  ›
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

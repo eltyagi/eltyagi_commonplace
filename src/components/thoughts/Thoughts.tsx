@@ -62,13 +62,24 @@ const Thoughts: React.FC = () => {
       try {
         const allPosts: Post[] = [];
         
-        // Dynamically find all posts by trying to import them
-        // We'll try importing posts starting from a high number and working backwards
-        // This ensures newer posts (with higher numbers) appear first
-        for (let i = 20; i >= 1; i--) {
+        // Get all post modules using glob pattern
+        const postModules = import.meta.glob('../../assets/posts/post*.md', { query: '?raw', eager: false });
+        
+        // Extract post numbers and sort in descending order (newest first)
+        const postPaths = Object.keys(postModules).sort((a, b) => {
+          const numA = parseInt(a.match(/post(\d+)\.md/)?.[1] || '0');
+          const numB = parseInt(b.match(/post(\d+)\.md/)?.[1] || '0');
+          return numB - numA; // Descending order
+        });
+
+        // Load full content for each post
+        for (const path of postPaths) {
           try {
-            const postModule = await import(`../../assets/posts/post${i}.md?raw`);
-            const { data } = parseFrontmatter(postModule.default);
+            const resolver = postModules[path];
+            const postModule = await resolver() as { default: string };
+            const { data, content } = parseFrontmatter(postModule.default);
+            const filename = path.split('/').pop() || '';
+            
             allPosts.push({
               title: data.title || 'Untitled',
               classification: data.classification || 'Uncategorized',
@@ -78,10 +89,11 @@ const Thoughts: React.FC = () => {
                 month: 'long',
                 day: 'numeric'
               }) : undefined,
-              filePath: `post${i}.md`
+              filePath: filename,
+              content: content // Load content immediately
             });
           } catch (err) {
-            // Post doesn't exist, skip silently
+            console.error('Error loading post:', path, err);
             continue;
           }
         }
@@ -95,44 +107,17 @@ const Thoughts: React.FC = () => {
     loadPosts();
   }, []);
 
-  // Lazy load post content when needed
-  const loadPostContent = async (index: number) => {
-    const post = posts[index];
-    if (post.content) return; // Already loaded
-
-    try {
-      // Dynamically import based on the file path
-      const module = await import(`../../assets/posts/${post.filePath}?raw`);
-      
-      if (module) {
-        const { content: markdownContent } = parseFrontmatter(module.default);
-        
-        // Update the post with the loaded content
-        setPosts(prevPosts => {
-          const newPosts = [...prevPosts];
-          newPosts[index] = { ...newPosts[index], content: markdownContent };
-          return newPosts;
-        });
-      }
-    } catch (error) {
-      console.error('Error loading post content:', error);
-    }
-  };
-
   // Update initial viewing state based on screen size
   useEffect(() => {
     if (!isMobile) {
       setIsViewing(true); // Desktop shows content by default
       setIsMobileContentView(false);
-      // Load first post content for desktop
-      if (posts.length > 0) {
-        loadPostContent(0);
-      }
+      // Content is already loaded, no need to load again
     } else {
       setIsViewing(false); // Mobile doesn't show content initially
       setIsMobileContentView(false);
     }
-  }, [isMobile, posts.length]);
+  }, [isMobile]);
 
   const handleCardClick = async (index: number) => {
     if (activeCardIndex === index) {
@@ -140,19 +125,16 @@ const Thoughts: React.FC = () => {
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
     } else {
-      // If clicking a different card, expand it and load its content
+      // If clicking a different card, expand it
       setActiveCardIndex(index);
       setIsViewing(false); // Don't show content initially
-      await loadPostContent(index); // Load content lazily
+      // Content is already loaded, no need to load again
     }
   };
 
   const handleViewStateChange = async (viewing: boolean) => {
     setIsViewing(viewing);
-    // Load content if viewing
-    if (viewing) {
-      await loadPostContent(activeCardIndex);
-    }
+    // Content is already loaded
     // On mobile, when user clicks "View", show the content view
     if (viewing && isMobile) {
       setIsMobileContentView(true);

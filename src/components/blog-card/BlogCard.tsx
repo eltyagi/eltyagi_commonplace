@@ -5,8 +5,8 @@ interface BlogCardProps {
     index: number;
     title: string;
     classification: string;
-    excerpt: string;
-    content: string;
+    excerpt?: string;
+    content?: string;
     isExpanded: boolean;
     isViewing: boolean;
     onCardClick: () => void;
@@ -33,7 +33,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <div className='blog-card-title'>{title}</div>
             {isExpanded && (
                 <>
-                    <div className='blog-card-excerpt'>{excerpt}</div>
+                    {excerpt && <div className='blog-card-excerpt'>{excerpt}</div>}
                     <div 
                         className='blog-card-view-button'
                         onClick={handleViewButtonClick}

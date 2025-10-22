@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import  AboutMe from './components/about-me/AboutMe'
 import Contact from './components/contact/Contact'
 import LandingPage from './components/landing-page/LandingPage'
 import Thoughts from './components/thoughts/Thoughts'
@@ -17,7 +16,6 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/thoughts" element={<Thoughts />} />
           <Route path="/meditations" element={<Meditations />} />
-          <Route path="/about" element={<AboutMe />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>

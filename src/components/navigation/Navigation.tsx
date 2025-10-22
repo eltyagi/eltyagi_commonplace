@@ -10,7 +10,6 @@ const Navigation = () => {
     { path: '/', label: 'Home', icon: musicIcon },
     { path: '/thoughts', label: 'Thoughts' },
     { path: '/meditations', label: 'Meditations' },
-    { path: '/about', label: 'Me?' },
     { path: '/contact', label: 'Say hi?' },
   ];
 

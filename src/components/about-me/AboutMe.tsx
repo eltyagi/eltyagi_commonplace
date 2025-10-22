@@ -23,11 +23,9 @@ const AboutMe: React.FC = () => {
         </div>
         
         <div className='about-me-text fira-code-regular'>
-          Hi there, I'm Lakshya and welcome to my digital home!<br/><br/>
-          I am a Solutions Engineer, <a href='https://github.com/eltyagi'>GitHub</a>. By day, I help CTOs, 
-          Engineering Managers and VPs drive engineering productivity. 
-          By night, I am building, creating and teaching and more..
-          There is much to cover, so much to learn so I am happy to have you here.
+
+          
+
         </div>
       </div>
 

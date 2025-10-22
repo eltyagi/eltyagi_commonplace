@@ -14,8 +14,6 @@ const PageHeader: React.FC = () => {
         return 'thoughts';
       case '/meditations':
         return 'meditations';
-      case '/about':
-        return 'dock';
       case '/contact':
         return 'contact';
       default:

@@ -8,7 +8,6 @@ interface BlogCardProps {
     excerpt?: string;
     content?: string;
     isExpanded: boolean;
-    isViewing: boolean;
     onCardClick: () => void;
     onViewStateChange: (viewing: boolean) => void;
 }
@@ -18,13 +17,13 @@ const BlogCard: React.FC<BlogCardProps> = ({
     classification,
     excerpt,
     isExpanded,
-    isViewing,
     onCardClick,
     onViewStateChange
 }) => {
     const handleViewButtonClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onViewStateChange(!isViewing);
+        // Button now only collapses the view (since clicking card already expands)
+        onViewStateChange(false);
     };
 
     return (
@@ -38,7 +37,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                         className='blog-card-view-button'
                         onClick={handleViewButtonClick}
                     >
-                        {isViewing ? "Viewing" : "View"}
+                        Viewing
                     </div>
                 </>
             )}

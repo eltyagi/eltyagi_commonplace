@@ -121,23 +121,27 @@ const Thoughts: React.FC = () => {
 
   const handleCardClick = async (index: number) => {
     if (activeCardIndex === index) {
-      // If clicking the same card, toggle its expanded state
+      // If clicking the same card, collapse it and go back to default (index 0)
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
+      setIsMobileContentView(false);
     } else {
-      // If clicking a different card, expand it
+      // If clicking a different card, immediately show its content
       setActiveCardIndex(index);
-      setIsViewing(false); // Don't show content initially
-      // Content is already loaded, no need to load again
+      setIsViewing(true); // Always show content immediately
+      // On mobile, show the content view
+      if (isMobile) {
+        setIsMobileContentView(true);
+      }
     }
   };
 
   const handleViewStateChange = async (viewing: boolean) => {
-    setIsViewing(viewing);
-    // Content is already loaded
-    // On mobile, when user clicks "View", show the content view
-    if (viewing && isMobile) {
-      setIsMobileContentView(true);
+    // When user clicks "Viewing", collapse back to default card (index 0)
+    if (!viewing) {
+      setActiveCardIndex(0);
+      setIsViewing(!isMobile); // Show content on desktop, not on mobile
+      setIsMobileContentView(false);
     }
   };
 
@@ -194,7 +198,6 @@ const Thoughts: React.FC = () => {
                 excerpt={post.excerpt}
                 content={post.content || ''}
                 isExpanded={activeCardIndex === index}
-                isViewing={activeCardIndex === index && isViewing}
                 onCardClick={() => handleCardClick(index)}
                 onViewStateChange={handleViewStateChange}
               />
@@ -202,7 +205,7 @@ const Thoughts: React.FC = () => {
           </div>
 
           <div className='blog-content-display fira-code-regular'>
-            {activePost && !isMobile && (activeCardIndex === 0 || isViewing) && (
+            {activePost && !isMobile && isViewing && (
               <div className='blog-content'>
                 <div className='blog-content-title'>{activePost.title}</div>
                 <div className='blog-content-classification'>{activePost.classification}</div>

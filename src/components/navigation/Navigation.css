@@ -61,16 +61,28 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navigation {
+    gap: 12px;
+  }
+  
+  .nav-tab {
+    padding: 14px;
+    font-size: 18px;
+  }
+}
+
 @media (max-width: 768px) {
   .navigation {
     bottom: 20px;
     gap: 8px;
     height: 48px;
     border-radius: 60px;
+    padding: 0 4px;
   }
   
   .nav-tab {
-    padding: 12px;
+    padding: 12px 14px;
     font-size: 16px;
   }
   
@@ -81,8 +93,54 @@
 }
 
 @media (max-width: 640px) {
+  .navigation {
+    bottom: 16px;
+    gap: 6px;
+    height: 44px;
+    max-width: 95vw;
+  }
+  
   .nav-tab {
     padding: 10px 12px;
     font-size: 14px;
+  }
+  
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation {
+    bottom: 12px;
+    gap: 4px;
+    height: 42px;
+    padding: 0 3px;
+  }
+  
+  .nav-tab {
+    padding: 8px 10px;
+    font-size: 13px;
+    height: 38px;
+  }
+  
+  .nav-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  /* Extra small phones */
+  .navigation {
+    gap: 3px;
+    height: 40px;
+  }
+  
+  .nav-tab {
+    padding: 7px 8px;
+    font-size: 12px;
+    height: 36px;
   }
 }

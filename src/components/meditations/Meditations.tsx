@@ -107,6 +107,7 @@ interface MeditationSection {
   excerpt?: string;
   content?: string;
   isGallery?: boolean;
+  isCarousel?: boolean;
 }
 
 // Custom hook for responsive design
@@ -127,7 +128,44 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+// Carousel component for rotating images
+const ImageCarousel: React.FC<{ images: SceneryImage[] }> = ({ images }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  useEffect(() => {
+    if (images.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  if (images.length === 0) {
+    return (
+      <div className="carousel-loading">
+        <div className="loading-spinner"></div>
+        <span>Loading images...</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="image-carousel">
+      <div className="carousel-image-container">
+        {images.map((image, index) => (
+          <LazyImage
+            key={image.filename}
+            src={image.src}
+            alt={image.caption}
+            className={`carousel-image ${index === currentImageIndex ? 'active' : ''}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Meditations: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
@@ -149,13 +187,7 @@ const Meditations: React.FC = () => {
   useEffect(() => {
     const loadMeditationContent = async () => {
       try {
-        const sections: MeditationSection[] = [
-          {
-            title: "Sceneries from my world",
-            classification: "Visual Gallery",
-            isGallery: true
-          }
-        ];
+        const sections: MeditationSection[] = [];
 
         // Load markdown files using glob
         const meditationFiles = import.meta.glob('../../assets/meditations/*.md', { 
@@ -172,16 +204,27 @@ const Meditations: React.FC = () => {
             const parsed = matter(content);
             console.log('Loaded meditation file:', path, parsed);
             
+            // Check if this is the about-me file to set isCarousel
+            const isAboutMe = path.includes('about-me.md');
+            
             sections.push({
               title: parsed.data.title || "Untitled",
               classification: parsed.data.classification || "General",
               excerpt: parsed.data.excerpt,
-              content: parsed.content
+              content: parsed.content,
+              isCarousel: isAboutMe
             });
           } catch (error) {
             console.error(`Failed to load ${path}:`, error);
           }
         }
+
+        // Sort sections to ensure About Me comes first
+        sections.sort((a, b) => {
+          if (a.isCarousel) return -1;
+          if (b.isCarousel) return 1;
+          return 0;
+        });
 
         console.log('All sections loaded:', sections);
         setMeditationSections(sections);
@@ -322,7 +365,30 @@ const Meditations: React.FC = () => {
           <div className='mobile-meditation-content fira-code-regular'>
             {activeSection && (
               <div className='meditation-content'>
-                <div className='meditation-content-text krona-one-regular'>{activeSection.content}</div>
+                {/* Render carousel content with split paragraphs */}
+                {activeSection.isCarousel && activeSection.content && (
+                  <>
+                    {(() => {
+                      const paragraphs = activeSection.content.trim().split('\n\n').filter(p => p.trim());
+                      const midpoint = Math.floor(paragraphs.length / 2);
+                      const firstHalf = paragraphs.slice(0, midpoint).join('\n\n');
+                      const secondHalf = paragraphs.slice(midpoint).join('\n\n');
+                      
+                      return (
+                        <>
+                          <div className='meditation-content-text krona-one-regular'>{firstHalf}</div>
+                          <ImageCarousel images={sceneryImages} />
+                          <div className='meditation-content-text krona-one-regular'>{secondHalf}</div>
+                        </>
+                      );
+                    })()}
+                  </>
+                )}
+                
+                {/* Regular content rendering for non-carousel sections */}
+                {!activeSection.isCarousel && !activeSection.isGallery && activeSection.content && (
+                  <div className='meditation-content-text krona-one-regular'>{activeSection.content}</div>
+                )}
                 
                 {/* Render gallery for sceneries section on mobile */}
                 {activeSection.isGallery && (
@@ -375,7 +441,31 @@ const Meditations: React.FC = () => {
               <div className='meditation-content'>
                 <div className='meditation-content-title'>{activeSection.title}</div>
                 <div className='meditation-content-classification'>{activeSection.classification}</div>
-                <div className='meditation-content-text krona-one-regular'>{activeSection.content}</div>
+                
+                {/* Render carousel content with split paragraphs */}
+                {activeSection.isCarousel && activeSection.content && (
+                  <>
+                    {(() => {
+                      const paragraphs = activeSection.content.trim().split('\n\n').filter(p => p.trim());
+                      const midpoint = Math.floor(paragraphs.length / 2);
+                      const firstHalf = paragraphs.slice(0, midpoint).join('\n\n');
+                      const secondHalf = paragraphs.slice(midpoint).join('\n\n');
+                      
+                      return (
+                        <>
+                          <div className='meditation-content-text krona-one-regular'>{firstHalf}</div>
+                          <ImageCarousel images={sceneryImages} />
+                          <div className='meditation-content-text krona-one-regular'>{secondHalf}</div>
+                        </>
+                      );
+                    })()}
+                  </>
+                )}
+                
+                {/* Regular content rendering for non-carousel sections */}
+                {!activeSection.isCarousel && !activeSection.isGallery && activeSection.content && (
+                  <div className='meditation-content-text krona-one-regular'>{activeSection.content}</div>
+                )}
                 
                 {/* Render gallery for sceneries section */}
                 {activeSection.isGallery && (

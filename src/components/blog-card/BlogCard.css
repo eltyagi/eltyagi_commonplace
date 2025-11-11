@@ -109,7 +109,8 @@
 
 @media (max-width: 480px) {
     .blog-card {
-        width: 331px; /* Exact Figma width */
+        width: 100%; /* Full width of container */
+        max-width: 331px; /* Max Figma width */
         height: auto;
         margin-bottom: 26px; /* Exact Figma gap between cards */
         border: 1px solid #ABB2BF; /* Exact inactive border color from Figma */

@@ -130,6 +130,62 @@
     gap: 24px;
 }
 
+/* Image Carousel Styles */
+.image-carousel {
+    margin: 40px 0;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-image-container {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid #252525;
+}
+
+.carousel-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.carousel-image.active {
+    opacity: 1;
+}
+
+.carousel-image .lazy-image-container {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #666;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    gap: 16px;
+}
+
 /* Gallery Loading State */
 .gallery-loading {
     display: flex;
@@ -451,12 +507,15 @@
     .meditation-cards {
         position: relative; /* Change to relative for stacking */
         right: 0; /* Reset right alignment */
-        width: 331px; /* Match Figma width */
+        width: min(331px, calc(100vw - 32px)); /* Responsive width with max */
         height: auto; /* Auto height for flexibility */
         overflow-y: visible; /* Disable scrolling on mobile */
         margin-top: 111px; /* Match Figma top margin */
-        margin-left: 31px; /* Match Figma left margin */
+        margin-left: auto; /* Center horizontally */
+        margin-right: auto; /* Center horizontally */
         margin-bottom: 60px; /* Add margin at bottom */
+        padding-left: 16px; /* Add padding for smaller screens */
+        padding-right: 16px; /* Add padding for smaller screens */
         top: auto; /* Remove top positioning */
         order: 2; /* Display second */
         display: flex;
@@ -599,5 +658,16 @@
     .meditations {
         background-color: #F9F6EE;
         min-height: 100vh;
+    }
+
+    /* Mobile Carousel Styles */
+    .image-carousel {
+        margin: 30px 0;
+        width: 100%;
+    }
+
+    .carousel-image-container {
+        height: 250px;
+        border-radius: 16px;
     }
 }

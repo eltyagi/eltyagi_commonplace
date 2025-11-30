@@ -5,6 +5,8 @@
     width: 100%;
     padding-bottom: 200px; /* Increased padding for more space */
     background-color: #F9F6EE; /* Ensure background color matches Figma */
+    --header-offset: calc(var(--header-height-current, var(--header-height-expanded, 220px)) + 100px);
+    --cards-height-offset: calc(var(--header-height-current, var(--header-height-expanded, 220px)) + 130px);
 }
 
 /* Header Overlay - positioned behind header but above content */
@@ -32,7 +34,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: 172px;
+    height: 120px;
     background: linear-gradient(
         180deg,
         rgba(249, 246, 238, 0.2) 0%,
@@ -57,12 +59,14 @@
     position: fixed; /* Fix the position of cards */
     right: 50px; /* Adjusted positioning to accommodate larger content area */
     width: 331px; /* Match exact Figma width */
-    height: calc(100vh - 350px); /* Adjusted height to account for header and bottom padding */
+    height: calc(100vh - var(--cards-height-offset));
     overflow-y: scroll; /* Enable vertical scrolling */
     display: flex;
     flex-direction: column;
     gap: 26px; /* Match exact Figma gap */
-    top: 320px;
+    top: var(--header-offset);
+    transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 300px;
     padding-bottom: 200px; /* Increased padding at bottom for better scrolling */
 }
@@ -72,11 +76,13 @@
     display: flex;
     width: 900px; /* Increased width for more content space */
     left: 97px; /* Match Figma left positioning */
-    margin-top: 320px;
+    margin-top: var(--header-offset);
     margin-bottom: 200px; /* Add margin at the bottom */
     position: relative; /* Change to relative positioning */
     padding-bottom: 100px;
-    min-height: calc(100vh - 320px); /* Ensure minimum height */
+    min-height: calc(100vh - var(--header-offset));
+    transition: margin-top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                min-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1; /* Below overlay */
 }
 
@@ -124,7 +130,7 @@
 
     /* Footer overlay adjustments for mobile */
     .footer-overlay {
-        height: 130px; /* Proportionally adjusted for mobile */
+        height: 90px; /* Proportionally adjusted for mobile */
         background: linear-gradient(
             180deg,
             rgba(249, 246, 238, 0.2) 0%,

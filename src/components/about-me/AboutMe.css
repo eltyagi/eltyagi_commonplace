@@ -32,14 +32,7 @@
   left: 0;
   right: 0;
   width: 100%;
-  height: 172px;
-  background: linear-gradient(
-      180deg,
-      rgba(249, 246, 238, 0.2) 0%,
-      rgba(249, 246, 238, 1) 25%
-  );
-  z-index: 5; /* Behind navigation (z-index 10) but above content (z-index 4) */
-  pointer-events: none; /* Allow clicks to pass through */
+    height: 120px;
 }
 
 .about-me-main-content {
@@ -110,9 +103,7 @@
 
   /* Footer overlay adjustments for mobile */
   .footer-overlay {
-    height: 130px; /* Proportionally adjusted for mobile */
-    background: linear-gradient(
-        180deg,
+    height: 90px; /* Proportionally adjusted for mobile */
         rgba(249, 246, 238, 0.2) 0%,
         rgba(249, 246, 238, 1) 25%
     );

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, CSSProperties } from 'react';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
 import PageHeader from '../page-header/PageHeader';
+import { useScrollThreshold } from '../../hooks/useScrollThreshold';
+import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
 
 // Lightweight frontmatter parser (replaces gray-matter)
 const parseFrontmatter = (content: string) => {
@@ -56,6 +58,11 @@ const Thoughts: React.FC = () => {
   const [isViewing, setIsViewing] = useState<boolean>(false);
   const [isMobileContentView, setIsMobileContentView] = useState<boolean>(false);
   const isMobile = useIsMobile();
+  const isHeaderCollapsed = useScrollThreshold();
+  const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
+  const containerStyle: CSSProperties = {
+    '--header-height-current': `${headerHeight}px`
+  } as CSSProperties;
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -152,7 +159,7 @@ const Thoughts: React.FC = () => {
   const activePost = posts[activeCardIndex];
 
   return (
-    <div className="thoughts">
+    <div className="thoughts" style={containerStyle}>
       {/* Header Overlay - positioned behind header but above content */}
       <div className="header-overlay"></div>
       
@@ -160,7 +167,7 @@ const Thoughts: React.FC = () => {
       <div className="footer-overlay"></div>
       
       <div className = 'pg-title-container'>
-            <PageHeader/>
+            <PageHeader isCollapsed={isHeaderCollapsed}/>
         </div>
 
       {/* Mobile Content View */}

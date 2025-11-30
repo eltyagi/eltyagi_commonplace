@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, CSSProperties } from 'react';
 import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
 import matter from 'gray-matter';
+import { useScrollThreshold } from '../../hooks/useScrollThreshold';
+import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
 
 // Optimized LazyImage component
 const LazyImage: React.FC<{
@@ -182,6 +184,11 @@ const Meditations: React.FC = () => {
     }
   ]);
   const isMobile = useIsMobile();
+  const isHeaderCollapsed = useScrollThreshold();
+  const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
+  const containerStyle: CSSProperties = {
+    '--header-height-current': `${headerHeight}px`
+  } as CSSProperties;
 
   // Load meditation content from markdown files
   useEffect(() => {
@@ -337,7 +344,7 @@ const Meditations: React.FC = () => {
   const activeSection = meditationSections[activeCardIndex];
 
   return (
-    <div className="meditations">
+    <div className="meditations" style={containerStyle}>
       {/* Header Overlay - positioned behind header but above content */}
       <div className="header-overlay"></div>
       
@@ -345,7 +352,7 @@ const Meditations: React.FC = () => {
       <div className="footer-overlay"></div>
       
       <div className="pg-title-container">
-        <PageHeader/>
+        <PageHeader isCollapsed={isHeaderCollapsed}/>
       </div>
 
       {/* Mobile Content View */}
@@ -399,7 +406,7 @@ const Meditations: React.FC = () => {
                         <span>Loading beautiful moments...</span>
                       </div>
                     ) : (
-                      sceneryImages.slice(0, 6).map((image, index) => (
+                      sceneryImages.slice(0, 8).map((image, index) => (
                         <div key={image.filename} className="scenery-card">
                           <LazyImage
                             src={image.src}

@@ -5,6 +5,8 @@
     width: 100%;
     padding-bottom: 200px; /* Increased padding for more space */
     background-color: #F9F6EE; /* Ensure background color matches */
+    --header-offset: calc(var(--header-height-current, var(--header-height-expanded, 220px)) + 100px);
+    --cards-height-offset: calc(var(--header-height-current, var(--header-height-expanded, 220px)) + 130px);
 }
 
 /* Header Overlay - positioned behind header but above content */
@@ -32,7 +34,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: 172px;
+    height: 120px;
     background: linear-gradient(
         180deg,
         rgba(249, 246, 238, 0.2) 0%,
@@ -71,12 +73,14 @@
     position: fixed; /* Fix the position of cards */
     right: 50px; /* Adjusted positioning to accommodate larger content area */
     width: 331px;
-    height: calc(100vh - 350px); /* Adjusted height to account for header and bottom padding */
+    height: calc(100vh - var(--cards-height-offset));
     overflow-y: scroll; /* Enable vertical scrolling */
     display: flex;
     flex-direction: column;
     gap: 26px;
-    top: 320px;
+    top: var(--header-offset);
+    transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 300px;
     padding-bottom: 200px; /* Increased padding at bottom for better scrolling */
 }
@@ -86,11 +90,13 @@
     display: flex;
     width: 900px; /* Increased width for more content space */
     left: 97px;
-    margin-top: 320px;
+    margin-top: var(--header-offset);
     margin-bottom: 200px; /* Add margin at the bottom */
     position: relative; /* Change to relative positioning */
     padding-bottom: 100px;
-    min-height: calc(100vh - 320px); /* Ensure minimum height */
+    min-height: calc(100vh - var(--header-offset));
+    transition: margin-top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                min-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1; /* Below overlay */
 }
 
@@ -105,12 +111,16 @@
 .meditation-content-title {
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Krona One', sans-serif;
+    color: #252525;
 }
 
 .meditation-content-classification {
     color: #666;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
 }
 
 .meditation-content-text {
@@ -118,9 +128,10 @@
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 21px;
+    line-height: 24px;
     color: #252525;
     white-space: pre-wrap;
+    margin-bottom: 24px;
 }
 
 /* Sceneries Gallery Styles */
@@ -132,7 +143,7 @@
 
 /* Image Carousel Styles */
 .image-carousel {
-    margin: 40px 0;
+    margin: 48px 0;
     width: 100%;
     max-width: 800px;
     display: flex;
@@ -259,10 +270,10 @@
     max-width: 832px; /* (392px * 2) + (24px gap) = total width for 2 columns */
 }
 
-/* Mobile Gallery - 2 columns × 3 rows */
+/* Mobile Gallery - 2 columns × 4 rows (8 images) */
 .sceneries-gallery.mobile-gallery {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
     margin-top: 20px;
 }
 
@@ -485,7 +496,7 @@
 
     /* Footer overlay adjustments for mobile */
     .meditations .footer-overlay {
-        height: 130px; /* Proportionally adjusted for mobile */
+        height: 90px; /* Proportionally adjusted for mobile */
         background: linear-gradient(
             180deg,
             rgba(249, 246, 238, 0.2) 0%,
@@ -566,7 +577,7 @@
         left: 0;
         right: 0;
         width: 100%;
-        height: 153px; /* Extended height to accommodate title */
+        height: 170px; /* Extended height for better spacing */
         background: linear-gradient(
             135deg,
             rgba(249, 246, 238, 0.4) 3.04%,
@@ -577,30 +588,31 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 0 33px 20px 33px; /* Bottom padding to position title properly */
+        padding: 0 33px 24px 33px; /* Increased bottom padding */
     }
 
     .mobile-back-button {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
         cursor: pointer;
         width: fit-content;
         margin-left: auto;
         margin-right: 0;
         position: absolute;
-        top: 115px;
+        top: 105px;
         right: 32px;
         z-index: 11;
+        padding: 8px;
     }
 
     /* Title in the overlay */
     .mobile-content-title-overlay {
-        font-size: 14px;
-        font-weight: 500;
-        color: #000000;
-        font-family: 'Fira Code', monospace;
-        line-height: 1.312em;
+        font-size: 20px;
+        font-weight: 600;
+        color: #252525;
+        font-family: 'Krona One', sans-serif;
+        line-height: 1.3em;
         margin: 0;
         z-index: 11;
         position: relative;
@@ -608,14 +620,14 @@
     }
 
     .back-icon {
-        font-size: 18px;
+        font-size: 20px;
         color: #FF6F61;
         font-weight: 500;
         font-family: 'Fira Code', monospace;
     }
 
     .back-text {
-        font-size: 14px;
+        font-size: 16px;
         color: #FF6F61;
         font-weight: 500;
         font-family: 'Fira Code', monospace;
@@ -623,10 +635,10 @@
 
     .mobile-meditation-content {
         width: 100%;
-        height: calc(100vh - 153px); /* Account for overlay height */
+        height: calc(100vh - 170px); /* Account for overlay height */
         overflow-y: auto;
         padding: 0 33px; /* Match Figma padding */
-        padding-top: 153px; /* Push content below overlay */
+        padding-top: 170px; /* Push content below overlay */
         z-index: 1; /* Below overlay */
         margin-top: 0;
     }
@@ -635,7 +647,8 @@
         width: 100%;
         padding: 0;
         margin: 0;
-        padding-top: 20px; /* Add some space at the top */
+        padding-top: 32px; /* Increased space at the top */
+        padding-bottom: 40px; /* Add bottom padding for scrolling comfort */
     }
 
     .mobile-meditation-content .meditation-content-text {
@@ -643,10 +656,11 @@
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
-        line-height: 21px;
+        line-height: 24px;
         color: #252525;
         white-space: pre-wrap;
         text-align: left; /* Left align as per Figma */
+        margin-bottom: 20px;
     }
 
     /* Hide navigation in mobile content view */

@@ -1,30 +1,73 @@
 .page-header {
     width: 100%;
-    height: 220px;
+    height: var(--header-height-expanded, 220px);
     background-color: #F9F6EE;
     z-index: 100;
     position: fixed;
+    transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-header.collapsed {
+    height: var(--header-height-collapsed, 120px);
 }
 
 .pg-title{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     top: 58px;
     padding: 0px;
-    gap: 9px;
+    gap: clamp(6px, 1.5vw, 20px);
     left: 97px;
     right: 97px;
     position: absolute;
     width: calc(100vw - 194px); /* Full width minus left and right margins (97px each) */
+    flex-wrap: nowrap;
+    transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-header.collapsed .pg-title {
+    top: 28px;
+    gap: 8px;
+}
+
+.pg-title-center {
+    justify-content: center;
+}
+
+.pg-title-icon {
+    display: flex;
+    align-items: center;
+    margin: 0 9px;
+    transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                margin 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-header.collapsed .pg-title-icon {
+    width: 0;
+    margin: 0;
+    overflow: hidden;
 }
 
 .pg-title-icon-img {
-    width: 164px;  /* Exact size from Figma */
-    height: 164px; /* Exact size from Figma */
-    transition: transform 0.6s ease-in-out;
+    width: 164px;  /* Base size from Figma */
+    height: 164px; /* Base size from Figma */
+    max-width: 164px;
+    max-height: 164px;
+    flex-shrink: 0; /* Prevent logo from shrinking */
+    transition: transform 0.6s ease-in-out,
+                width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
     cursor: pointer;
+}
+
+.page-header.collapsed .pg-title-icon-img {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin-right: 0;
 }
 
 .pg-title-icon-img:hover {
@@ -35,18 +78,32 @@
     font-size: 68px;           /* Exact size from Figma */
     line-height: 1.25em;       /* Exact line-height from Figma */
     color: #252525;            /* Exact color from Figma */
-    width: 392px;              /* Exact width from Figma */
+    max-width: 392px;          /* Preferred width from Figma */
     padding: 0;                /* Remove padding for exact sizing */
     text-align: left;
+    flex: 0 0 auto;            /* Prevent text from shrinking */
+}
+
+.page-header.collapsed .pg-title-name,
+.page-header.collapsed .pg-title-subtitle {
+    font-size: 54px;
+    transition: font-size 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page-header.collapsed .pg-title-name,
+.page-header.collapsed .pg-title-subtitle {
+    max-width: none;
+    flex: 0 1 auto;
 }
 
 .pg-title-subtitle {
     font-size: 68px;           /* Exact size from Figma */
     line-height: 1.25em;       /* Exact line-height from Figma */
     color: #252525;            /* Exact color from Figma */
-    width: 665px;              /* Exact width from Figma */
+    max-width: 665px;          /* Preferred width from Figma */
     padding: 0;                /* Remove padding for exact sizing */
     text-align: left;
+    flex: 1 1 auto;
+    transition: font-size 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (max-width: 768px) {

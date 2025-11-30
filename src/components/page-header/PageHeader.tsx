@@ -3,8 +3,13 @@ import { useLocation } from 'react-router-dom';
 import './PageHeader.css';
 import logoImg from '../../assets/music-luxe.svg';
 
-const PageHeader: React.FC = () => {
+interface PageHeaderProps {
+  isCollapsed?: boolean;
+}
+
+const PageHeader: React.FC<PageHeaderProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
+  const isLandingPage = location.pathname === '/';
   
   const getSubtitle = () => {
     switch (location.pathname) {
@@ -22,8 +27,8 @@ const PageHeader: React.FC = () => {
   };
 
   return (
-    <div className="page-header">
-      <div className='pg-title'>
+    <div className={`page-header ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className={`pg-title ${isLandingPage ? 'pg-title-center' : ''}`}>
         <div className='pg-title-name krona-one-regular'>
           eltyagi's
         </div>

@@ -26,13 +26,15 @@ height: 164px;
 
 .contact-chat-container {
   position: absolute;
-  top: clamp(12rem, 20vh, 16rem); /* Instead of fixed 280px */
-  left: clamp(2rem, 5vw, 6rem); /* Instead of fixed 97px */
-  width: min(calc(100vw - 4rem), 50rem); /* Responsive width */
-  height: calc(100vh - clamp(20rem, 30vh, 30rem)); /* Responsive height */
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100vw - 4rem), 50rem);
+  height: calc(100vh - 320px);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; /* 20px */
+  justify-content: space-between;
+  gap: 1.25rem;
 }
 
 .chat-messages {
@@ -42,6 +44,7 @@ height: 164px;
   gap: 15px;
   overflow-y: auto;
   padding-bottom: 20px;
+  align-items: center;
 }
 
 .chat-message {
@@ -91,7 +94,7 @@ height: 164px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-self: flex-end;
+  align-self: center;
   max-width: 70%;
   min-width: 300px;
 }

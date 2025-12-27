@@ -56,7 +56,6 @@
   width: 300px;
   height: 400px;
   object-fit: cover;
-  border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -125,9 +124,6 @@
     box-sizing: border-box;
     width: 343.25px;
     height: 515px;
-    background: url('../../assets/fqs 2025-03-18 165755.792.jpg');
-    border: 0.735714px solid #000000;
-    border-radius: 17.6571px;
     object-fit: cover;
   }
 

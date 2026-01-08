@@ -308,19 +308,26 @@ const Meditations: React.FC = () => {
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);
     } else {
-      // If clicking a different card, immediately show its content
+      // If clicking a different card, expand it
       setActiveCardIndex(index);
-      setIsViewing(true); // Always show content immediately
-      // On mobile, show the content view
-      if (isMobile) {
-        setIsMobileContentView(true);
+      // On desktop, show content immediately
+      // On mobile, just expand the card (don't show content yet)
+      if (!isMobile) {
+        setIsViewing(true);
       }
+      // Don't set isMobileContentView here - wait for View button click
     }
   };
 
   const handleViewStateChange = (viewing: boolean) => {
-    // When user clicks "Viewing", collapse back to default card (index 0)
-    if (!viewing) {
+    if (viewing) {
+      // User clicked View button - show content
+      setIsViewing(true);
+      if (isMobile) {
+        setIsMobileContentView(true);
+      }
+    } else {
+      // Collapse back to default card (index 0)
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);

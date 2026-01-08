@@ -516,23 +516,30 @@
     }
 
     .meditation-cards {
-        position: relative; /* Change to relative for stacking */
-        right: 0; /* Reset right alignment */
-        width: 84.22%; /* Match Figma: 100% - 7.89% - 7.89% = 84.22% */
-        max-width: none; /* Remove max-width constraint */
-        height: auto; /* Auto height for flexibility */
-        overflow-y: visible; /* Disable scrolling on mobile */
+        position: relative !important; /* Change to relative for stacking */
+        right: 0 !important; /* Reset right alignment */
+        left: auto !important; /* Reset left positioning */
+        width: 84.22% !important; /* Match Figma: 100% - 7.89% - 7.89% = 84.22% */
+        max-width: none !important; /* Remove max-width constraint */
+        height: auto !important; /* Auto height for flexibility */
+        overflow-y: visible !important; /* Disable scrolling on mobile */
         margin-top: 110px; /* Position below header */
         margin-left: auto; /* Center horizontally */
         margin-right: auto; /* Center horizontally */
         margin-bottom: 100px; /* Space for navigation */
         padding: 0; /* No extra padding */
-        top: auto; /* Remove top positioning */
+        top: auto !important; /* Remove top positioning */
         order: 2; /* Display second */
         display: flex;
         flex-direction: column;
         gap: 26px; /* Match Figma gap exactly */
         z-index: 2; /* Below overlay but above other content */
+    }
+
+    /* Ensure BlogCards stretch to full width within meditation-cards */
+    .meditation-cards .blog-card {
+        width: 100% !important;
+        max-width: none !important;
     }
 
     .meditation-content {

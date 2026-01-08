@@ -508,6 +508,7 @@
         flex-direction: column; /* Stack cards and content vertically */
         align-items: center; /* Center align items */
         z-index: 1; /* Below overlay */
+        width: 100%; /* Ensure full width on mobile */
     }
 
     /* Change order in flex container to put content first, then cards */
@@ -679,6 +680,7 @@
     .meditations {
         background-color: #F9F6EE;
         min-height: 100vh;
+        width: 100vw; /* Force viewport width on mobile */
     }
 
     /* Mobile Carousel Styles */

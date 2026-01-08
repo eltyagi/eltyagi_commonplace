@@ -45,7 +45,7 @@
     /* Title in Frame 3 with exact Figma specifications */
     font-family: 'Fira Code', monospace;
     font-weight: 500; /* exact weight from Figma */
-    font-size: 24px; /* exact size from Figma */
+    font-size: 18px; /* exact size from Figma */
     line-height: 1.312000036239624em; /* exact line-height from Figma */
     color: #ABB2BF; /* Default color for collapsed cards */
     margin: 0;
@@ -63,7 +63,7 @@
     /* Description text in Frame 3 with exact Figma specifications */
     font-family: 'Fira Code', monospace;
     font-weight: 400; /* exact weight from Figma */
-    font-size: 16px; /* exact size from Figma */
+    font-size: 12px; /* exact size from Figma */
     line-height: 1.312000036239624em; /* exact line-height from Figma */
     color: #FF8074; /* exact color from Figma #FF8074 */
     margin: 0;
@@ -76,21 +76,21 @@
 }
 
 .blog-card-view-button {
-    /* Buttons component with exact Figma specifications */
+    /* Buttons component with exact Figma specifications - outlined style */
     display: none; /* Hidden for inactive cards on desktop - match Figma */
     justify-content: center; /* justifyContent: center from Figma */
     align-items: center; /* alignItems: center from Figma */
     gap: 10px; /* exact gap from Figma */
     padding: 8px 16px; /* exact padding from Figma */
     margin: 16px; /* maintain spacing within Frame 3 */
-    background: #FF6F61; /* exact background from Figma #FF6F61 */
-    border: none;
+    background: transparent; /* outlined style - transparent background */
+    border: 1px solid #FF6F61; /* outlined style - coral border */
     border-radius: 100px; /* exact border radius from Figma */
     font-family: 'Fira Code', monospace;
     font-weight: 500; /* exact weight from Figma */
     font-size: 16px; /* exact size from Figma */
     line-height: 1.312000036239624em; /* exact line-height from Figma */
-    color: #FFE0DC; /* exact text color from Figma #FFE0DC */
+    color: #FF6F61; /* outlined style - coral text */
     cursor: pointer;
     transition: all 0.2s ease;
     height: 46px; /* exact height from Figma */
@@ -103,16 +103,17 @@
 }
 
 .blog-card-view-button:hover {
-    background: #e55a4d;
+    background: #FF6F61;
+    color: #FFF0EE;
     transform: translateY(-1px);
 }
 
 @media (max-width: 480px) {
     .blog-card {
         width: 100%; /* Full width of container */
-        max-width: 331px; /* Max Figma width */
+        max-width: none; /* Remove max-width to allow full stretch */
         height: auto;
-        margin-bottom: 26px; /* Exact Figma gap between cards */
+        margin-bottom: 0; /* Remove margin - spacing handled by gap on parent */
         border: 1px solid #ABB2BF; /* Exact inactive border color from Figma */
         background: transparent; /* Inactive cards have no background */
         display: flex;

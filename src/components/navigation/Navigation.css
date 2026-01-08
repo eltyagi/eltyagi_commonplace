@@ -57,7 +57,10 @@
 .nav-icon {
   width: 24px;
   height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   display: block;
+  flex-shrink: 0;
 }
 
 /* Responsive adjustments */
@@ -118,20 +121,27 @@
 @media (max-width: 480px) {
   .navigation {
     bottom: 10px;
-    gap: 4px;
-    height: 38px;
+    gap: 9px; /* Match Figma ~9.424px */
+    height: 40px; /* Slightly taller to accommodate tabs */
     padding: 0 3px;
+    border-radius: 47px; /* Match Figma ~47.122px */
+    max-width: calc(100vw - 34px); /* Ensure it fits on screen with margins */
   }
   
   .nav-tab {
-    padding: 7px 9px;
-    font-size: 13px;
-    height: 34px;
+    padding: 9px; /* Match Figma ~9.424px */
+    font-size: 12px; /* Match Figma exactly */
+    height: 27px; /* Match Figma ~27.095px */
+    border-radius: 28px; /* Match Figma ~28.273px */
+    letter-spacing: -0.12px; /* Match Figma tracking */
   }
   
   .nav-icon {
-    width: 16px;
-    height: 16px;
+    width: 14px; /* Match Figma ~14.137px */
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    flex-shrink: 0;
   }
 }
 

@@ -22,8 +22,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
 }) => {
     const handleViewButtonClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        // Button now only collapses the view (since clicking card already expands)
-        onViewStateChange(false);
+        // Button expands/shows the content view
+        onViewStateChange(true);
     };
 
     return (
@@ -37,7 +37,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                         className='blog-card-view-button'
                         onClick={handleViewButtonClick}
                     >
-                        Viewing
+                        View
                     </div>
                 </>
             )}

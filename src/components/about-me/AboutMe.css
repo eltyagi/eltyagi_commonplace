@@ -7,24 +7,6 @@
   background-color: #F9F6EE; /* Ensure background color matches Figma */
 }
 
-/* Header Overlay - positioned behind header but above content */
-.header-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 136px;
-  background: linear-gradient(
-      135deg,
-      rgba(249, 246, 238, 0.4) 3.04%,
-      rgba(249, 246, 238, 0) 99.2%
-  );
-  backdrop-filter: blur(19.648296356201172px);
-  z-index: 5; /* Behind header (z-index 10) but above content (z-index 4) */
-  pointer-events: none; /* Allow clicks to pass through */
-}
-
 /* Footer Overlay - positioned behind navigation but above content */
 .footer-overlay {
   position: fixed;
@@ -32,7 +14,14 @@
   left: 0;
   right: 0;
   width: 100%;
-    height: 120px;
+  height: 120px;
+  background: linear-gradient(
+      180deg,
+      rgba(249, 246, 238, 0) 0%,
+      rgba(249, 246, 238, 1) 25%
+  );
+  z-index: 5;
+  pointer-events: none;
 }
 
 .about-me-main-content {
@@ -96,17 +85,9 @@
 }
 
 @media (max-width: 480px) {
-  /* Header overlay adjustments for mobile */
-  .header-overlay {
-    height: 95px; /* Adjusted for mobile header height */
-  }
-
   /* Footer overlay adjustments for mobile */
   .footer-overlay {
-    height: 90px; /* Proportionally adjusted for mobile */
-        rgba(249, 246, 238, 0.2) 0%,
-        rgba(249, 246, 238, 1) 25%
-    );
+    height: 90px;
   }
 
   .about-me-main-content {

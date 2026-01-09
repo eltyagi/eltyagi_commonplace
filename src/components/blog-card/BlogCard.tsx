@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import './BlogCard.css';
 
 interface BlogCardProps {
@@ -12,14 +12,14 @@ interface BlogCardProps {
     onViewStateChange: (viewing: boolean) => void;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({
+const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
     title,
     classification,
     excerpt,
     isExpanded,
     onCardClick,
     onViewStateChange
-}) => {
+}, ref) => {
     const handleViewButtonClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         // Button expands/shows the content view
@@ -27,22 +27,27 @@ const BlogCard: React.FC<BlogCardProps> = ({
     };
 
     return (
-        <div className={`blog-card ${isExpanded ? 'expanded' : ''}`} onClick={onCardClick}>
+        <div 
+            ref={ref}
+            className={`blog-card ${isExpanded ? 'expanded' : ''}`} 
+            onClick={onCardClick}
+        >
             <div className='blog-card-classification'>{classification}</div>
             <div className='blog-card-title'>{title}</div>
-            {isExpanded && (
-                <>
-                    {excerpt && <div className='blog-card-excerpt'>{excerpt}</div>}
-                    <div 
-                        className='blog-card-view-button'
-                        onClick={handleViewButtonClick}
-                    >
-                        View
-                    </div>
-                </>
-            )}
+            {/* Always render expandable content, control visibility via CSS */}
+            <div className='blog-card-expandable'>
+                {excerpt && <div className='blog-card-excerpt'>{excerpt}</div>}
+                <div 
+                    className='blog-card-view-button'
+                    onClick={handleViewButtonClick}
+                >
+                    View
+                </div>
+            </div>
         </div>
     );
-};
+});
+
+BlogCard.displayName = 'BlogCard';
 
 export default BlogCard;

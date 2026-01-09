@@ -1,0 +1,138 @@
+/* Progress Bar Component Styles */
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Vertical orientation (desktop - between content and cards) */
+.progress-bar--vertical {
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+}
+
+/* Horizontal orientation (mobile - at top) */
+.progress-bar--horizontal {
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
+}
+
+/* Individual indicator button */
+.progress-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.progress-indicator:hover {
+  transform: scale(1.2);
+}
+
+.progress-indicator:focus {
+  outline: none;
+}
+
+.progress-indicator:focus-visible {
+  outline: 2px solid #FF6F61;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Shape element inside indicator */
+.progress-indicator__shape {
+  display: block;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #ABB2BF;
+}
+
+/* Inactive state - line */
+.progress-indicator--inactive .progress-indicator__shape {
+  background-color: #ABB2BF;
+}
+
+/* Active state - box with coral color */
+.progress-indicator--active .progress-indicator__shape {
+  background-color: #99352F;
+}
+
+/* Vertical orientation shapes */
+.progress-bar--vertical .progress-indicator--inactive .progress-indicator__shape {
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.progress-bar--vertical .progress-indicator--active .progress-indicator__shape {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+/* Horizontal orientation shapes */
+.progress-bar--horizontal .progress-indicator--inactive .progress-indicator__shape {
+  width: 2px;
+  height: 20px;
+  border-radius: 1px;
+}
+
+.progress-bar--horizontal .progress-indicator--active .progress-indicator__shape {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+/* Hover effects for inactive indicators */
+.progress-indicator--inactive:hover .progress-indicator__shape {
+  background-color: #FF8074;
+}
+
+/* Container for positioning the progress bar */
+.progress-bar-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+/* Desktop vertical positioning */
+.progress-bar-container--vertical {
+  right: 420px; /* Cards width (331px) + right offset (50px) + gap (39px) */
+  top: var(--header-offset, 320px);
+  height: calc(100vh - var(--cards-height-offset, 350px));
+  width: 40px;
+  transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile horizontal positioning */
+.progress-bar-container--horizontal {
+  top: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  padding: 8px 16px;
+}
+
+/* Hide on appropriate screen sizes */
+@media (max-width: 480px) {
+  .progress-bar-container--vertical {
+    display: none;
+  }
+}
+
+@media (min-width: 481px) {
+  .progress-bar-container--horizontal {
+    display: none;
+  }
+}

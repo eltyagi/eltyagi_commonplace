@@ -3,6 +3,7 @@ import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
+import ProgressBar from '../progress-bar/ProgressBar';
 import matter from 'gray-matter';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
@@ -114,14 +115,19 @@ interface MeditationSection {
 
 // Custom hook for responsive design
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialize with actual value to prevent flash of wrong layout
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 480;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 480);
     };
 
-    checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
 
     return () => window.removeEventListener('resize', checkIsMobile);
@@ -176,13 +182,8 @@ const Meditations: React.FC = () => {
   const [expandedImageIndex, setExpandedImageIndex] = useState<number | null>(null);
   const [sceneryImages, setSceneryImages] = useState<SceneryImage[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
-  const [meditationSections, setMeditationSections] = useState<MeditationSection[]>([
-    {
-      title: "Sceneries from my world",
-      classification: "Visual Gallery",
-      isGallery: true
-    }
-  ]);
+  const [sectionsLoading, setSectionsLoading] = useState<boolean>(true);
+  const [meditationSections, setMeditationSections] = useState<MeditationSection[]>([]);
   const isMobile = useIsMobile();
   const isHeaderCollapsed = useScrollThreshold();
   const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
@@ -190,10 +191,16 @@ const Meditations: React.FC = () => {
     '--header-height-current': `${headerHeight}px`
   } as CSSProperties;
 
+  // Refs for scrolling to cards when progress bar is clicked
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Ref for scrolling content to top
+  const contentDisplayRef = useRef<HTMLDivElement>(null);
+
   // Load meditation content from markdown files
   useEffect(() => {
     const loadMeditationContent = async () => {
       try {
+        setSectionsLoading(true);
         const sections: MeditationSection[] = [];
 
         // Load markdown files using glob
@@ -237,6 +244,8 @@ const Meditations: React.FC = () => {
         setMeditationSections(sections);
       } catch (error) {
         console.error('Error loading meditation content:', error);
+      } finally {
+        setSectionsLoading(false);
       }
     };
 
@@ -301,14 +310,14 @@ const Meditations: React.FC = () => {
     }
   }, [isMobile]);
 
-  const handleCardClick = (index: number) => {
+  const handleCardClick = useCallback((index: number) => {
     if (activeCardIndex === index) {
       // If clicking the same card, collapse it and go back to default (index 0)
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);
     } else {
-      // If clicking a different card, expand it
+      // If clicking a different card, expand it (in place, no scroll)
       setActiveCardIndex(index);
       // On desktop, show content immediately
       // On mobile, just expand the card (don't show content yet)
@@ -317,7 +326,7 @@ const Meditations: React.FC = () => {
       }
       // Don't set isMobileContentView here - wait for View button click
     }
-  };
+  }, [activeCardIndex, isMobile]);
 
   const handleViewStateChange = (viewing: boolean) => {
     if (viewing) {
@@ -333,6 +342,25 @@ const Meditations: React.FC = () => {
       setIsMobileContentView(false);
     }
   };
+
+  // Handle progress bar indicator click - scroll to card and expand it
+  const handleProgressIndicatorClick = useCallback((index: number) => {
+    setActiveCardIndex(index);
+    // Scroll the card into view
+    const card = cardRefs.current[index];
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    // Scroll content display to top
+    if (contentDisplayRef.current) {
+      contentDisplayRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Also scroll the main window to top for content visibility
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!isMobile) {
+      setIsViewing(true);
+    }
+  }, [isMobile]);
 
   const handleBackToCards = () => {
     setIsMobileContentView(false);
@@ -352,12 +380,6 @@ const Meditations: React.FC = () => {
 
   return (
     <div className="meditations" style={containerStyle}>
-      {/* Header Overlay - positioned behind header but above content */}
-      <div className="header-overlay"></div>
-      
-      {/* Footer Overlay - positioned behind navigation but above content */}
-      <div className="footer-overlay"></div>
-      
       <div className="pg-title-container">
         <PageHeader isCollapsed={isHeaderCollapsed}/>
       </div>
@@ -430,13 +452,41 @@ const Meditations: React.FC = () => {
             )}
           </div>
         </div>
+      ) : sectionsLoading ? (
+        /* Loading state */
+        <div className='meditation-container krona-one-regular'>
+          <div className='meditation-loading'>
+            <div className='loading-spinner'></div>
+          </div>
+        </div>
       ) : (
         /* Desktop and Mobile Card View */
         <div className='meditation-container krona-one-regular'>
+          {/* Progress Bar - Desktop (vertical) */}
+          <div className='progress-bar-container progress-bar-container--vertical'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={meditationSections.length}
+              orientation="vertical"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
+          {/* Progress Bar - Mobile (horizontal) */}
+          <div className='progress-bar-container progress-bar-container--horizontal'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={meditationSections.length}
+              orientation="horizontal"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
           <div className='meditation-cards'>
             {meditationSections.map((section, index) => (
               <BlogCard
                 key={index}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 index={index}
                 title={section.title}
                 classification={section.classification}
@@ -450,7 +500,7 @@ const Meditations: React.FC = () => {
           </div>
 
 
-          <div className='meditation-content-display fira-code-regular'>
+          <div ref={contentDisplayRef} className='meditation-content-display fira-code-regular'>
             {activeSection && !isMobile && isViewing && (
               <div className='meditation-content'>
                 <div className='meditation-content-title'>{activeSection.title}</div>
@@ -511,9 +561,12 @@ const Meditations: React.FC = () => {
 
       {/* Navigation - hide in mobile content view */}
       {!(isMobileContentView && isMobile) && (
-        <div className="nav">
-          <Navigation />
-        </div>
+        <>
+          <div className="footer-overlay"></div>
+          <div className="nav">
+            <Navigation />
+          </div>
+        </>
       )}
 
       {/* Expanded Image Modal */}

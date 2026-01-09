@@ -9,24 +9,6 @@
     --cards-height-offset: calc(var(--header-height-current, var(--header-height-expanded, 220px)) + 130px);
 }
 
-/* Header Overlay - positioned behind header but above content */
-.meditations .header-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 136px;
-    background: linear-gradient(
-        135deg,
-        rgba(249, 246, 238, 0.4) 3.04%,
-        rgba(249, 246, 238, 0) 99.2%
-    );
-    backdrop-filter: blur(19.648296356201172px);
-    z-index: 5; /* Behind header (z-index 10) but above content (z-index 4) */
-    pointer-events: none; /* Allow clicks to pass through */
-}
-
 /* Footer Overlay - positioned behind navigation but above content */
 .meditations .footer-overlay {
     position: fixed;
@@ -37,12 +19,14 @@
     height: 120px;
     background: linear-gradient(
         180deg,
-        rgba(249, 246, 238, 0.2) 0%,
+        rgba(249, 246, 238, 0) 0%,
         rgba(249, 246, 238, 1) 25%
     );
-    z-index: 5; /* Behind navigation (z-index 10) but above content (z-index 4) */
-    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 5;
+    pointer-events: none;
 }
+
+
 
 .pg-title-container {
     position: fixed;
@@ -68,6 +52,14 @@
     padding-bottom: 200px; /* Add padding to container */
 }
 
+.meditation-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 200px);
+}
+
 .meditation-cards {
     z-index: 2; /* Below overlay but above other content */
     position: fixed; /* Fix the position of cards */
@@ -77,7 +69,7 @@
     overflow-y: scroll; /* Enable vertical scrolling */
     display: flex;
     flex-direction: column;
-    gap: 26px;
+    gap: 56px; /* Increased gap for scroll-expand breathing room */
     top: var(--header-offset);
     transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
                 height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
@@ -489,19 +481,9 @@
 }
 
 @media (max-width: 480px) {
-    /* Header overlay adjustments for mobile */
-    .meditations .header-overlay {
-        height: 95px; /* Adjusted for mobile header height */
-    }
-
     /* Footer overlay adjustments for mobile */
     .meditations .footer-overlay {
-        height: 90px; /* Proportionally adjusted for mobile */
-        background: linear-gradient(
-            180deg,
-            rgba(249, 246, 238, 0.2) 0%,
-            rgba(249, 246, 238, 1) 25%
-        );
+        height: 90px;
     }
 
     .meditation-container {
@@ -524,7 +506,7 @@
         max-width: none !important; /* Remove max-width constraint */
         height: auto !important; /* Auto height for flexibility */
         overflow-y: visible !important; /* Disable scrolling on mobile */
-        margin-top: 110px; /* Position below header */
+        margin-top: 140px; /* Position below header + progress bar */
         margin-left: auto; /* Center horizontally */
         margin-right: auto; /* Center horizontally */
         margin-bottom: 100px; /* Space for navigation */
@@ -533,7 +515,7 @@
         order: 2; /* Display second */
         display: flex;
         flex-direction: column;
-        gap: 26px; /* Match Figma gap exactly */
+        gap: 56px; /* Increased gap for scroll-expand */
         z-index: 2; /* Below overlay but above other content */
     }
 

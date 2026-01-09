@@ -15,11 +15,15 @@
     display: flex;
     flex-direction: column;
     border-radius: 0;
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .blog-card.expanded {
     background: #FFF0EE; /* Active card background - exact Figma #FFF0EE */
     border: 1px solid #99352F; /* Active card border - exact Figma #99352F */
+    box-shadow: 0 4px 12px rgba(153, 53, 47, 0.1);
 }
 
 .blog-card-classification {
@@ -35,6 +39,7 @@
     color: #ABB2BF; /* Default color for collapsed cards */
     margin: 0;
     border-bottom: none;
+    transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .blog-card.expanded .blog-card-classification {
@@ -51,12 +56,44 @@
     margin: 0;
     padding: 16px; /* exact padding from Figma */
     border-top: 1px solid #99352F; /* stroke from Frame 3 - exact color #99352F */
-    display: none; /* Hidden for inactive cards on desktop - match Figma */
+    /* Smooth transition for title visibility */
+    max-height: 0;
+    padding: 0 16px;
+    opacity: 0;
+    overflow: hidden;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .blog-card.expanded .blog-card-title {
     color: #FF6F61; /* Active title color - exact Figma #FF6F61 */
-    display: block; /* Show title only for expanded cards */
+    max-height: 100px;
+    padding: 16px;
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+/* Expandable content wrapper */
+.blog-card-expandable {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-card.expanded .blog-card-expandable {
+    max-height: 300px;
+    opacity: 1;
+    transform: scaleY(1);
 }
 
 .blog-card-excerpt {
@@ -68,16 +105,11 @@
     color: #FF8074; /* exact color from Figma #FF8074 */
     margin: 0;
     padding: 0 16px 16px 16px; /* match Frame 3 padding structure */
-    display: none; /* Hidden for inactive cards on desktop - match Figma */
-}
-
-.blog-card.expanded .blog-card-excerpt {
-    display: block; /* Show excerpt only for expanded cards */
 }
 
 .blog-card-view-button {
     /* Buttons component with exact Figma specifications - outlined style */
-    display: none; /* Hidden for inactive cards on desktop - match Figma */
+    display: flex; /* Always flex, visibility controlled by parent */
     justify-content: center; /* justifyContent: center from Figma */
     align-items: center; /* alignItems: center from Figma */
     gap: 10px; /* exact gap from Figma */
@@ -98,10 +130,6 @@
     text-align: center;
 }
 
-.blog-card.expanded .blog-card-view-button {
-    display: flex; /* Show button only for expanded cards */
-}
-
 .blog-card-view-button:hover {
     background: #FF6F61;
     color: #FFF0EE;
@@ -118,11 +146,15 @@
         background: transparent; /* Inactive cards have no background */
         display: flex;
         flex-direction: column;
+        transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .blog-card.expanded {
         background: #FFF0EE; /* Exact active card background from Figma */
         border: 1px solid #99352F; /* Exact active card border from Figma */
+        box-shadow: 0 4px 12px rgba(153, 53, 47, 0.1);
     }
 
     .blog-card-classification {
@@ -138,6 +170,7 @@
         color: #ABB2BF; /* Exact inactive color from Figma */
         margin: 0;
         border-bottom: none;
+        transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .blog-card.expanded .blog-card-classification {
@@ -152,14 +185,45 @@
         line-height: 1.3120000627305772em; /* exact line-height from Figma */
         color: #ABB2BF; /* Exact inactive color from Figma */
         margin: 0;
-        padding: 16px; /* exact padding from Figma */
         border-top: 1px solid #99352F; /* stroke from Frame 3 */
-        display: none; /* Hidden for inactive cards on mobile */
+        /* Smooth transition for title visibility */
+        max-height: 0;
+        padding: 0 16px;
+        opacity: 0;
+        overflow: hidden;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.3s ease,
+                    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .blog-card.expanded .blog-card-title {
         color: #FF6F61; /* Exact active title color from Figma */
-        display: block; /* Show title only for active cards */
+        max-height: 100px;
+        padding: 16px;
+        opacity: 1;
+        transform: scaleY(1);
+    }
+
+    /* Expandable content wrapper - mobile */
+    .blog-card-expandable {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.3s ease,
+                    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .blog-card.expanded .blog-card-expandable {
+        max-height: 300px;
+        opacity: 1;
+        transform: scaleY(1);
     }
 
     .blog-card-excerpt {
@@ -168,20 +232,14 @@
         font-weight: 400; /* exact weight from Figma */
         font-size: 12px; /* exact mobile size from Figma */
         line-height: 1.312000036239624em; /* exact line-height from Figma */
-        color: #ABB2BF; /* Exact inactive color from Figma */
+        color: #FF8074; /* Exact active excerpt color from Figma */
         margin: 0;
         padding: 0 16px 16px 16px; /* match Frame 3 padding structure */
-        display: none; /* Hidden for inactive cards on mobile */
-    }
-
-    .blog-card.expanded .blog-card-excerpt {
-        color: #FF8074; /* Exact active excerpt color from Figma */
-        display: block; /* Show excerpt only for active cards */
     }
 
     .blog-card-view-button {
         /* Button - exact mobile Figma specifications */
-        display: none; /* Hidden for inactive cards on mobile */
+        display: flex; /* Always flex, visibility controlled by parent */
         justify-content: center;
         align-items: center;
         gap: 10px;
@@ -200,10 +258,6 @@
         height: 46px;
         width: fit-content;
         text-align: center;
-    }
-
-    .blog-card.expanded .blog-card-view-button {
-        display: flex; /* Show button only for active cards */
     }
 
     .blog-card-view-button:hover {

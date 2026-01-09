@@ -1,8 +1,9 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useEffect, useState, CSSProperties, useCallback, useRef } from 'react';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
 import PageHeader from '../page-header/PageHeader';
+import ProgressBar from '../progress-bar/ProgressBar';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
 
@@ -36,14 +37,19 @@ interface Post {
 
 // Custom hook for responsive design
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialize with actual value to prevent flash of wrong layout
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 480;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 480);
     };
 
-    checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
 
     return () => window.removeEventListener('resize', checkIsMobile);
@@ -63,6 +69,11 @@ const Thoughts: React.FC = () => {
   const containerStyle: CSSProperties = {
     '--header-height-current': `${headerHeight}px`
   } as CSSProperties;
+
+  // Refs for scrolling to cards when progress bar is clicked
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Ref for scrolling content to top
+  const contentDisplayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -126,14 +137,14 @@ const Thoughts: React.FC = () => {
     }
   }, [isMobile]);
 
-  const handleCardClick = async (index: number) => {
+  const handleCardClick = useCallback(async (index: number) => {
     if (activeCardIndex === index) {
       // If clicking the same card, collapse it and go back to default (index 0)
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);
     } else {
-      // If clicking a different card, expand it
+      // If clicking a different card, expand it (in place, no scroll)
       setActiveCardIndex(index);
       // On desktop, show content immediately
       // On mobile, just expand the card (don't show content yet)
@@ -142,7 +153,7 @@ const Thoughts: React.FC = () => {
       }
       // Don't set isMobileContentView here - wait for View button click
     }
-  };
+  }, [activeCardIndex, isMobile]);
 
   const handleViewStateChange = async (viewing: boolean) => {
     if (viewing) {
@@ -159,6 +170,25 @@ const Thoughts: React.FC = () => {
     }
   };
 
+  // Handle progress bar indicator click - scroll to card and expand it
+  const handleProgressIndicatorClick = useCallback((index: number) => {
+    setActiveCardIndex(index);
+    // Scroll the card into view
+    const card = cardRefs.current[index];
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    // Scroll content display to top
+    if (contentDisplayRef.current) {
+      contentDisplayRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Also scroll the main window to top for content visibility
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!isMobile) {
+      setIsViewing(true);
+    }
+  }, [isMobile]);
+
   const handleBackToCards = () => {
     setIsMobileContentView(false);
   };
@@ -167,12 +197,6 @@ const Thoughts: React.FC = () => {
 
   return (
     <div className="thoughts" style={containerStyle}>
-      {/* Header Overlay - positioned behind header but above content */}
-      <div className="header-overlay"></div>
-      
-      {/* Footer Overlay - positioned behind navigation but above content */}
-      <div className="footer-overlay"></div>
-      
       <div className = 'pg-title-container'>
             <PageHeader isCollapsed={isHeaderCollapsed}/>
         </div>
@@ -202,10 +226,31 @@ const Thoughts: React.FC = () => {
       ) : (
         /* Desktop and Mobile Card View */
         <div className='blog-container krona-one-regular'>
+          {/* Progress Bar - Desktop (vertical) */}
+          <div className='progress-bar-container progress-bar-container--vertical'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={posts.length}
+              orientation="vertical"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
+          {/* Progress Bar - Mobile (horizontal) */}
+          <div className='progress-bar-container progress-bar-container--horizontal'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={posts.length}
+              orientation="horizontal"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
           <div className='blog-cards'>
             {posts.map((post, index) => (
               <BlogCard
                 key={index}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 index={index}
                 title={post.title}
                 classification={post.classification}
@@ -218,7 +263,7 @@ const Thoughts: React.FC = () => {
             ))}
           </div>
 
-          <div className='blog-content-display fira-code-regular'>
+          <div ref={contentDisplayRef} className='blog-content-display fira-code-regular'>
             {activePost && !isMobile && isViewing && (
               <div className='blog-content'>
                 <div className='blog-content-title'>{activePost.title}</div>
@@ -233,9 +278,12 @@ const Thoughts: React.FC = () => {
 
       {/* Navigation - hide in mobile content view */}
       {!(isMobileContentView && isMobile) && (
-        <div className='nav'>
-          <Navigation />
-        </div>
+        <>
+          <div className="footer-overlay"></div>
+          <div className='nav'>
+            <Navigation />
+          </div>
+        </>
       )}
     </div>
   );

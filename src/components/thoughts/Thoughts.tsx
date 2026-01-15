@@ -63,6 +63,8 @@ const Thoughts: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [isViewing, setIsViewing] = useState<boolean>(false);
   const [isMobileContentView, setIsMobileContentView] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeFilter, setActiveFilter] = useState<string>('All');
   const isMobile = useIsMobile();
   const isHeaderCollapsed = useScrollThreshold();
   const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
@@ -193,7 +195,24 @@ const Thoughts: React.FC = () => {
     setIsMobileContentView(false);
   };
 
-  const activePost = posts[activeCardIndex];
+  // Get unique classifications for filter tabs
+  const classifications = ['All', ...Array.from(new Set(posts.map(p => p.classification)))];
+
+  // Filter posts based on search query and active filter
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = searchQuery === '' || 
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = activeFilter === 'All' || post.classification === activeFilter;
+    return matchesSearch && matchesFilter;
+  });
+
+  // Reset active card index when filters change
+  useEffect(() => {
+    setActiveCardIndex(0);
+  }, [searchQuery, activeFilter]);
+
+  const activePost = filteredPosts[activeCardIndex];
 
   return (
     <div className="thoughts" style={containerStyle}>
@@ -226,11 +245,39 @@ const Thoughts: React.FC = () => {
       ) : (
         /* Desktop and Mobile Card View */
         <div className='blog-container krona-one-regular'>
+          {/* Search and Filter Section */}
+          <div className='search-filter-section'>
+            <div className='search-box'>
+              <span className='search-icon'>🔍</span>
+              <input
+                type='text'
+                className='search-input'
+                placeholder='Search posts...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className='filter-tabs'>
+              {classifications.map((classification) => (
+                <button
+                  key={classification}
+                  className={`filter-tab ${activeFilter === classification ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(classification)}
+                >
+                  {classification}
+                </button>
+              ))}
+            </div>
+            <div className='results-count'>
+              {filteredPosts.length} {filteredPosts.length === 1 ? 'result' : 'results'} found
+            </div>
+          </div>
+
           {/* Progress Bar - Desktop (vertical) */}
           <div className='progress-bar-container progress-bar-container--vertical'>
             <ProgressBar
               currentIndex={activeCardIndex}
-              totalCount={posts.length}
+              totalCount={filteredPosts.length}
               orientation="vertical"
               onIndicatorClick={handleProgressIndicatorClick}
             />
@@ -240,14 +287,14 @@ const Thoughts: React.FC = () => {
           <div className='progress-bar-container progress-bar-container--horizontal'>
             <ProgressBar
               currentIndex={activeCardIndex}
-              totalCount={posts.length}
+              totalCount={filteredPosts.length}
               orientation="horizontal"
               onIndicatorClick={handleProgressIndicatorClick}
             />
           </div>
 
           <div className='blog-cards'>
-            {posts.map((post, index) => (
+            {filteredPosts.map((post, index) => (
               <BlogCard
                 key={index}
                 ref={(el) => { cardRefs.current[index] = el; }}

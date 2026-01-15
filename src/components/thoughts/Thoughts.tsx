@@ -1,4 +1,4 @@
-import React, { useEffect, useState, CSSProperties, useCallback, useRef } from 'react';
+import React, { useEffect, useState, CSSProperties, useCallback, useRef, useMemo } from 'react';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
@@ -195,17 +195,19 @@ const Thoughts: React.FC = () => {
     setIsMobileContentView(false);
   };
 
-  // Get unique classifications for filter tabs
-  const classifications = ['All', ...Array.from(new Set(posts.map(p => p.classification)))];
+  // Fixed categories for filter tabs
+  const classifications = ['All', 'Poetry', 'Technology'];
 
   // Filter posts based on search query and active filter
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = searchQuery === '' || 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = activeFilter === 'All' || post.classification === activeFilter;
-    return matchesSearch && matchesFilter;
-  });
+  const filteredPosts = useMemo(() => {
+    return posts.filter(post => {
+      const matchesSearch = searchQuery === '' || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter = activeFilter === 'All' || post.classification === activeFilter;
+      return matchesSearch && matchesFilter;
+    });
+  }, [posts, searchQuery, activeFilter]);
 
   // Reset active card index when filters change
   useEffect(() => {
@@ -245,7 +247,27 @@ const Thoughts: React.FC = () => {
       ) : (
         /* Desktop and Mobile Card View */
         <div className='blog-container krona-one-regular'>
-          {/* Search and Filter Section */}
+          {/* Progress Bar - Desktop (vertical) */}
+          <div className='progress-bar-container progress-bar-container--vertical'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={filteredPosts.length}
+              orientation="vertical"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
+          {/* Progress Bar - Mobile (horizontal) */}
+          <div className='progress-bar-container progress-bar-container--horizontal'>
+            <ProgressBar
+              currentIndex={activeCardIndex}
+              totalCount={filteredPosts.length}
+              orientation="horizontal"
+              onIndicatorClick={handleProgressIndicatorClick}
+            />
+          </div>
+
+          {/* Search and Filter Section - positioned above cards */}
           <div className='search-filter-section'>
             <div className='search-box'>
               <span className='search-icon'>🔍</span>
@@ -271,26 +293,6 @@ const Thoughts: React.FC = () => {
             <div className='results-count'>
               {filteredPosts.length} {filteredPosts.length === 1 ? 'result' : 'results'} found
             </div>
-          </div>
-
-          {/* Progress Bar - Desktop (vertical) */}
-          <div className='progress-bar-container progress-bar-container--vertical'>
-            <ProgressBar
-              currentIndex={activeCardIndex}
-              totalCount={filteredPosts.length}
-              orientation="vertical"
-              onIndicatorClick={handleProgressIndicatorClick}
-            />
-          </div>
-
-          {/* Progress Bar - Mobile (horizontal) */}
-          <div className='progress-bar-container progress-bar-container--horizontal'>
-            <ProgressBar
-              currentIndex={activeCardIndex}
-              totalCount={filteredPosts.length}
-              orientation="horizontal"
-              onIndicatorClick={handleProgressIndicatorClick}
-            />
           </div>
 
           <div className='blog-cards'>

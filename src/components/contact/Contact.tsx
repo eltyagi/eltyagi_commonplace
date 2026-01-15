@@ -3,55 +3,80 @@ import './Contact.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 
+type ConversationStep = 'message' | 'name' | 'email' | 'confirm';
+
 const Contact: React.FC = () => {
-  const [message, setMessage] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState([
     { sender: 'eltyagi', text: 'hi there!', timestamp: Date.now() }
   ]);
   const [isTyping, setIsTyping] = useState(false);
-  const [showMessageInput, setShowMessageInput] = useState(true);
+  const [step, setStep] = useState<ConversationStep>('message');
+  const [userMessage, setUserMessage] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+
+  const addBotMessage = (text: string, delay = 1000) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      setChatMessages(prev => [...prev, { sender: 'eltyagi', text, timestamp: Date.now() }]);
+      setIsTyping(false);
+    }, delay);
+  };
 
   const handleSendMessage = async () => {
-    if (!message.trim()) return;
+    if (!inputValue.trim()) return;
 
-    // Add user message to chat
-    const userMessage = { sender: 'you', text: message, timestamp: Date.now() };
-    setChatMessages(prev => [...prev, userMessage]);
-    setMessage('');
-    setShowMessageInput(false);
-    setIsTyping(true);
+    const userMsg = { sender: 'you', text: inputValue, timestamp: Date.now() };
+    setChatMessages(prev => [...prev, userMsg]);
+    const currentInput = inputValue;
+    setInputValue('');
 
-    try {
-      // Create mailto link (client-side email sending)
-      const subject = 'Message from your website contact form';
-      const body = `Hi Lakshya,\n\nYou received a new message from your website:\n\n"${message}"\n\nBest regards,\nWebsite Contact Form`;
-      const mailtoLink = `mailto:lakshya_tyagi@icloud.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      
-      // Open email client
-      window.location.href = mailtoLink;
-
-      // Simulate processing delay
-      setTimeout(() => {
-        const responseMessage = { 
-          sender: 'eltyagi', 
-          text: 'Thanks for reaching out! I\'ll get back to you soon!', 
-          timestamp: Date.now() 
-        };
-        setChatMessages(prev => [...prev, responseMessage]);
-        setIsTyping(false);
-      }, 2000);
-
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setIsTyping(false);
-      setShowMessageInput(true);
+    if (step === 'message') {
+      setUserMessage(currentInput);
+      addBotMessage("Nice to meet you! What's your name?");
+      setStep('name');
+    } else if (step === 'name') {
+      setUserName(currentInput);
+      addBotMessage(`Great, ${currentInput}! What's your email so I can get back to you?`);
+      setStep('email');
+    } else if (step === 'email') {
+      setUserEmail(currentInput);
+      addBotMessage("Perfect! Click 'Send Email' to open your email client with the message ready to go.");
+      setStep('confirm');
     }
+  };
+
+  const handleSendEmail = () => {
+    const subject = 'Message from your website';
+    const body = `Hi Lakshya,
+
+${userMessage}
+
+— ${userName} (${userEmail})`;
+    const mailtoLink = `mailto:lakshya_tyagi@icloud.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+    
+    addBotMessage("Thanks for reaching out! I'll get back to you soon!", 500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      if (step === 'confirm') {
+        handleSendEmail();
+      } else {
+        handleSendMessage();
+      }
+    }
+  };
+
+  const getPlaceholder = () => {
+    switch (step) {
+      case 'message': return 'type your message here...';
+      case 'name': return 'enter your name...';
+      case 'email': return 'enter your email...';
+      default: return '';
     }
   };
 
@@ -84,24 +109,33 @@ const Contact: React.FC = () => {
           )}
         </div>
 
-        {showMessageInput && (
+        {step !== 'confirm' ? (
           <div className='message-input-container'>
             <div className='message-input-label'>you</div>
             <textarea
               className='message-input'
               aria-label='Your message'
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder='type your message here...'
+              placeholder={getPlaceholder()}
               autoFocus
             />
             <button 
               className='send-button'
               onClick={handleSendMessage}
-              disabled={!message.trim()}
+              disabled={!inputValue.trim()}
             >
               Send
+            </button>
+          </div>
+        ) : (
+          <div className='message-input-container'>
+            <button 
+              className='send-button send-email-button'
+              onClick={handleSendEmail}
+            >
+              Send Email
             </button>
           </div>
         )}

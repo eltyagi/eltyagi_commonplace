@@ -184,6 +184,8 @@ const Meditations: React.FC = () => {
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [sectionsLoading, setSectionsLoading] = useState<boolean>(true);
   const [meditationSections, setMeditationSections] = useState<MeditationSection[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeFilter, setActiveFilter] = useState<string>('All');
   const isMobile = useIsMobile();
   const isHeaderCollapsed = useScrollThreshold();
   const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
@@ -374,9 +376,24 @@ const Meditations: React.FC = () => {
     setExpandedImageIndex(null);
   };
 
+  // Get unique classifications for filter tabs
+  const classifications = ['All', ...Array.from(new Set(meditationSections.map(s => s.classification)))];
 
+  // Filter sections based on search query and active filter
+  const filteredSections = meditationSections.filter(section => {
+    const matchesSearch = searchQuery === '' || 
+      section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (section.excerpt || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = activeFilter === 'All' || section.classification === activeFilter;
+    return matchesSearch && matchesFilter;
+  });
 
-  const activeSection = meditationSections[activeCardIndex];
+  // Reset active card index when filters change
+  useEffect(() => {
+    setActiveCardIndex(0);
+  }, [searchQuery, activeFilter]);
+
+  const activeSection = filteredSections[activeCardIndex];
 
   return (
     <div className="meditations" style={containerStyle}>
@@ -462,11 +479,39 @@ const Meditations: React.FC = () => {
       ) : (
         /* Desktop and Mobile Card View */
         <div className='meditation-container krona-one-regular'>
+          {/* Search and Filter Section */}
+          <div className='search-filter-section'>
+            <div className='search-box'>
+              <span className='search-icon'>🔍</span>
+              <input
+                type='text'
+                className='search-input'
+                placeholder='Search meditations...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className='filter-tabs'>
+              {classifications.map((classification) => (
+                <button
+                  key={classification}
+                  className={`filter-tab ${activeFilter === classification ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(classification)}
+                >
+                  {classification}
+                </button>
+              ))}
+            </div>
+            <div className='results-count'>
+              {filteredSections.length} {filteredSections.length === 1 ? 'result' : 'results'} found
+            </div>
+          </div>
+
           {/* Progress Bar - Desktop (vertical) */}
           <div className='progress-bar-container progress-bar-container--vertical'>
             <ProgressBar
               currentIndex={activeCardIndex}
-              totalCount={meditationSections.length}
+              totalCount={filteredSections.length}
               orientation="vertical"
               onIndicatorClick={handleProgressIndicatorClick}
             />
@@ -476,14 +521,14 @@ const Meditations: React.FC = () => {
           <div className='progress-bar-container progress-bar-container--horizontal'>
             <ProgressBar
               currentIndex={activeCardIndex}
-              totalCount={meditationSections.length}
+              totalCount={filteredSections.length}
               orientation="horizontal"
               onIndicatorClick={handleProgressIndicatorClick}
             />
           </div>
 
           <div className='meditation-cards'>
-            {meditationSections.map((section, index) => (
+            {filteredSections.map((section, index) => (
               <BlogCard
                 key={index}
                 ref={(el) => { cardRefs.current[index] = el; }}

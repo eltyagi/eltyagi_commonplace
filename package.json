@@ -5,12 +5,14 @@
   "version": "0.8.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "astro dev",
+    "dev:vite": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "build": "tsc -b && vite build",
+    "build": "astro build",
+    "build:vite": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "astro preview",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
@@ -18,6 +20,8 @@
     "test:report": "playwright show-report"
   },
   "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "astro": "^5.17.1",
     "buffer": "^6.0.3",
     "front-matter": "^4.0.2",
     "gray-matter": "^4.0.3",

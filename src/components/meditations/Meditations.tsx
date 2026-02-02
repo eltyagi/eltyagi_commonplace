@@ -318,31 +318,14 @@ const Meditations: React.FC = () => {
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);
     } else {
-      // If clicking a different card, expand it (in place, no scroll)
+      // If clicking a different card, expand it and open the content
       setActiveCardIndex(index);
-      // On desktop, show content immediately
-      // On mobile, just expand the card (don't show content yet)
-      if (!isMobile) {
-        setIsViewing(true);
-      }
-      // Don't set isMobileContentView here - wait for View button click
-    }
-  }, [activeCardIndex, isMobile]);
-
-  const handleViewStateChange = (viewing: boolean) => {
-    if (viewing) {
-      // User clicked View button - show content
       setIsViewing(true);
       if (isMobile) {
         setIsMobileContentView(true);
       }
-    } else {
-      // Collapse back to default card (index 0)
-      setActiveCardIndex(0);
-      setIsViewing(!isMobile); // Show content on desktop, not on mobile
-      setIsMobileContentView(false);
     }
-  };
+  }, [activeCardIndex, isMobile]);
 
   // Handle progress bar indicator click - scroll to card and expand it
   const handleProgressIndicatorClick = useCallback((index: number) => {
@@ -497,7 +480,6 @@ const Meditations: React.FC = () => {
                 content={section.content}
                 isExpanded={activeCardIndex === index}
                 onCardClick={() => handleCardClick(index)}
-                onViewStateChange={handleViewStateChange}
               />
             ))}
           </div>

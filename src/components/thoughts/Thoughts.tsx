@@ -1,12 +1,15 @@
 import { useEffect, useState, CSSProperties, useCallback, useRef, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
 import PageHeader from '../page-header/PageHeader';
 import ProgressBar from '../progress-bar/ProgressBar';
 import Loader from '../loader/Loader';
+import BlogPostFooter from '../blog-post-footer/BlogPostFooter';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
+import { generateSlug, findPostBySlug } from '../../utils/slug';
 
 // Lightweight frontmatter parser (replaces gray-matter)
 const parseFrontmatter = (content: string) => {
@@ -60,6 +63,8 @@ const useIsMobile = () => {
 };
 
 const Thoughts: React.FC = () => {
+  const { slug } = useParams<{ slug?: string }>();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
@@ -132,6 +137,20 @@ const Thoughts: React.FC = () => {
     loadPosts();
   }, []);
 
+  // Handle URL slug - find and select the post when slug changes or posts load
+  useEffect(() => {
+    if (posts.length > 0 && slug) {
+      const result = findPostBySlug(posts, slug);
+      if (result) {
+        setActiveCardIndex(result.index);
+        setIsViewing(true);
+        if (isMobile) {
+          setIsMobileContentView(true);
+        }
+      }
+    }
+  }, [posts, slug, isMobile]);
+
   // Update initial viewing state based on screen size
   useEffect(() => {
     if (!isMobile) {
@@ -144,12 +163,14 @@ const Thoughts: React.FC = () => {
     }
   }, [isMobile]);
 
-  const handleCardClick = useCallback(async (index: number) => {
+  const handleCardClick = useCallback((index: number, post: Post) => {
     if (activeCardIndex === index) {
       // If clicking the same card, collapse it and go back to default (index 0)
       setActiveCardIndex(0);
       setIsViewing(!isMobile); // Show content on desktop, not on mobile
       setIsMobileContentView(false);
+      // Update URL to base thoughts page
+      navigate('/thoughts', { replace: true });
     } else {
       // If clicking a different card, expand it and open the blog
       setActiveCardIndex(index);
@@ -157,11 +178,14 @@ const Thoughts: React.FC = () => {
       if (isMobile) {
         setIsMobileContentView(true);
       }
+      // Update URL with post slug
+      const postSlug = generateSlug(post.title);
+      navigate(`/thoughts/${postSlug}`, { replace: true });
     }
-  }, [activeCardIndex, isMobile]);
+  }, [activeCardIndex, isMobile, navigate]);
 
   // Handle progress bar indicator click - scroll to card and expand it
-  const handleProgressIndicatorClick = useCallback((index: number) => {
+  const handleProgressIndicatorClick = useCallback((index: number, postsArray: Post[]) => {
     setActiveCardIndex(index);
     // Scroll the card into view
     const card = cardRefs.current[index];
@@ -177,10 +201,16 @@ const Thoughts: React.FC = () => {
     if (!isMobile) {
       setIsViewing(true);
     }
-  }, [isMobile]);
+    // Update URL with post slug
+    if (postsArray[index]) {
+      const postSlug = generateSlug(postsArray[index].title);
+      navigate(`/thoughts/${postSlug}`, { replace: true });
+    }
+  }, [isMobile, navigate]);
 
   const handleBackToCards = () => {
     setIsMobileContentView(false);
+    navigate('/thoughts', { replace: true });
   };
 
   // Fixed categories for filter tabs
@@ -229,6 +259,7 @@ const Thoughts: React.FC = () => {
             {activePost && (
               <div className='blog-content'>
                 <div className='blog-content-text krona-one-regular'>{activePost.content}</div>
+                <BlogPostFooter title={activePost.title} date={activePost.date} />
               </div>
             )}
           </div>
@@ -242,7 +273,7 @@ const Thoughts: React.FC = () => {
               currentIndex={activeCardIndex}
               totalCount={filteredPosts.length}
               orientation="vertical"
-              onIndicatorClick={handleProgressIndicatorClick}
+              onIndicatorClick={(index) => handleProgressIndicatorClick(index, filteredPosts)}
             />
           </div>
 
@@ -252,7 +283,7 @@ const Thoughts: React.FC = () => {
               currentIndex={activeCardIndex}
               totalCount={filteredPosts.length}
               orientation="horizontal"
-              onIndicatorClick={handleProgressIndicatorClick}
+              onIndicatorClick={(index) => handleProgressIndicatorClick(index, filteredPosts)}
             />
           </div>
 
@@ -295,7 +326,7 @@ const Thoughts: React.FC = () => {
                 excerpt={post.excerpt}
                 content={post.content || ''}
                 isExpanded={activeCardIndex === index}
-                onCardClick={() => handleCardClick(index)}
+                onCardClick={() => handleCardClick(index, post)}
               />
             ))}
           </div>
@@ -307,6 +338,7 @@ const Thoughts: React.FC = () => {
                 <div className='blog-content-classification'>{activePost.classification}</div>
                 {activePost.date && <div className='blog-content-date'>{activePost.date}</div>}
                 <div className='blog-content-text krona-one-regular'>{activePost.content}</div>
+                <BlogPostFooter title={activePost.title} date={activePost.date} />
               </div>
             )}
           </div>

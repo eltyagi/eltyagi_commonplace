@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/thoughts" element={<Thoughts />} />
+          <Route path="/thoughts/:slug" element={<Thoughts />} />
           <Route path="/meditations" element={<Meditations />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

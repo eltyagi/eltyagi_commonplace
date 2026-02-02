@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import './BlogCard.css';
 
 interface BlogCardProps {
@@ -9,7 +9,6 @@ interface BlogCardProps {
     content?: string;
     isExpanded: boolean;
     onCardClick: () => void;
-    onViewStateChange: (viewing: boolean) => void;
 }
 
 const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
@@ -18,14 +17,7 @@ const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
     excerpt,
     isExpanded,
     onCardClick,
-    onViewStateChange
 }, ref) => {
-    const handleViewButtonClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        // Button expands/shows the content view
-        onViewStateChange(true);
-    };
-
     return (
         <div 
             ref={ref}
@@ -37,12 +29,6 @@ const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
             {/* Always render expandable content, control visibility via CSS */}
             <div className='blog-card-expandable'>
                 {excerpt && <div className='blog-card-excerpt'>{excerpt}</div>}
-                <div 
-                    className='blog-card-view-button'
-                    onClick={handleViewButtonClick}
-                >
-                    View
-                </div>
             </div>
         </div>
     );

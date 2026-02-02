@@ -43,12 +43,12 @@
     position: fixed; /* Fix the position of cards */
     right: 50px; /* Adjusted positioning to accommodate larger content area */
     width: 331px; /* Match exact Figma width */
-    height: calc(100vh - var(--cards-height-offset));
+    height: calc(100vh - var(--cards-height-offset) - 120px);
     overflow-y: scroll; /* Enable vertical scrolling */
     display: flex;
     flex-direction: column;
     gap: 56px; /* Increased gap for scroll-expand breathing room */
-    top: var(--header-offset);
+    top: calc(var(--header-offset) + 120px);
     transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1),
                 height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 300px;
@@ -107,15 +107,16 @@
 /* Search and Filter Styles */
 .search-filter-section {
     position: fixed;
-    top: var(--header-offset);
-    left: 97px;
-    width: 900px;
+    top: 0;
+    right: 50px;
+    width: 331px;
     z-index: 3;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    padding-top: calc(var(--header-height-current, 220px) + 20px);
     padding-bottom: 16px;
-    background: linear-gradient(180deg, #F9F6EE 80%, rgba(249, 246, 238, 0) 100%);
+    background-color: #F9F6EE;
 }
 
 .search-box {
@@ -183,7 +184,7 @@
 
 /* Adjust content display to account for search section */
 .blog-content-display {
-    margin-top: calc(var(--header-offset) + 130px);
+    margin-top: var(--header-offset);
 }
 
 

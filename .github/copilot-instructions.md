@@ -1,160 +1,61 @@
-# Commonplace Project Guide for AI Assistants
+# Commonplace - AI Assistant Guide
 
-## Project Overview
+## General Instructions
+- When asked a question, always provide clear, concise and accurate answers, in a manner that is good for someone who is trying to learn or understand the topic.
+- Use examples and analogies where appropriate to illustrate complex concepts.
+- Discuss approaches, explore why one might be better than another, and consider edge cases.
 
-Commonplace is a personal portfolio website built with React, TypeScript, and Vite. It showcases the author's thoughts, visual meditations, technical skills, and philosophical principles through a clean, responsive interface with consistent design language.
+## Architecture Overview
 
-### Core Architecture
+React + TypeScript + Vite SPA portfolio site. Routes: `/` (landing), `/thoughts` (blog), `/meditations` (gallery), `/contact`.
 
-- **Single Page Application** using React Router for navigation
-- **Component Structure** organized by page/feature
-- **Responsive Design** with custom hooks for mobile detection
-- **Content Management** using markdown with gray-matter for frontmatter parsing
+### Key Patterns
 
-## Key Components & Patterns
+**Page Layout**: Every page uses `PageHeader` (route-aware title) + main content + `Navigation` (shared tabs). Header has collapsible behavior controlled by `useScrollThreshold` hook.
 
-### Page Structure Pattern
-Each page follows this component hierarchy:
-1. `PageHeader` - Dynamically shows section title based on current route
-2. Main content area - Unique to each page
-3. `Navigation` - Shared navigation component with active state tracking
+**Responsive Strategy**: Mobile breakpoint is `480px`. Use inline `useIsMobile` hook pattern (defined per-component, not shared). Mobile shows expandable cards; desktop shows side-by-side list + content.
 
-```tsx
-// Example page structure from src/components/thoughts/Thoughts.tsx
-<div className="thoughts">
-  <div className="header-overlay"></div>
-  <div className="footer-overlay"></div>
-  <div className="pg-title-container">
-    <PageHeader/>
-  </div>
-  {/* Main content area */}
-  <div className="nav">
-    <Navigation />
-  </div>
-</div>
-```
+**Content Loading**: Blog posts use Vite's `import.meta.glob('../../assets/posts/post*.md')` with custom frontmatter parser (not gray-matter in Thoughts). Posts are numbered `post1.md`, `post2.md`, etc. and auto-sorted descending.
 
-### Responsive Patterns
-The project uses a custom `useIsMobile` hook for conditional rendering:
+### Important Files
 
-```tsx
-// From src/components/thoughts/Thoughts.tsx
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 480);
-    };
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
-  }, []);
-  return isMobile;
-};
-```
+- [src/constants/layout.ts](src/constants/layout.ts) - Header height values used across components
+- [src/hooks/useScrollThreshold.ts](src/hooks/useScrollThreshold.ts) - Scroll-based header collapse logic
+- [src/components/blog-card/BlogCard.tsx](src/components/blog-card/BlogCard.tsx) - Reusable expandable card with `forwardRef`
 
-### Content Display Patterns
-Content is displayed with:
-- Card previews in a grid layout
-- Expandable/collapsible card components
-- Content view that changes based on device type
-- Special handling for image galleries in the Meditations section
-
-## Design Language
-
-- **Typography**: 'Krona One' for headings, 'Fira Code' for body text
-- **Color Palette**: Light cream background, dark gray text, coral accent color
-- **Visual Elements**: Music-themed logo and consistent header styling
-- **CSS Patterns**: BEM naming convention (e.g., `blog-card`, `blog-card__title`)
-
-## Development Workflow
-
-### Installation & Setup
+## Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Run tests
-npm test
+npm run dev          # Start dev server
+npm test             # Playwright e2e tests (all browsers)
+npm run test:headed  # Debug tests with visible browser
+npm run deploy       # Build + deploy to GitHub Pages (https://eltyagi.xyz)
 ```
 
-### Testing
+## Adding Content
 
-The project uses Playwright for end-to-end testing:
-
-```bash
-# Run all tests
-npm test
-
-# Run with UI
-npm run test:ui
-
-# Run with browser visible
-npm run test:headed
-
-# Debug tests
-npm run test:debug
-
-# View test report
-npm run test:report
-```
-
-### Deployment
-
-The site is deployed to GitHub Pages using:
-
-```bash
-# Build and deploy
-npm run deploy
-```
-
-## Common Tasks & Patterns
-
-### Adding a new blog post
-1. Create a markdown file in `/src/assets/posts/`
-2. Include frontmatter with title, classification, and excerpt
-3. Posts will automatically load in the Thoughts component
-
-Example blog post:
+**New blog post**: Create `src/assets/posts/post{N}.md` with frontmatter:
 ```md
 ---
-title: New Thought
-classification: Philosophy
-excerpt: A short preview of the content
-date: 2025-09-01
+title: Post Title
+classification: Philosophy|Poetry|Tech
+excerpt: Short preview text
+date: 2025-01-15
 ---
-Content goes here...
 ```
 
-### Adding a new image to gallery
-1. Add image to `/src/assets/sceneries/`
-2. Update `sceneryImages` array in `Meditations.tsx` with new image reference and caption
+**New gallery image**: Add to `src/assets/sceneries/`, then update `sceneryImages` array in [Meditations.tsx](src/components/meditations/Meditations.tsx).
 
-## Project Structure
+## Conventions
 
-```
-src/
-├── App.tsx             # Main application component with routes
-├── components/
-│   ├── about-me/       # About page components
-│   ├── blog-card/      # Reusable blog/content card component
-│   ├── contact/        # Contact page components
-│   ├── landing-page/   # Homepage components
-│   ├── meditations/    # Meditations page with visual gallery
-│   ├── navigation/     # Shared navigation component
-│   ├── page-header/    # Dynamic header component
-│   └── thoughts/       # Blog/thoughts page components
-└── assets/
-    ├── posts/          # Markdown blog content
-    └── sceneries/      # Images for the meditations gallery
-```
+- CSS: BEM-style naming (`blog-card`, `blog-card-title`, `blog-card-expandable`)
+- Typography: `krona-one-regular` class for headings, Fira Code for body
+- Tests: Playwright specs in `e2e/`, test selectors use CSS classes (`.blog-card`, `.nav-tab`)
+- Mobile views: Always test both viewports - desktop (1920x1080) and mobile (375x667)
 
-## Troubleshooting
+## Gotchas
 
-- If working on responsive layouts, use the custom `useIsMobile` hook to toggle between mobile/desktop views
-- Image loading issues? Check import paths and make sure images are in the correct format
-- Test failures? Run tests in headed mode (`npm run test:headed`) to visually inspect
+- `useIsMobile` hook is duplicated in Thoughts.tsx and Meditations.tsx (not extracted to hooks/)
+- Meditations uses `gray-matter` library; Thoughts uses custom `parseFrontmatter` function
+- Header heights are CSS variables set dynamically: `--header-height-current`
+- GitHub Pages deployment requires `base: '/'` in vite.config.ts and `homepage` in package.json

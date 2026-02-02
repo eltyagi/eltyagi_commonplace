@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/astro/PageHeader.astro';
+import Navigation from '../../components/astro/Navigation.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+
+// Sort posts by date descending
+const sortedPosts = posts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+---
+
+<BaseLayout title="Thoughts | Lakshya Tyagi">
+  <div class="thoughts">
+    <div class="header-overlay"></div>
+    <div class="footer-overlay"></div>
+    
+    <PageHeader subtitle="thoughts" />
+
+    <div class="posts-container">
+      <ul class="posts-list">
+        {sortedPosts.map((post) => (
+          <li class="post-item">
+            <a href={`/thoughts/${post.slug}`} class="post-link">
+              <span class="post-date fira-code-regular">
+                {new Date(post.data.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+              <span class="post-title fira-code-regular">{post.data.title}</span>
+              <span class="post-classification fira-code-regular">{post.data.classification}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <Navigation currentPath="/thoughts" />
+  </div>
+</BaseLayout>
+
+<style>
+.thoughts {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 200px;
+  background-color: #F9F6EE;
+}
+
+.header-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 136px;
+  background: linear-gradient(
+    135deg,
+    rgba(249, 246, 238, 0.4) 3.04%,
+    rgba(249, 246, 238, 0) 99.2%
+  );
+  backdrop-filter: blur(19.648296356201172px);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.footer-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    rgba(249, 246, 238, 0.2) 0%,
+    rgba(249, 246, 238, 1) 25%
+  );
+  z-index: 5;
+  pointer-events: none;
+}
+
+.posts-container {
+  margin-top: 320px;
+  padding: 0 97px;
+  max-width: 900px;
+  z-index: 1;
+}
+
+.posts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-item {
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-link {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 16px 0;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.post-link:hover {
+  color: #FF6F61;
+}
+
+.post-link:hover .post-title {
+  color: #FF6F61;
+}
+
+.post-date {
+  color: #ABB2BF;
+  font-size: 14px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.post-title {
+  color: #252525;
+  font-size: 18px;
+  font-weight: 500;
+  flex: 1;
+  transition: color 0.2s ease;
+}
+
+.post-classification {
+  color: #ABB2BF;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .posts-container {
+    padding: 0 24px;
+    margin-top: 111px;
+  }
+
+  .post-link {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0;
+  }
+
+  .post-date {
+    font-size: 12px;
+    min-width: auto;
+  }
+
+  .post-title {
+    font-size: 16px;
+  }
+
+  .post-classification {
+    font-size: 12px;
+  }
+}
+</style>

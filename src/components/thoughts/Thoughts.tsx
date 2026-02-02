@@ -1,9 +1,10 @@
-import React, { useEffect, useState, CSSProperties, useCallback, useRef, useMemo } from 'react';
+import { useEffect, useState, CSSProperties, useCallback, useRef, useMemo } from 'react';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
 import PageHeader from '../page-header/PageHeader';
 import ProgressBar from '../progress-bar/ProgressBar';
+import Loader from '../loader/Loader';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
 
@@ -60,6 +61,7 @@ const useIsMobile = () => {
 
 const Thoughts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [isViewing, setIsViewing] = useState<boolean>(false);
   const [isMobileContentView, setIsMobileContentView] = useState<boolean>(false);
@@ -80,6 +82,7 @@ const Thoughts: React.FC = () => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
+        setIsLoading(true);
         const allPosts: Post[] = [];
         
         // Get all post modules using glob pattern
@@ -119,8 +122,10 @@ const Thoughts: React.FC = () => {
         }
 
         setPosts(allPosts);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error loading posts:', error);
+        setIsLoading(false);
       }
     };
 
@@ -201,6 +206,7 @@ const Thoughts: React.FC = () => {
 
   return (
     <div className="thoughts" style={containerStyle}>
+      <Loader isLoading={isLoading} />
       <div className = 'pg-title-container'>
             <PageHeader isCollapsed={isHeaderCollapsed}/>
         </div>

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback, CSSProperties } from 'react';
+import { useEffect, useState, useRef, useCallback, CSSProperties } from 'react';
 import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
 import ProgressBar from '../progress-bar/ProgressBar';
+import Loader from '../loader/Loader';
 import matter from 'gray-matter';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
@@ -376,8 +377,12 @@ const Meditations: React.FC = () => {
 
   const activeSection = meditationSections[activeCardIndex];
 
+  // Combined loading state - wait for both sections and images
+  const isLoading = sectionsLoading || imagesLoading;
+
   return (
     <div className="meditations" style={containerStyle}>
+      <Loader isLoading={isLoading} />
       <div className="pg-title-container">
         <PageHeader isCollapsed={isHeaderCollapsed}/>
       </div>

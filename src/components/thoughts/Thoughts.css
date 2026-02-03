@@ -203,18 +203,23 @@
 
     /* Mobile Search and Filter Styles */
     .search-filter-section {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 84.22%;
-        margin: 140px auto 20px auto;
-        padding: 0;
-        background: transparent;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 16px;
+        padding-top: 140px;
+        background-color: #F9F6EE;
+        z-index: 10;
+        box-sizing: border-box;
     }
 
     .search-box {
         padding: 10px 12px;
         max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .search-input {
@@ -250,7 +255,7 @@
         max-width: none; /* Remove max-width constraint */
         height: auto; /* Auto height for flexibility */
         overflow-y: visible; /* Disable scrolling on mobile */
-        margin-top: 20px; /* Reduced margin since search takes space */
+        margin-top: 180px; /* Increased margin to account for fixed search bar */
         margin-left: auto; /* Center horizontally */
         margin-right: auto; /* Center horizontally */
         margin-bottom: 100px; /* Space for navigation */
@@ -293,34 +298,31 @@
     /* Mobile Content View Styles */
     .mobile-content-view {
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         padding: 0;
         margin-top: 0;
-        background-color: #F9F6EE; /* Match Figma background */
-        z-index: 1; /* Below overlay */
+        background-color: #F9F6EE;
+        position: relative;
     }
 
-    /* Mobile Content Overlay - Static header with title and back button */
+    /* Mobile Content Overlay - Static header with back button */
     .mobile-content-overlay {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         width: 100%;
-        height: 153px; /* Extended height to accommodate title */
-        background: linear-gradient(
-            135deg,
-            rgba(249, 246, 238, 0.4) 3.04%,
-            rgba(249, 246, 238, 0) 99.2%
-        );
-        backdrop-filter: blur(19.648296356201172px);
-        z-index: 10; /* Above content but below header */
+        height: auto;
+        padding: 50px 24px 12px 24px;
+        background-color: #F9F6EE;
+        z-index: 10;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: flex-end;
-        padding: 0 33px 20px 33px; /* Bottom padding to position title properly */
+        align-items: center;
+        box-sizing: border-box;
     }
 
     .mobile-back-button {
@@ -328,30 +330,12 @@
         align-items: center;
         gap: 4px;
         cursor: pointer;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: 0;
-        position: absolute;
-        top: 115px;
-        right: 32px;
-        z-index: 11;
-    }
-
-    /* Title in the overlay */
-    .mobile-content-title-overlay {
-        font-size: 14px;
-        font-weight: 500;
-        color: #000000;
-        font-family: 'Fira Code', monospace;
-        line-height: 1.312em;
+        position: static;
         margin: 0;
-        z-index: 11;
-        position: relative;
-        align-self: flex-start;
     }
 
     .back-icon {
-        font-size: 18px;
+        font-size: 16px;
         color: #FF6F61;
         font-weight: 500;
         font-family: 'Fira Code', monospace;
@@ -366,34 +350,104 @@
 
     .mobile-blog-content {
         width: 100%;
-        height: calc(100vh - 153px); /* Account for overlay height */
+        flex: 1;
         overflow-y: auto;
-        padding: 0 33px; /* Match Figma padding */
-        padding-top: 153px; /* Push content below overlay */
-        z-index: 1; /* Below overlay */
-        margin-top: 0;
+        padding: 100px 24px 40px 24px;
+        box-sizing: border-box;
     }
 
     .mobile-blog-content .blog-content {
         width: 100%;
         padding: 0;
         margin: 0;
-        padding-top: 20px; /* Add some space at the top */
+    }
+
+    /* Mobile Post Header */
+    .mobile-post-header {
+        margin-bottom: 32px;
+    }
+
+    .mobile-post-classification {
+        display: inline-block;
+        font-family: 'Fira Code', monospace;
+        font-size: 12px;
+        font-weight: 500;
+        color: #FF8074;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+    }
+
+    .mobile-post-title {
+        font-family: 'Fira Code', monospace;
+        font-size: 24px;
+        font-weight: 600;
+        color: #252525;
+        line-height: 1.3;
+        margin: 0 0 16px 0;
+    }
+
+    .mobile-post-accent-line {
+        width: 48px;
+        height: 2px;
+        background-color: #FF6F61;
+        margin-bottom: 16px;
+    }
+
+    .mobile-post-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: 'Fira Code', monospace;
+        font-size: 12px;
+        color: #ABB2BF;
+    }
+
+    .mobile-post-date {
+        font-style: italic;
+    }
+
+    .mobile-post-reading-time {
+        position: relative;
+        padding-left: 16px;
+    }
+
+    .mobile-post-reading-time::before {
+        content: '·';
+        position: absolute;
+        left: 0;
+        color: #ABB2BF;
     }
 
     .mobile-blog-content .blog-content-text {
-        font-family: 'Fira Code';
+        font-family: 'Fira Code', monospace;
         font-style: normal;
         font-weight: 400;
-        font-size: 16px;
-        line-height: 21px;
+        font-size: 15px;
+        line-height: 1.8;
         color: #252525;
         white-space: pre-wrap;
-        text-align: left; /* Left align as per Figma */
+        text-align: left;
+    }
+
+    /* Drop cap for first letter - literary touch */
+    .mobile-blog-content .blog-content-text::first-letter {
+        float: left;
+        font-size: 3em;
+        line-height: 0.8;
+        padding-right: 8px;
+        padding-top: 4px;
+        color: #99352F;
+        font-weight: 600;
     }
 
     /* Hide navigation in mobile content view */
     .mobile-content-view ~ .nav {
+        display: none;
+    }
+
+    /* Hide old title overlay - no longer used */
+    .mobile-content-title-overlay {
         display: none;
     }
 

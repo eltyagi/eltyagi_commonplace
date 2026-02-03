@@ -137,10 +137,21 @@ const Thoughts: React.FC = () => {
     loadPosts();
   }, []);
 
+  // Filter posts based on search query and active filter
+  const filteredPosts = useMemo(() => {
+    return posts.filter(post => {
+      const matchesSearch = searchQuery === '' || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter = activeFilter === 'All' || post.classification === activeFilter;
+      return matchesSearch && matchesFilter;
+    });
+  }, [posts, searchQuery, activeFilter]);
+
   // Handle URL slug - find and select the post when slug changes or posts load
   useEffect(() => {
-    if (posts.length > 0 && slug) {
-      const result = findPostBySlug(posts, slug);
+    if (filteredPosts.length > 0 && slug) {
+      const result = findPostBySlug(filteredPosts, slug);
       if (result) {
         setActiveCardIndex(result.index);
         setIsViewing(true);
@@ -149,7 +160,7 @@ const Thoughts: React.FC = () => {
         }
       }
     }
-  }, [posts, slug, isMobile]);
+  }, [filteredPosts, slug, isMobile]);
 
   // Update initial viewing state based on screen size
   useEffect(() => {
@@ -216,21 +227,17 @@ const Thoughts: React.FC = () => {
   // Fixed categories for filter tabs
   const classifications = ['All', 'Poetry', 'Technology'];
 
-  // Filter posts based on search query and active filter
-  const filteredPosts = useMemo(() => {
-    return posts.filter(post => {
-      const matchesSearch = searchQuery === '' || 
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesFilter = activeFilter === 'All' || post.classification === activeFilter;
-      return matchesSearch && matchesFilter;
-    });
-  }, [posts, searchQuery, activeFilter]);
-
-  // Reset active card index when filters change
+  // Reset active card index when filters change (not when viewport changes)
   useEffect(() => {
     setActiveCardIndex(0);
   }, [searchQuery, activeFilter]);
+
+  // Ensure activeCardIndex is valid for current filtered posts
+  useEffect(() => {
+    if (activeCardIndex >= filteredPosts.length && filteredPosts.length > 0) {
+      setActiveCardIndex(0);
+    }
+  }, [filteredPosts.length, activeCardIndex]);
 
   const activePost = filteredPosts[activeCardIndex];
 
@@ -244,21 +251,33 @@ const Thoughts: React.FC = () => {
       {/* Mobile Content View */}
       {isMobileContentView && isMobile ? (
         <div className='mobile-content-view'>
-          {/* Header Overlay with Title and Back Button - Static */}
+          {/* Header Overlay with Back Button */}
           <div className="mobile-content-overlay">
             <div className='mobile-back-button' onClick={handleBackToCards}>
               <span className='back-icon'>←</span>
               <span className='back-text'>Back</span>
             </div>
-            {activePost && (
-              <div className='mobile-content-title-overlay'>{activePost.title}</div>
-            )}
           </div>
           
           <div className='mobile-blog-content fira-code-regular'>
             {activePost && (
               <div className='blog-content'>
-                <div className='blog-content-text krona-one-regular'>{activePost.content}</div>
+                {/* Post Header */}
+                <div className='mobile-post-header'>
+                  <span className='mobile-post-classification'>{activePost.classification}</span>
+                  <h1 className='mobile-post-title'>{activePost.title}</h1>
+                  <div className='mobile-post-accent-line'></div>
+                  <div className='mobile-post-meta'>
+                    {activePost.date && <span className='mobile-post-date'>{activePost.date}</span>}
+                    <span className='mobile-post-reading-time'>
+                      {Math.max(1, Math.ceil((activePost.content?.split(/\s+/).length || 0) / 200))} min read
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Post Content */}
+                <div className='blog-content-text'>{activePost.content}</div>
+                
                 <BlogPostFooter title={activePost.title} date={activePost.date} />
               </div>
             )}
@@ -318,7 +337,7 @@ const Thoughts: React.FC = () => {
           <div className='blog-cards'>
             {filteredPosts.map((post, index) => (
               <BlogCard
-                key={index}
+                key={post.title}
                 ref={(el) => { cardRefs.current[index] = el; }}
                 index={index}
                 title={post.title}
@@ -347,12 +366,9 @@ const Thoughts: React.FC = () => {
 
       {/* Navigation - hide in mobile content view */}
       {!(isMobileContentView && isMobile) && (
-        <>
-          <div className="footer-overlay"></div>
-          <div className='nav'>
-            <Navigation />
-          </div>
-        </>
+        <div className='nav'>
+          <Navigation />
+        </div>
       )}
     </div>
   );

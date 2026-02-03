@@ -23,7 +23,6 @@ const AboutMe: React.FC = () => {
         </div>
       </div>
 
-      <div className="footer-overlay"></div>
       <div className='nav'>
         <Navigation/>
       </div>

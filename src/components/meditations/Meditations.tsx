@@ -546,12 +546,9 @@ const Meditations: React.FC = () => {
 
       {/* Navigation - hide in mobile content view */}
       {!(isMobileContentView && isMobile) && (
-        <>
-          <div className="footer-overlay"></div>
-          <div className="nav">
-            <Navigation />
-          </div>
-        </>
+        <div className="nav">
+          <Navigation />
+        </div>
       )}
 
       {/* Expanded Image Modal */}

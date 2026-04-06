@@ -1,5 +1,6 @@
-const t=`---
+const n=`---
 title: My Technology Stack
 classification: Technology
 ---
-`;export{t as default};
+
+Stay Tuned`;export{n as default};

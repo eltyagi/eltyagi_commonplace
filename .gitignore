@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Image optimization scripts (temporary build tools)
+resize-images.js
+convert-to-webp.js
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

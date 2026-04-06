@@ -32,14 +32,23 @@ async function resizeImage(filePath) {
 
     console.log(`Resizing ${filename} from ${metadata.width}x${metadata.height}...`);
 
-    // Resize to max dimension while maintaining aspect ratio
-    await image
+    // Determine output format from file extension
+    const ext = path.extname(filename).toLowerCase();
+    let pipeline = image
       .resize(MAX_DIMENSION, MAX_DIMENSION, {
         fit: 'inside',
         withoutEnlargement: true
-      })
-      .jpeg({ quality: QUALITY })
-      .toFile(filePath + '.tmp');
+      });
+
+    if (ext === '.png') {
+      pipeline = pipeline.png({ quality: QUALITY });
+    } else if (ext === '.gif') {
+      pipeline = pipeline.gif();
+    } else {
+      pipeline = pipeline.jpeg({ quality: QUALITY });
+    }
+
+    await pipeline.toFile(filePath + '.tmp');
 
     // Replace original with resized version
     fs.renameSync(filePath + '.tmp', filePath);

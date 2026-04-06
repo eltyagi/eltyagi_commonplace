@@ -7,6 +7,7 @@ import PageHeader from '../page-header/PageHeader';
 import ProgressBar from '../progress-bar/ProgressBar';
 import Loader from '../loader/Loader';
 import BlogPostFooter from '../blog-post-footer/BlogPostFooter';
+import SplitText from '../split-text/SplitText';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
 import { generateSlug, findPostBySlug } from '../../utils/slug';
@@ -279,7 +280,9 @@ const Thoughts: React.FC = () => {
                 {/* Post Header */}
                 <div className='mobile-post-header'>
                   <span className='mobile-post-classification'>{activePost.classification}</span>
-                  <h1 className='mobile-post-title'>{activePost.title}</h1>
+                  <h1 className='mobile-post-title'>
+                    <SplitText text={activePost.title} stagger={0.03} delay={0} />
+                  </h1>
                   <div className='mobile-post-accent-line'></div>
                   <div className='mobile-post-meta'>
                     {activePost.date && <span className='mobile-post-date'>{activePost.date}</span>}
@@ -368,7 +371,9 @@ const Thoughts: React.FC = () => {
           <div ref={contentDisplayRef} className='blog-content-display fira-code-regular'>
             {activePost && !isMobile && isViewing && (
               <div className='blog-content'>
-                <div className='blog-content-title'>{activePost.title}</div>
+                <div className='blog-content-title'>
+                  <SplitText text={activePost.title} stagger={0.03} delay={0} />
+                </div>
                 <div className='blog-content-classification'>{activePost.classification}</div>
                 {activePost.date && <div className='blog-content-date'>{activePost.date}</div>}
                 <div className='blog-content-text krona-one-regular'>{activePost.content}</div>

@@ -313,19 +313,28 @@ const Meditations: React.FC = () => {
 
   const handleCardClick = useCallback((index: number) => {
     if (activeCardIndex === index) {
-      // If clicking the same card, collapse it and go back to default (index 0)
+      // Collapse and reset
       setActiveCardIndex(0);
-      setIsViewing(!isMobile); // Show content on desktop, not on mobile
+      setIsViewing(!isMobile);
       setIsMobileContentView(false);
     } else {
-      // If clicking a different card, expand it and open the content
+      // Expand the card
       setActiveCardIndex(index);
-      setIsViewing(true);
-      if (isMobile) {
-        setIsMobileContentView(true);
+      if (!isMobile) {
+        // Desktop: immediately show content in the right panel
+        setIsViewing(true);
       }
+      // Mobile: just expand to show excerpt — navigation happens via "View" button
     }
   }, [activeCardIndex, isMobile]);
+
+  const handleViewClick = useCallback((index: number) => {
+    setActiveCardIndex(index);
+    setIsViewing(true);
+    if (isMobile) {
+      setIsMobileContentView(true);
+    }
+  }, [isMobile]);
 
   // Handle progress bar indicator click - scroll to card and expand it
   const handleProgressIndicatorClick = useCallback((index: number) => {
@@ -373,20 +382,27 @@ const Meditations: React.FC = () => {
       {/* Mobile Content View */}
       {isMobileContentView && isMobile ? (
         <div className='mobile-content-view'>
-          {/* Header Overlay with Title and Back Button - Static */}
+          {/* Header Overlay with Back Button only */}
           <div className="mobile-content-overlay">
             <div className='mobile-back-button' onClick={handleBackToCards}>
               <span className='back-icon'>←</span>
               <span className='back-text'>Back</span>
             </div>
-            {activeSection && (
-              <div className='mobile-content-title-overlay'>{activeSection.title}</div>
-            )}
           </div>
           
           <div className='mobile-meditation-content fira-code-regular'>
             {activeSection && (
               <div className='meditation-content'>
+                {/* Post header — matches Thoughts page style */}
+                <div className='meditation-post-header'>
+                  <span className='meditation-post-classification'>{activeSection.classification}</span>
+                  <h1 className='meditation-post-title'>{activeSection.title}</h1>
+                  <div className='meditation-post-accent-line'></div>
+                  {activeSection.excerpt && (
+                    <p className='meditation-post-excerpt'>{activeSection.excerpt}</p>
+                  )}
+                </div>
+
                 {/* Render carousel content with split paragraphs */}
                 {activeSection.isCarousel && activeSection.content && (
                   <>
@@ -398,9 +414,9 @@ const Meditations: React.FC = () => {
                       
                       return (
                         <>
-                          <div className='meditation-content-text krona-one-regular'>{firstHalf}</div>
+                          <div className='meditation-content-text'>{firstHalf}</div>
                           <ImageCarousel images={sceneryImages} />
-                          <div className='meditation-content-text krona-one-regular'>{secondHalf}</div>
+                          <div className='meditation-content-text'>{secondHalf}</div>
                         </>
                       );
                     })()}
@@ -480,6 +496,7 @@ const Meditations: React.FC = () => {
                 content={section.content}
                 isExpanded={activeCardIndex === index}
                 onCardClick={() => handleCardClick(index)}
+                onViewClick={isMobile ? () => handleViewClick(index) : undefined}
               />
             ))}
           </div>

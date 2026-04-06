@@ -530,9 +530,9 @@
     }
 
     .meditation-content {
-        width: 95%; /* Full width on mobile */
-        margin-bottom: 20px; /* Less margin on mobile */
-        text-align: justify; /* Justify text on mobile */
+        width: 100%;
+        margin-bottom: 20px;
+        text-align: left;
     }
     
     .meditation-content-title {
@@ -564,40 +564,31 @@
         z-index: 1; /* Below overlay */
     }
 
-    /* Mobile Content Overlay - Static header with title and back button */
+    /* Mobile Content Overlay - Back button only, matches Thoughts page */
     .mobile-content-overlay {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         width: 100%;
-        height: 170px; /* Extended height for better spacing */
-        background: linear-gradient(
-            135deg,
-            rgba(249, 246, 238, 0.4) 3.04%,
-            rgba(249, 246, 238, 0) 99.2%
-        );
-        backdrop-filter: blur(19.648296356201172px);
-        z-index: 10; /* Above content but below header */
+        height: auto;
+        padding: 90px 24px 16px 24px;
+        background-color: #F9F6EE;
+        z-index: 10;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: flex-end;
-        padding: 0 33px 24px 33px; /* Increased bottom padding */
+        align-items: center;
+        box-sizing: border-box;
     }
 
     .mobile-back-button {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         cursor: pointer;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: 0;
-        position: absolute;
-        top: 105px;
-        right: 32px;
-        z-index: 11;
-        padding: 8px;
+        position: static;
+        margin: 0;
     }
 
     /* Title in the overlay */
@@ -629,11 +620,11 @@
 
     .mobile-meditation-content {
         width: 100%;
-        height: calc(100vh - 170px); /* Account for overlay height */
+        flex: 1;
         overflow-y: auto;
-        padding: 0 33px; /* Match Figma padding */
-        padding-top: 170px; /* Push content below overlay */
-        z-index: 1; /* Below overlay */
+        padding: 148px 24px 40px 24px;
+        box-sizing: border-box;
+        z-index: 1;
         margin-top: 0;
     }
 
@@ -641,20 +632,71 @@
         width: 100%;
         padding: 0;
         margin: 0;
-        padding-top: 32px; /* Increased space at the top */
-        padding-bottom: 40px; /* Add bottom padding for scrolling comfort */
+        padding-bottom: 40px;
+    }
+
+    /* Post header — matches Thoughts mobile-post-header */
+    .meditation-post-header {
+        margin-bottom: 32px;
+    }
+
+    .meditation-post-classification {
+        display: inline-block;
+        font-family: 'Fira Code', monospace;
+        font-size: 12px;
+        font-weight: 500;
+        color: #FF8074;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+    }
+
+    .meditation-post-title {
+        font-family: 'Fira Code', monospace;
+        font-size: 24px;
+        font-weight: 600;
+        color: #252525;
+        line-height: 1.3;
+        margin: 0 0 16px 0;
+    }
+
+    .meditation-post-accent-line {
+        width: 48px;
+        height: 2px;
+        background-color: #FF6F61;
+        margin-bottom: 16px;
+    }
+
+    .meditation-post-excerpt {
+        font-family: 'Fira Code', monospace;
+        font-size: 13px;
+        color: #ABB2BF;
+        font-style: italic;
+        margin: 0 0 24px 0;
+        line-height: 1.6;
     }
 
     .mobile-meditation-content .meditation-content-text {
-        font-family: 'Fira Code';
+        font-family: 'Fira Code', monospace;
         font-style: normal;
         font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
+        font-size: 15px;
+        line-height: 1.8;
         color: #252525;
         white-space: pre-wrap;
-        text-align: left; /* Left align as per Figma */
+        text-align: left;
         margin-bottom: 20px;
+    }
+
+    /* Drop cap — matches Thoughts */
+    .mobile-meditation-content .meditation-content-text:first-of-type::first-letter {
+        float: left;
+        font-size: 3em;
+        line-height: 0.8;
+        padding-right: 8px;
+        padding-top: 4px;
+        color: #99352F;
+        font-weight: 600;
     }
 
     /* Hide navigation in mobile content view */

@@ -9,6 +9,7 @@ interface BlogCardProps {
     content?: string;
     isExpanded: boolean;
     onCardClick: () => void;
+    onViewClick?: () => void;
 }
 
 const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
@@ -17,6 +18,7 @@ const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
     excerpt,
     isExpanded,
     onCardClick,
+    onViewClick,
 }, ref) => {
     return (
         <div 
@@ -29,6 +31,14 @@ const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
             {/* Always render expandable content, control visibility via CSS */}
             <div className='blog-card-expandable'>
                 {excerpt && <div className='blog-card-excerpt'>{excerpt}</div>}
+                {onViewClick && (
+                    <button
+                        className='blog-card-view-button'
+                        onClick={(e) => { e.stopPropagation(); onViewClick(); }}
+                    >
+                        View
+                    </button>
+                )}
             </div>
         </div>
     );

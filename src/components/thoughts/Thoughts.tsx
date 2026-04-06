@@ -183,17 +183,27 @@ const Thoughts: React.FC = () => {
       // Update URL to base thoughts page
       navigate('/thoughts', { replace: true });
     } else {
-      // If clicking a different card, expand it and open the blog
+      // Expand the new card
       setActiveCardIndex(index);
-      setIsViewing(true);
-      if (isMobile) {
-        setIsMobileContentView(true);
+      if (!isMobile) {
+        // Desktop: immediately show content in the right panel and update URL
+        setIsViewing(true);
+        const postSlug = generateSlug(post.title);
+        navigate(`/thoughts/${postSlug}`, { replace: true });
       }
-      // Update URL with post slug
-      const postSlug = generateSlug(post.title);
-      navigate(`/thoughts/${postSlug}`, { replace: true });
+      // Mobile: just expand to show excerpt — navigation happens via "View" button
     }
   }, [activeCardIndex, isMobile, navigate]);
+
+  const handleViewClick = useCallback((index: number, post: Post) => {
+    setActiveCardIndex(index);
+    setIsViewing(true);
+    if (isMobile) {
+      setIsMobileContentView(true);
+    }
+    const postSlug = generateSlug(post.title);
+    navigate(`/thoughts/${postSlug}`, { replace: true });
+  }, [isMobile, navigate]);
 
   // Handle progress bar indicator click - scroll to card and expand it
   const handleProgressIndicatorClick = useCallback((index: number, postsArray: Post[]) => {
@@ -224,8 +234,12 @@ const Thoughts: React.FC = () => {
     navigate('/thoughts', { replace: true });
   };
 
-  // Fixed categories for filter tabs
-  const classifications = ['All', 'Poetry', 'Technology'];
+  // Derive filter tabs dynamically from loaded posts
+  const classifications = useMemo(() => {
+    const unique = Array.from(new Set(posts.map(p => p.classification).filter(Boolean)));
+    unique.sort();
+    return ['All', ...unique];
+  }, [posts]);
 
   // Reset active card index when filters change (not when viewport changes)
   useEffect(() => {
@@ -346,6 +360,7 @@ const Thoughts: React.FC = () => {
                 content={post.content || ''}
                 isExpanded={activeCardIndex === index}
                 onCardClick={() => handleCardClick(index, post)}
+                onViewClick={isMobile ? () => handleViewClick(index, post) : undefined}
               />
             ))}
           </div>

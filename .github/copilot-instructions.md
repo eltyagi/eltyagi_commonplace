@@ -1,61 +1,134 @@
-# Commonplace - AI Assistant Guide
+# Copilot Instructions for eltyagi.xyz
 
-## General Instructions
-- When asked a question, always provide clear, concise and accurate answers, in a manner that is good for someone who is trying to learn or understand the topic.
-- Use examples and analogies where appropriate to illustrate complex concepts.
-- Discuss approaches, explore why one might be better than another, and consider edge cases.
+## Project Overview
+Personal portfolio/blog site deployed to GitHub Pages. React 19 + TypeScript SPA with three main sections: **Thoughts** (blog), **Meditations** (image gallery), and **Contact**.
 
-## Architecture Overview
+## Architecture & File Organization
 
-React + TypeScript + Vite SPA portfolio site. Routes: `/` (landing), `/thoughts` (blog), `/meditations` (gallery), `/contact`.
+### Content Management
+- **Blog posts**: Markdown files in `src/assets/posts/` with frontmatter (title, classification, excerpt, date)
+- **Images**: `src/assets/meditations/` for gallery sceneries, `src/assets/icons/` for UI assets
+- **Frontmatter format**:
+  ```markdown
+  ---
+  title: Post Title
+  classification: Poetry|Essay|Technical
+  excerpt: Brief description
+  date: YYYY-MM-DD
+  ---
+  ```
 
-### Key Patterns
+### Component Structure
+- **Page components**: `src/components/{landing-page,thoughts,meditations,contact}/`
+- **Shared UI**: `blog-card/`, `page-header/`, `navigation/`, `progress-bar/`, `loader/`
+- **Custom hooks**: `src/hooks/` - `useScrollThreshold`, `useCardIntersection` for intersection-based UX
+- **Constants**: `src/constants/layout.ts` - header heights and breakpoints (NEVER hardcode these values)
 
-**Page Layout**: Every page uses `PageHeader` (route-aware title) + main content + `Navigation` (shared tabs). Header has collapsible behavior controlled by `useScrollThreshold` hook.
+### Routing
+- Uses React Router with slug-based blog routing: `/thoughts/:slug`
+- Slugs generated via `src/utils/slug.ts` - strips special chars, lowercases, hyphenates
+- Example: "The Observer Effect" → "the-observer-effect"
 
-**Responsive Strategy**: Mobile breakpoint is `480px`. Use inline `useIsMobile` hook pattern (defined per-component, not shared). Mobile shows expandable cards; desktop shows side-by-side list + content.
+## Design System
 
-**Content Loading**: Blog posts use Vite's `import.meta.glob('../../assets/posts/post*.md')` with custom frontmatter parser (not gray-matter in Thoughts). Posts are numbered `post1.md`, `post2.md`, etc. and auto-sorted descending.
+### CSS Variables (defined in `src/index.css`)
+```css
+--color-bg: #F9F6EE       /* Cream background */
+--color-accent: #FF6F61   /* Coral accent */
+--color-text: #252525     /* Near-black text */
+--mobile: 480px           /* Mobile breakpoint */
+--tablet: 768px           /* Tablet/Desktop threshold */
+```
 
-### Important Files
+### Typography
+- **Krona One**: Headings and titles (`krona-one-regular` class)
+- **Fira Code**: Body text (loaded via Google Fonts in App.tsx)
 
-- [src/constants/layout.ts](src/constants/layout.ts) - Header height values used across components
-- [src/hooks/useScrollThreshold.ts](src/hooks/useScrollThreshold.ts) - Scroll-based header collapse logic
-- [src/components/blog-card/BlogCard.tsx](src/components/blog-card/BlogCard.tsx) - Reusable expandable card with `forwardRef`
+### Responsive Breakpoints
+- Mobile: ≤480px (single-column, stacked navigation)
+- Desktop: >768px (collapsing header, multi-column layouts)
 
-## Commands
+## Key Patterns
 
+### Collapsing Header
+1. Import `useScrollThreshold` hook and `HEADER_HEIGHT_COLLAPSED/EXPANDED` constants
+2. Header collapses when scrolling >120px on desktop (disabled on mobile)
+3. Always use CSS variable `--header-height-current` for layout calculations:
+   ```tsx
+   const headerHeight = isHeaderCollapsed ? HEADER_HEIGHT_COLLAPSED : HEADER_HEIGHT_EXPANDED;
+   const containerStyle = { '--header-height-current': `${headerHeight}px` } as CSSProperties;
+   ```
+
+### Card-Based Navigation
+- `BlogCard` component used in both Thoughts and Meditations with different behaviors
+- In Thoughts: Cards expand on click to show excerpt, then "View" button to full content
+- In Meditations: Cards navigate to image details/gallery view
+- Use `useCardIntersection` hook to track which card is in viewport center
+
+### Image Optimization
+- Meditations uses custom `LazyImage` component with IntersectionObserver
+- Lazy loads images with 50px margin, 0.1 threshold
+- Shows loading spinner, handles errors with fallback UI
+
+### Content Parsing
+- **Inconsistency**: Thoughts uses custom `parseFrontmatter()`, Meditations uses `gray-matter` library
+- When adding new content features, prefer `gray-matter` for consistency
+
+## Development Workflows
+
+### Local Development
 ```bash
-npm run dev          # Start dev server
-npm test             # Playwright e2e tests (all browsers)
-npm run test:headed  # Debug tests with visible browser
-npm run deploy       # Build + deploy to GitHub Pages (https://eltyagi.xyz)
+npm run dev              # Start Vite dev server (localhost:5173)
+npm run build            # TypeScript check + Vite build
+npm run preview          # Preview production build
 ```
 
-## Adding Content
-
-**New blog post**: Create `src/assets/posts/post{N}.md` with frontmatter:
-```md
----
-title: Post Title
-classification: Philosophy|Poetry|Tech
-excerpt: Short preview text
-date: 2025-01-15
----
+### Testing
+```bash
+npm test                 # Run Playwright E2E tests
+npm run test:ui          # Interactive UI mode
+npm run test:headed      # Browser-visible mode
+npm run test:debug       # Debug mode with breakpoints
+npm run test:report      # View HTML report
 ```
 
-**New gallery image**: Add to `src/assets/sceneries/`, then update `sceneryImages` array in [Meditations.tsx](src/components/meditations/Meditations.tsx).
+- **Test structure**: `e2e/*.spec.ts` files test each section
+- **Multi-browser**: Tests run on Chromium, Firefox, WebKit, Mobile Chrome/Safari
+- **Visual regression**: Screenshots in `e2e/visual-regression.spec.ts-snapshots/`
+- Dev server auto-starts before tests (configured in `playwright.config.ts`)
 
-## Conventions
+### Deployment
+```bash
+npm run deploy           # Builds and deploys to gh-pages branch
+```
+- Deployed to `eltyagi.xyz` via GitHub Pages
+- Base URL: `/` (root deployment, not subdirectory)
+- 404 handling: `public/404.html` redirects to index for SPA routing
 
-- CSS: BEM-style naming (`blog-card`, `blog-card-title`, `blog-card-expandable`)
-- Typography: `krona-one-regular` class for headings, Fira Code for body
-- Tests: Playwright specs in `e2e/`, test selectors use CSS classes (`.blog-card`, `.nav-tab`)
-- Mobile views: Always test both viewports - desktop (1920x1080) and mobile (375x667)
+## Common Tasks
 
-## Gotchas
+### Adding a New Blog Post
+1. Create `src/assets/posts/postN.md` with frontmatter
+2. Content auto-discovered via Vite's `import.meta.glob('../../assets/posts/*.md')`
+3. Slug auto-generated from title, no routing changes needed
 
-- `useIsMobile` hook is duplicated in Thoughts.tsx and Meditations.tsx (not extracted to hooks/)
-- Meditations uses `gray-matter` library; Thoughts uses custom `parseFrontmatter` function
-- Header heights are CSS variables set dynamically: `--header-height-current`
-- GitHub Pages deployment requires `base: '/'` in vite.config.ts and `homepage` in package.json
+### Adding UI Components
+- Follow existing component structure: `ComponentName/ComponentName.tsx` + `ComponentName.css`
+- Use forwardRef for components that need scroll/intersection refs
+- Import layout constants instead of hardcoding dimensions
+
+### Modifying Header Behavior
+- Edit `src/components/page-header/PageHeader.tsx` for visual changes
+- Edit `src/hooks/useScrollThreshold.ts` to adjust collapse threshold (currently 120px)
+- Always test on both desktop and mobile viewports
+
+## Known Quirks
+- **Dual App div**: App.tsx has nested `<div className="App">` wrappers (legacy structure)
+- **Font loading**: Google Fonts links in App.tsx JSX (not ideal, but working)
+- **Buffer polyfill**: Vite config includes buffer shim for frontmatter parsing (required for gray-matter)
+- **Inconsistent parsers**: Thoughts and Meditations use different frontmatter libraries
+
+## Browser Compatibility
+- Modern browsers (ES2020+)
+- Mobile Safari and Chrome tested via Playwright
+- No IE11 support (uses modern React 19 features)

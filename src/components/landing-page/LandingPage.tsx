@@ -35,7 +35,7 @@ const LandingPage: React.FC = () => {
 
         <div className = 'pg-content fira-code-regular'>
         <strong>Hi there, I'm Lakshya and welcome to my digital commonplace!</strong><br/><br/>
-        I'm an hobbyist developer, writer and educator. Currently at <span style={{color: '#FF6F61'}}> GitHub</span> bringing an AI-native developer platform 
+        I'm a hobbyist developer, writer and educator. Currently at <span style={{color: '#FF6F61'}}> GitHub</span> bringing an AI-native developer platform 
         to enterprises across APAC. This site is home to my life's work, and thoughts on tech,
         defence and probably a bunch of other things. Welcome!
 

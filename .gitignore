@@ -16,6 +16,10 @@ dist-ssr
 resize-images.js
 convert-to-webp.js
 
+# Test results
+test-results/
+playwright-report/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,9 +27,10 @@ convert-to-webp.js
 .DS_Store
 *.suo
 *.ntvs*
-*.njsproj
+*.njsproj*
 *.sln
 *.sw?
+
 playwright-report/data/0ae664414eea55b7366100ff89c868831fe24a0c.md
 playwright-report/data/0bde47166f3f99325a0a9a81a85857a300b74157.png
 playwright-report/data/0e2f23f972841b568a03f5e806c7b4108950d9a7.md

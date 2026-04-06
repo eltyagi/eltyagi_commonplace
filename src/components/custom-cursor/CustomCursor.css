@@ -1,0 +1,71 @@
+/* Hide default cursor on desktop only */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  /* Keep text cursor for input elements */
+  input,
+  textarea,
+  select,
+  [contenteditable='true'] {
+    cursor: text !important;
+  }
+}
+
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  will-change: transform;
+}
+
+/* Hover state for regular interactive elements (links, buttons) */
+.custom-cursor--hover {
+  width: 16px;
+  height: 16px;
+  background: var(--color-accent);
+  opacity: 0.8;
+}
+
+/* Action state for cards and primary interactive elements */
+.custom-cursor--action {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 111, 97, 0.15);
+  border: 1.5px solid var(--color-accent);
+}
+
+.cursor-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.65rem;
+  font-family: 'Fira Code', monospace;
+  color: var(--color-accent);
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    transition: none;
+  }
+}
+
+/* Hide custom cursor on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+}

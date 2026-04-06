@@ -438,7 +438,7 @@ const Meditations: React.FC = () => {
                       </div>
                     ) : (
                       sceneryImages.slice(0, 8).map((image, index) => (
-                        <div key={image.filename} className="scenery-card">
+                        <div key={image.filename} className="scenery-card" data-cursor-label="View">
                           <LazyImage
                             src={image.src}
                             alt={image.caption}
@@ -543,7 +543,7 @@ const Meditations: React.FC = () => {
                       </div>
                     ) : (
                       sceneryImages.map((image, index) => (
-                        <div key={image.filename} className="scenery-card">
+                        <div key={image.filename} className="scenery-card" data-cursor-label="View">
                           <LazyImage
                             src={image.src}
                             alt={image.caption}

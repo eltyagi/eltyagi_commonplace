@@ -258,7 +258,10 @@ const Meditations: React.FC = () => {
     const loadImages = async () => {
       try {
         setImagesLoading(true);
-        const imageModules = import.meta.glob('../../assets/sceneries/*.webp', { eager: false });
+        const imageModules = import.meta.glob([
+          '../../assets/sceneries/*.webp',
+          '../../assets/sceneries/*.png'
+        ], { eager: false });
         
         console.log('Found image modules:', Object.keys(imageModules));
         

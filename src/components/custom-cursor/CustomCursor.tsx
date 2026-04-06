@@ -41,7 +41,7 @@ const CustomCursor = () => {
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
-    // Setup intersection observers for interactive elements
+    // Setup hover handlers for interactive elements
     const updateCursorState = (element: Element, entering: boolean) => {
       if (entering) {
         const cursorLabel = element.getAttribute('data-cursor-label') || '';
@@ -57,7 +57,7 @@ const CustomCursor = () => {
       }
     };
 
-    // Observe all interactive elements
+    // Watch for dynamically added interactive elements
     const observer = new MutationObserver(() => {
       const interactiveElements = document.querySelectorAll(
         'a, button, .blog-card, .scenery-card, [data-cursor], .progress-indicator, .nav-tab'
@@ -94,7 +94,7 @@ const CustomCursor = () => {
         cancelAnimationFrame(rafRef.current);
       }
 
-      // Clean up event listeners
+      // Clean up hover listeners
       const allElements = document.querySelectorAll(
         'a, button, .blog-card, .scenery-card, [data-cursor], .progress-indicator, .nav-tab'
       );

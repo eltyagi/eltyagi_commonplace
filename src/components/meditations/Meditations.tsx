@@ -3,6 +3,7 @@ import './Meditations.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
 import BlogCard from '../blog-card/BlogCard';
+import GalleryCardSkeleton from './GalleryCardSkeleton';
 import ProgressBar from '../progress-bar/ProgressBar';
 import Loader from '../loader/Loader';
 import matter from 'gray-matter';
@@ -432,10 +433,7 @@ const Meditations: React.FC = () => {
                 {activeSection.isGallery && (
                   <div className="sceneries-gallery mobile-gallery">
                     {imagesLoading ? (
-                      <div className="gallery-loading">
-                        <div className="loading-spinner"></div>
-                        <span>Loading beautiful moments...</span>
-                      </div>
+                      Array(8).fill(null).map((_, i) => <GalleryCardSkeleton key={i} isMobile={true} />)
                     ) : (
                       sceneryImages.slice(0, 8).map((image, index) => (
                         <div key={image.filename} className="scenery-card" data-cursor-label="View">
@@ -537,10 +535,7 @@ const Meditations: React.FC = () => {
                 {activeSection.isGallery && (
                   <div className="sceneries-gallery">
                     {imagesLoading ? (
-                      <div className="gallery-loading">
-                        <div className="loading-spinner"></div>
-                        <span>Loading beautiful moments...</span>
-                      </div>
+                      Array(6).fill(null).map((_, i) => <GalleryCardSkeleton key={i} isMobile={false} />)
                     ) : (
                       sceneryImages.map((image, index) => (
                         <div key={image.filename} className="scenery-card" data-cursor-label="View">

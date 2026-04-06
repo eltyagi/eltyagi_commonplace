@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './Thoughts.css';
 import Navigation from '../navigation/Navigation';
 import BlogCard from '../blog-card/BlogCard';
+import BlogCardSkeleton from '../blog-card/BlogCardSkeleton';
 import PageHeader from '../page-header/PageHeader';
 import ProgressBar from '../progress-bar/ProgressBar';
 import Loader from '../loader/Loader';
@@ -349,20 +350,23 @@ const Thoughts: React.FC = () => {
           </div>
 
           <div className='blog-cards'>
-            {filteredPosts.map((post, index) => (
-              <BlogCard
-                key={post.title}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                index={index}
-                title={post.title}
-                classification={post.classification}
-                excerpt={post.excerpt}
-                content={post.content || ''}
-                isExpanded={activeCardIndex === index}
-                onCardClick={() => handleCardClick(index, post)}
-                onViewClick={isMobile ? () => handleViewClick(index, post) : undefined}
-              />
-            ))}
+            {isLoading
+              ? Array(4).fill(null).map((_, i) => <BlogCardSkeleton key={i} />)
+              : filteredPosts.map((post, index) => (
+                  <BlogCard
+                    key={post.title}
+                    ref={(el) => { cardRefs.current[index] = el; }}
+                    index={index}
+                    title={post.title}
+                    classification={post.classification}
+                    excerpt={post.excerpt}
+                    content={post.content || ''}
+                    isExpanded={activeCardIndex === index}
+                    onCardClick={() => handleCardClick(index, post)}
+                    onViewClick={isMobile ? () => handleViewClick(index, post) : undefined}
+                  />
+                ))
+            }
           </div>
 
           <div ref={contentDisplayRef} className='blog-content-display fira-code-regular'>

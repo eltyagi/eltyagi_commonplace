@@ -1,0 +1,29 @@
+.gallery-card-skeleton {
+  pointer-events: none;
+  opacity: 0.7;
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+}
+
+.gallery-image-skeleton {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card-skeleton {
+    animation: none;
+    opacity: 0.7;
+  }
+}

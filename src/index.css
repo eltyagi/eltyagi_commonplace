@@ -68,4 +68,33 @@ img {
   }
 }
 
+/* Global reduced motion: disable all animations and transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
+/* Consistent focus indicator for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Remove default outline for mouse/touch (focus-visible handles keyboard) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Specific overrides for pill-shaped elements */
+.nav-tab:focus-visible,
+.filter-tab:focus-visible,
+.blog-card-view-button:focus-visible {
+  outline-offset: 3px;
+  border-radius: inherit;
+}

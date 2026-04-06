@@ -7,23 +7,28 @@
     - img "Logo" [ref=e10] [cursor=pointer]
     - generic [ref=e11]: meditations
   - generic [ref=e12]:
-    - generic [ref=e13]:
-      - generic [ref=e14] [cursor=pointer]:
-        - generic [ref=e15] [cursor=pointer]: Personal
-        - generic [ref=e16] [cursor=pointer]: About Me
-        - generic [ref=e17] [cursor=pointer]: A glimpse into who I am and what drives me
-        - generic [ref=e18] [cursor=pointer]: View
-      - generic [ref=e20] [cursor=pointer]: Principles
-      - generic [ref=e22] [cursor=pointer]: Technology
-    - generic [ref=e24]:
-      - generic [ref=e25]: About Me
-      - generic [ref=e26]: Personal
-      - generic [ref=e27]: I'm a passionate developer and creative thinker who finds beauty in both code and the world around me. My journey in technology has been shaped by curiosity, continuous learning, and a deep appreciation for elegant solutions to complex problems.
-      - generic [ref=e36]: Through my work, I strive to create experiences that are not just functional, but meaningful. Whether I'm writing code, exploring new technologies, or capturing moments through photography, I believe in the power of thoughtful creation and the importance of staying connected to the world beyond the screen. Life is a collection of moments—some captured, some remembered, all contributing to who we are. These images represent the balance I seek between the digital and the natural, the structured and the spontaneous, the technical and the artistic. Each photograph is a reminder to pause, observe, and appreciate the beauty that surrounds us every day.
-  - navigation [ref=e38]:
-    - button "Home" [ref=e39] [cursor=pointer]:
-      - img "Home" [ref=e40] [cursor=pointer]
-    - button "Thoughts" [ref=e41] [cursor=pointer]
-    - button "Meditations" [ref=e42] [cursor=pointer]
-    - button "Say hi?" [ref=e43] [cursor=pointer]
+    - generic [ref=e14]:
+      - button "Go to card 1 (current)" [ref=e15] [cursor=pointer]
+      - button "Go to card 2" [ref=e17] [cursor=pointer]
+      - button "Go to card 3" [ref=e19] [cursor=pointer]
+    - generic [ref=e21]:
+      - generic [ref=e22] [cursor=pointer]:
+        - generic [ref=e23] [cursor=pointer]: A Gallery
+        - generic [ref=e24] [cursor=pointer]: Lumens
+        - generic [ref=e26] [cursor=pointer]: A glimpse into who I am and what drives me
+      - generic [ref=e27] [cursor=pointer]:
+        - generic [ref=e28] [cursor=pointer]: Principles
+        - generic: Things I stand by
+      - generic [ref=e29] [cursor=pointer]:
+        - generic [ref=e30] [cursor=pointer]: Technology
+        - generic: My Technology Stack
+    - generic [ref=e32]:
+      - generic [ref=e33]: Lumens
+      - generic [ref=e34]: A Gallery
+  - navigation [ref=e44]:
+    - button [ref=e45] [cursor=pointer]:
+      - img [ref=e46] [cursor=pointer]
+    - button "Thoughts" [ref=e73] [cursor=pointer]
+    - button "Meditations" [ref=e74] [cursor=pointer]
+    - button "Say hi?" [ref=e75] [cursor=pointer]
 ```

@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Image optimization scripts (temporary build tools)
+resize-images.js
+convert-to-webp.js
+
 # Test results
 test-results/
 playwright-report/

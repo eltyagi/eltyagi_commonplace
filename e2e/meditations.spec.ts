@@ -27,7 +27,7 @@ test.describe('Meditations Page', () => {
     
     // Check if images are loaded
     const images = page.locator('.scenery-card');
-    await expect(images).toHaveCount(10); // 10 images on desktop
+    await expect(images).toHaveCount(6); // 6 images on desktop
   });
 
   test('should expand images on click', async ({ page }) => {

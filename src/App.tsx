@@ -4,11 +4,13 @@ import Contact from './components/contact/Contact'
 import LandingPage from './components/landing-page/LandingPage'
 import Thoughts from './components/thoughts/Thoughts'
 import Meditations from './components/meditations/Meditations'
+import CustomCursor from './components/custom-cursor/CustomCursor'
 
 
 function App() {
   return (
     <>
+     <CustomCursor />
      <div className="App">
      <BrowserRouter>
       <div className="App">

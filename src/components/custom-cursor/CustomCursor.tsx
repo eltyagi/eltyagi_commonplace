@@ -20,11 +20,18 @@ const CustomCursor = () => {
   }, []);
 
   useEffect(() => {
-    // Only enable on non-touch devices with fine pointer
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
-    if (!mediaQuery.matches) return;
 
-    setIsEnabled(true);
+    const handleMediaChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsEnabled(e.matches);
+      if (!e.matches) setVisible(false);
+    };
+
+    // Set initial state
+    handleMediaChange(mediaQuery);
+
+    // Listen for dynamic changes (e.g. external mouse connected/disconnected)
+    mediaQuery.addEventListener('change', handleMediaChange);
 
     const handleMouseMove = (e: MouseEvent) => {
       positionRef.current = { x: e.clientX, y: e.clientY };
@@ -42,6 +49,7 @@ const CustomCursor = () => {
     document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
+      mediaQuery.removeEventListener('change', handleMediaChange);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
@@ -89,14 +97,17 @@ const CustomCursor = () => {
     // Initial attachment
     attachListeners();
 
-    // Re-attach when DOM changes (route transitions, dynamic content)
+    // Debounced re-attach when DOM changes (route transitions, dynamic content)
+    let debounceTimer: ReturnType<typeof setTimeout>;
     const observer = new MutationObserver(() => {
-      attachListeners();
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(attachListeners, 100);
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      clearTimeout(debounceTimer);
       observer.disconnect();
       listenersMap.forEach(({ enter, leave }, el) => {
         el.removeEventListener('mouseenter', enter);

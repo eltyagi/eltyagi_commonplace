@@ -27,20 +27,18 @@ test.describe('Custom Cursor', () => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto('/thoughts');
 
-    // Wait for page content
+    // Wait for blog cards to load
     await page.waitForLoadState('networkidle');
-
     const blogCard = page.locator('.blog-card').first();
-    // Only test if blog cards are present
-    if (await blogCard.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await blogCard.hover();
+    await expect(blogCard).toBeVisible({ timeout: 10000 });
 
-      const cursor = page.locator('.custom-cursor');
-      await expect(cursor).toHaveClass(/custom-cursor--action/);
+    await blogCard.hover();
 
-      const label = page.locator('.custom-cursor__label');
-      await expect(label).toHaveText('Read');
-    }
+    const cursor = page.locator('.custom-cursor');
+    await expect(cursor).toHaveClass(/custom-cursor--action/);
+
+    const label = page.locator('.custom-cursor__label');
+    await expect(label).toHaveText('Read');
   });
 
   test('should revert to default variant when mouse leaves interactive element', async ({ page }) => {
@@ -83,18 +81,17 @@ test.describe('Custom Cursor', () => {
 });
 
 test.describe('Custom Cursor - Mobile', () => {
-  test('should not render custom cursor on mobile (touch device)', async ({ page }) => {
-    // Simulate a touch device
+  test('should not interfere on mobile devices', async ({ page }) => {
+    // Simulate a touch device viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
 
-    await page.mouse.move(200, 300);
-
-    // On mobile devices with touch, the custom cursor should not be present
-    // The component checks for (hover: hover) and (pointer: fine) media query
-    const cursorCount = await page.locator('.custom-cursor').count();
-    // On Playwright's emulated mobile, matchMedia may still match desktop
-    // so we just check it doesn't break
-    expect(cursorCount).toBeLessThanOrEqual(1);
+    // The component uses matchMedia('(hover: hover) and (pointer: fine)') to
+    // determine if a fine pointer is available. In Playwright's default desktop
+    // browser context, this still matches even with a small viewport, so the
+    // cursor may render. On real touch-only devices, it won't render at all.
+    // Here we verify the page loads without errors and cursor doesn't break UX.
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('nav')).toBeVisible();
   });
 });

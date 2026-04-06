@@ -1,0 +1,75 @@
+/* Hide default cursor on desktop devices with fine pointer */
+@media (hover: hover) and (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+
+  /* Restore default cursor for text input elements */
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+
+/* Custom cursor element */
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease,
+    border 0.2s ease, opacity 0.15s ease;
+  will-change: left, top;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    transition: none;
+  }
+}
+
+.custom-cursor--hidden {
+  opacity: 0;
+}
+
+/* Hover state for links and buttons */
+.custom-cursor--hover {
+  width: 16px;
+  height: 16px;
+  background: var(--color-accent);
+}
+
+/* Action state for cards with labels */
+.custom-cursor--action {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 111, 97, 0.15);
+  border: 1.5px solid var(--color-accent);
+  mix-blend-mode: normal;
+}
+
+/* Label text inside cursor */
+.custom-cursor__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.65rem;
+  font-family: 'Fira Code', monospace;
+  color: var(--color-accent);
+  white-space: nowrap;
+  user-select: none;
+}

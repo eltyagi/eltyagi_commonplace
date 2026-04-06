@@ -389,3 +389,5 @@ test-results/visual-regression-Visual-R-cb6dd-d-match-landing-page-design-firefo
 test-results/visual-regression-Visual-R-cb6dd-d-match-landing-page-design-webkit/error-context.md
 test-results/visual-regression-Visual-R-cb6dd-d-match-landing-page-design-webkit/landing-page-actual.png
 test-results/visual-regression-Visual-R-cb6dd-d-match-landing-page-design-webkit/test-failed-1.png
+test-results/
+playwright-report/

@@ -25,6 +25,7 @@ const BlogCard = forwardRef<HTMLDivElement, BlogCardProps>(({
             ref={ref}
             className={`blog-card ${isExpanded ? 'expanded' : ''}`} 
             onClick={onCardClick}
+            data-cursor-label="Read"
         >
             <div className='blog-card-classification'>{classification}</div>
             <div className='blog-card-title'>{title}</div>

@@ -1,7 +1,7 @@
 ---
 title: Pillow for my Helmet
 classification: Poetry
-excerpt: I wonder if I could hold a fight, with no fight left in me. If my legacy could be of storeis of battles seldom told.
+excerpt: I wonder if I could hold a fight, with no fight left in me. If my legacy could be of stories of battles seldom told.
 date: 2023-09-21
 ---
 

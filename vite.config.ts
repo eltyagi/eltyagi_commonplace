@@ -9,9 +9,6 @@ export default defineConfig({
     react(),
     ViteImageOptimizer({
       exclude: /\.svg$/,
-      jpeg: { quality: 80 },
-      jpg: { quality: 80 },
-      png: { quality: 80 },
       webp: { quality: 80 },
     }),
   ],

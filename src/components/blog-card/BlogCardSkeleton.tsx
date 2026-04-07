@@ -10,7 +10,15 @@ const BlogCardSkeleton = () => {
       </div>
 
       {/* Title skeleton (hidden initially like actual title) */}
-      <div style={{ padding: '0 16px', borderTop: '1px solid #ABB2BF' }}>
+      <div
+        style={{
+          padding: '0 16px',
+          borderTop: '1px solid #99352F',
+          maxHeight: '0',
+          overflow: 'hidden',
+        }}
+        aria-hidden="true"
+      >
         <Skeleton width="60%" height="18px" borderRadius="0px" />
       </div>
 

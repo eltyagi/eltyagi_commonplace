@@ -6,7 +6,7 @@ import BlogCard from '../blog-card/BlogCard';
 import BlogCardSkeleton from '../blog-card/BlogCardSkeleton';
 import PageHeader from '../page-header/PageHeader';
 import ProgressBar from '../progress-bar/ProgressBar';
-import Loader from '../loader/Loader';
+
 import BlogPostFooter from '../blog-post-footer/BlogPostFooter';
 import { useScrollThreshold } from '../../hooks/useScrollThreshold';
 import { HEADER_HEIGHT_COLLAPSED, HEADER_HEIGHT_EXPANDED } from '../../constants/layout';
@@ -258,7 +258,6 @@ const Thoughts: React.FC = () => {
 
   return (
     <div className="thoughts" style={containerStyle}>
-      <Loader isLoading={isLoading} />
       <div className = 'pg-title-container'>
             <PageHeader isCollapsed={isHeaderCollapsed}/>
         </div>

@@ -370,12 +370,10 @@ const Meditations: React.FC = () => {
 
   const activeSection = meditationSections[activeCardIndex];
 
-  // Combined loading state - wait for both sections and images
-  const isLoading = sectionsLoading || imagesLoading;
 
   return (
     <div className="meditations" style={containerStyle}>
-      <Loader isLoading={isLoading} />
+      <Loader isLoading={sectionsLoading} />
       <div className="pg-title-container">
         <PageHeader isCollapsed={isHeaderCollapsed}/>
       </div>

@@ -3,7 +3,7 @@ import './BlogCardSkeleton.css';
 
 const BlogCardSkeleton = () => {
   return (
-    <div className="blog-card blog-card-skeleton">
+    <div className="blog-card-skeleton">
       {/* Classification skeleton */}
       <div style={{ padding: '8px' }}>
         <Skeleton width="30%" height="16px" borderRadius="0px" />

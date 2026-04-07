@@ -6,7 +6,7 @@
 }
 
 .gallery-image-skeleton {
-  position: absolute !important;
+  position: absolute;
   top: 0;
   left: 0;
 }

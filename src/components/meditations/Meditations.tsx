@@ -163,14 +163,20 @@ const ImageCarousel: React.FC<{ images: SceneryImage[] }> = ({ images }) => {
   return (
     <div className="image-carousel">
       <div className="carousel-image-container">
-        {images.map((image, index) => (
-          <LazyImage
-            key={image.filename}
-            src={image.src}
-            alt={image.caption}
-            className={`carousel-image ${index === currentImageIndex ? 'active' : ''}`}
-          />
-        ))}
+        {images.map((image, index) => {
+          // Only render active image and next image (for prefetch)
+          if (index !== currentImageIndex && index !== (currentImageIndex + 1) % images.length) {
+            return null;
+          }
+          return (
+            <LazyImage
+              key={image.filename}
+              src={image.src}
+              alt={image.caption}
+              className={`carousel-image ${index === currentImageIndex ? 'active' : ''}`}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Contact.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
@@ -6,6 +6,10 @@ import PageHeader from '../page-header/PageHeader';
 type ConversationStep = 'message' | 'name' | 'email' | 'confirm';
 
 const Contact: React.FC = () => {
+  useEffect(() => {
+    document.title = 'Say hi? · Lakshya Tyagi';
+  }, []);
+
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState([
     { sender: 'eltyagi', text: 'hi there!', timestamp: Date.now() }

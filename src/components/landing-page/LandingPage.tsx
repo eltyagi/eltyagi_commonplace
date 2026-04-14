@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './LandingPage.css';
 import Navigation from '../navigation/Navigation';
 import PageHeader from '../page-header/PageHeader';
@@ -27,6 +27,10 @@ const GitHubIcon: React.FC = () => (
   </svg>
 );
 const LandingPage: React.FC = () => {
+  useEffect(() => {
+    document.title = 'Lakshya Tyagi';
+  }, []);
+
   return (
     <div className="landing-page">
         <div className = 'pg-title-container'>

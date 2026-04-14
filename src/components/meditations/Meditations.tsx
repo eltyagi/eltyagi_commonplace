@@ -192,6 +192,11 @@ const Meditations: React.FC = () => {
     '--header-height-current': `${headerHeight}px`
   } as CSSProperties;
 
+  // Set page title
+  useEffect(() => {
+    document.title = 'Meditations · Lakshya Tyagi';
+  }, []);
+
   // Refs for scrolling to cards when progress bar is clicked
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Ref for scrolling content to top

@@ -255,6 +255,17 @@ const Thoughts: React.FC = () => {
 
   const activePost = filteredPosts[activeCardIndex];
 
+  // Update page title based on current view
+  useEffect(() => {
+    if (slug && activePost) {
+      // Individual post view - use post title
+      document.title = `${activePost.title} · Lakshya Tyagi`;
+    } else {
+      // List view - use section title
+      document.title = 'Thoughts · Lakshya Tyagi';
+    }
+  }, [slug, activePost]);
+
   return (
     <div className="thoughts" style={containerStyle}>
       <Loader isLoading={isLoading} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './PageHeader.css';
 import logoImg from '../../assets/music-luxe.svg';
+import { useParallax } from '../../hooks/useParallax';
 
 interface PageHeaderProps {
   isCollapsed?: boolean;
@@ -10,7 +11,8 @@ interface PageHeaderProps {
 const PageHeader: React.FC<PageHeaderProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
-  
+  useParallax(); // Enable parallax scroll effects
+
   const getSubtitle = () => {
     switch (location.pathname) {
       case '/':
@@ -33,7 +35,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ isCollapsed = false }) => {
           eltyagi's
         </div>
         <div className='pg-title-icon'>
-          <img className='pg-title-icon-img' src={logoImg} alt="Logo" />
+          <img className='pg-title-icon-img parallax-header-icon' src={logoImg} alt="Logo" />
         </div>
         <div className='pg-title-subtitle krona-one-regular'>
           {getSubtitle()}

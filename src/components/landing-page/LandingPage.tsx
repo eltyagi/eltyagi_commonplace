@@ -41,7 +41,7 @@ const LandingPage: React.FC = () => {
 
         </div>
 
-        <div className = 'pg-links'>
+        <div className = 'pg-links parallax-slow'>
             <a href="https://www.linkedin.com/in/lakshyatyagi/" target="_blank" rel="noopener noreferrer" className='pg-link-icon' aria-label="LinkedIn">
                 <LinkedInIcon />
             </a>

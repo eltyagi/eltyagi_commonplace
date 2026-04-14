@@ -68,4 +68,45 @@ img {
   }
 }
 
+/* Parallax scroll effects */
+.parallax-slow {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.05px));
+  will-change: transform;
+}
 
+.parallax-fast {
+  transform: translateY(calc(var(--scroll-y, 0) * 0.03px));
+  will-change: transform;
+}
+
+.parallax-header-icon {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.5px));
+  will-change: transform;
+}
+
+.parallax-gallery {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.02px));
+  will-change: transform;
+}
+
+/* Disable parallax on mobile (performance) */
+@media (max-width: 768px) {
+  .parallax-slow,
+  .parallax-fast,
+  .parallax-header-icon,
+  .parallax-gallery {
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-slow,
+  .parallax-fast,
+  .parallax-header-icon,
+  .parallax-gallery {
+    transform: none !important;
+    will-change: auto;
+  }
+}

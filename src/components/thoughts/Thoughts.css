@@ -258,8 +258,8 @@
         margin-top: 252px; /* Must clear fixed search section: 96px header-gap + ~140px content + 16px padding */
         margin-left: auto; /* Center horizontally */
         margin-right: auto; /* Center horizontally */
-        margin-bottom: 100px; /* Space for navigation */
-        padding: 0; /* No extra padding */
+        margin-bottom: 0; /* Remove margin, use padding instead */
+        padding: 0 0 calc(var(--nav-height, 40px) + var(--nav-bottom, 10px) + 16px) 0; /* Navigation clearance at bottom */
         top: auto; /* Remove top positioning */
         order: 2; /* Display second */
         display: flex;
